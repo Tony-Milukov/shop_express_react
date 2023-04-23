@@ -15,7 +15,7 @@ const addRole = async (req:any, res:any) => {
       res.status(404).json({ message: 'Role was not entered' });
     }
   } catch (e:any) {
-    apiError(res, e);
+    apiError(res);
   }
 };
 const deleteRole = async (req:any, res:any, next:any) => {
@@ -36,7 +36,7 @@ const deleteRole = async (req:any, res:any, next:any) => {
       res.status(404).json({ message: 'roleId was not entered' });
     }
   } catch (e:any) {
-    apiError(res, e);
+    apiError(res);
   }
 };
 
@@ -45,7 +45,7 @@ const getAllRoles = async (req:any, res:any) => {
     const response = await Role.findAndCountAll();
     res.send(response);
   } catch (e:any) {
-    apiError(res, e);
+    apiError(res);
   }
 };
 
