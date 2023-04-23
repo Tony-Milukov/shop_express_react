@@ -1,11 +1,11 @@
 const validateParam = require('./Validations/paramsValidation.ts');
-const { isRoleGiven } = require('./Validations/user.ts');
+const { isRoleGiven } = require('../Service/userService.ts');
 const {
-  deleteUserService, createUserService, getUserByIdService, doesEmailExistService, doesUsernameExistService, getUserByUsernameService,
-} = require('../Service/userService');
-const { getRoleById } = require('./Validations/role.ts');
+  deleteUserService, createUserService, getUserByIdService, doesEmailExistService, doesUsernameExistService, getUserByUsernameService, genUserJWTService, decodeJwtService,
+} = require('../Service/userService.ts');
+const { getRoleById } = require('../Service/roleService.ts');
 const {
-  User, UserRole,
+  UserRole,
 } = require('../models/models.ts');
 const apiError = require('../middelwares/apiError.ts');
 
@@ -68,7 +68,12 @@ const addRole = async (req:any, res:any) => {
     await getRoleById(roleId);
 
     // is role given
-    await isRoleGiven(userId, roleId);
+    const hasRole = await isRoleGiven(userId, roleId);
+    if (hasRole) {
+      res.status(200).json({
+        errorMSG: 'User with that userId already have the role',
+      });
+    }
 
     await UserRole.create({
       userId,
@@ -82,7 +87,6 @@ const addRole = async (req:any, res:any) => {
 const deleteUser = async (req:any, res:any) => {
   try {
     const userId = validateParam(req, res, 'userId');
-
     // does user exist
     await getUserByIdService(userId);
 
@@ -92,8 +96,22 @@ const deleteUser = async (req:any, res:any) => {
     } else {
       res.status(404).json({ message: 'Something went wrong' });
     }
-  } catch (e) {
-    apiError(res);
+  } catch (e:any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
+const getUserJWT = async (req:any, res:any) => {
+  try {
+    const email = validateParam(req, res, 'email');
+    const password = validateParam(req, res, 'password');
+    const jwt = await genUserJWTService(email, password);
+    if (jwt) {
+      res.status(200).json(jwt);
+    } else {
+      res.status(404).json({ message: 'email or password are incorrect' });
+    }
+  } catch (e:any) {
+    apiError(res, e.errorMSG, e.status);
   }
 };
 module.exports = {
@@ -102,5 +120,6 @@ module.exports = {
   getUser,
   deleteUser,
   addRole,
+  getUserJWT,
 };
 export {};

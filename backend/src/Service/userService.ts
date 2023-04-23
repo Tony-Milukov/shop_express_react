@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-
+const jwt = require('jsonwebtoken');
 const {
   User, Basket, UserRole,
 } = require('../models/models.ts');
@@ -49,7 +49,7 @@ const doesEmailExistService = async (email:string) => {
       email,
     },
   });
-  if (!user) {
+  if (user) {
     throw { status: 409, errorMSG: 'User with that email already exists' };
   } return !!user;
 };
@@ -59,7 +59,7 @@ const doesUsernameExistService = async (username:string) => {
       username,
     },
   });
-  if (!user) {
+  if (user) {
     throw { status: 409, errorMSG: 'User with that username already exists' };
   } return !!user;
 };
@@ -83,6 +83,53 @@ const getUserByUsernameService = async (username:string) => {
   }
   return user;
 };
+const isRoleGiven = async (userId:number, roleId:number) => {
+  const [isRoleGiven] = await UserRole.findAll({
+    where: {
+      userId,
+      roleId,
+    },
+  });
+  if (isRoleGiven) {
+    return true;
+  }
+  return false;
+};
+const getTokenService = (req:any) => {
+  const rareToken = req.headers.authorization;
+  if (!rareToken) {
+    return false;
+  }
+  const token = rareToken.split(' ')[1];
+  if (token) {
+    return token;
+  }
+  return false;
+};
+const getUserByEmailService = async (email:string) => {
+  const user = await User.findOne({
+    where: {
+      email,
+    },
+  });
+  return user;
+};
+const genUserJWTService = async (email:string, password:string) => {
+  const user = await getUserByEmailService(email);
+  if (user) {
+    const expectedPassword = user.password;
+    if (bcrypt.compareSync(password, expectedPassword)) {
+      return jwt.sign({ userId: user.id, username: user.username }, process.env.SECRET_JWT);
+    } return false;
+  }
+  return false;
+};
+
+const decodeJwtService = async (token:string) => jwt.verify(token, process.env.SECRET_JWT, (err:any, decoded:any) => {
+  if (err) {
+    return false;
+  } return decoded;
+});
 module.exports = {
   deleteUserService,
   createUserService,
@@ -90,5 +137,9 @@ module.exports = {
   doesEmailExistService,
   doesUsernameExistService,
   getUserByUsernameService,
+  isRoleGiven,
+  genUserJWTService,
+  getTokenService,
+  decodeJwtService,
 };
 export {};

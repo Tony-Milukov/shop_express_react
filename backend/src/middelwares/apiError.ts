@@ -1,5 +1,5 @@
-const apiError = (res:any, message = 'Internal Server Error') => {
-  res.status(500).json({ message });
+const apiError = (res:any, message = 'Internal Server Error', status = 500) => {
+  res.status(status).json({ message });
 };
 module.exports = apiError;
 export {};

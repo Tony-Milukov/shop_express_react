@@ -1,42 +1,36 @@
 const { Role } = require('../models/models.ts');
 const apiError = require('../middelwares/apiError.ts');
+const validateParam = require('./Validations/paramsValidation.ts');
+const {
+  deleteRoleService, addRoleService, getRoleById,
+} = require('../Service/roleService.ts');
 
 const addRole = async (req:any, res:any) => {
-  const { role } = req.body;
   try {
-    if (role) {
-      const response = await Role.create({
-        name: role,
-      });
-      if (response) {
-        res.status(200).json({ message: 'Role was added succesfully' });
-      }
+    const role = validateParam(req, res, 'role');
+    const response = await addRoleService(role);
+    if (response) {
+      res.status(200).json({ message: 'Role was added succesfully' });
     } else {
-      res.status(404).json({ message: 'Role was not entered' });
+      // default error (apiError)
+      throw {};
     }
   } catch (e:any) {
-    apiError(res);
+    apiError(res, e.errorMSG, e.status);
   }
 };
-const deleteRole = async (req:any, res:any, next:any) => {
-  const { roleId } = req.body;
+const deleteRole = async (req:any, res:any) => {
   try {
-    if (roleId) {
-      const response = await Role.destroy({
-        where: {
-          id: roleId,
-        },
-      });
-      if (response) {
-        res.status(200).json({ message: 'Role was deleted succesfully' });
-      } else {
-        res.status(404).json({ message: 'role with that roleId doesn\'t exist' });
-      }
+    const roleId = validateParam(req, res, 'roleId');
+    const response = await deleteRoleService(roleId);
+    if (response) {
+      res.status(200).json({ message: 'Role was deleted succesfully' });
     } else {
-      res.status(404).json({ message: 'roleId was not entered' });
+      // default error (apiError)
+      throw {};
     }
   } catch (e:any) {
-    apiError(res);
+    apiError(res, e.errorMSG, e.status);
   }
 };
 
@@ -48,9 +42,20 @@ const getAllRoles = async (req:any, res:any) => {
     apiError(res);
   }
 };
+const getRole = async (req:any, res:any) => {
+  try {
+    const roleId = validateParam(req, res, 'roleId');
+
+    const role = await getRoleById(roleId);
+    res.send(role);
+  } catch (e:any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
 
 module.exports = {
   addRole,
   getAllRoles,
   deleteRole,
+  getRole,
 };
