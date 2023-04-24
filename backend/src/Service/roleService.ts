@@ -7,7 +7,7 @@ const getRoleById = async (roleId:number) => {
   }
   return role;
 };
-const addRoleService = async (role: number) => {
+const addRoleService = async (role: string) => {
   const result = await Role.create({
     name: role,
   });
@@ -16,7 +16,6 @@ const addRoleService = async (role: number) => {
 const deleteRoleService = async (roleId: number) => {
   // does roleId exist
   await getRoleById(roleId);
-
   const result = await Role.destroy({
     where: {
       id: roleId,

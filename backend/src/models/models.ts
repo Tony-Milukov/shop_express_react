@@ -85,23 +85,29 @@ const Brand = Sequelize.define('brand', {
     autoIncrement: true,
   },
   name: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
     unique: true,
 
   },
 });
-const Type = Sequelize.define('type', {
+const Category = Sequelize.define('category', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   name: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-
+  },
+});
+const ProductsCategory = Sequelize.define('products_category', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
 });
 const Role = Sequelize.define('roles', {
@@ -143,8 +149,11 @@ Product.belongsTo(Basket);
 Product.hasMany(Description);
 Description.belongsTo(Product);
 
-Product.hasMany(Type);
-Type.belongsTo(Product);
+Category.hasMany(ProductsCategory);
+ProductsCategory.belongsTo(Category);
+
+Product.hasMany(ProductsCategory);
+ProductsCategory.belongsTo(Product);
 
 Product.hasMany(Brand);
 Brand.belongsTo(Product);
@@ -156,9 +165,10 @@ module.exports = {
   Product,
   Description,
   Brand,
-  Type,
+  Category,
   UserRole,
   Role,
+  ProductsCategory,
 };
 
 export {};

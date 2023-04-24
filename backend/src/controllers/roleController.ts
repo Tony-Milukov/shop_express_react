@@ -39,7 +39,7 @@ const getAllRoles = async (req:any, res:any) => {
     const response = await Role.findAndCountAll();
     res.send(response);
   } catch (e:any) {
-    apiError(res);
+    apiError(res, e.errorMSG, e.status);
   }
 };
 const getRole = async (req:any, res:any) => {

@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const uuid = require('uuid');
+const fs = require('fs');
 const {
   User, Basket, UserRole,
 } = require('../models/models.ts');
@@ -69,12 +71,34 @@ const getUserByIdService = async (userId:number) => {
   if (!user) {
     throw { errorMSG: 'User with that userId was not defined' };
   }
-  return user;
+  return user.dataValues;
 };
+
+const deleteOldImage = (img:string) => {
+  const imgPath = `${__dirname}/../static/avatars/${img}`;
+  if (img !== 'default.jpeg') {
+    fs.unlink(imgPath, (err:any) => {
+      if (err) {
+        throw { errorMSG: 'something went wrong' };
+      }
+      return true;
+    });
+  }
+};
+const updateUserImageDB = (img:string, userId:number) => {
+  const res = User.update({ img }, { where: { id: userId } });
+  if (!res) {
+    throw { errorMSG: 'something went wrong' };
+  }
+};
+
 const getUserByUsernameService = async (username:string) => {
   const user = await User.findOne({
     where: {
       username,
+    },
+    attributes: {
+      exclude: ['password', 'createdAt', 'updatedAt', 'id'],
     },
   });
   if (!user) {
@@ -97,6 +121,7 @@ const isRoleGiven = async (userId:number, roleId:number) => {
 };
 const getTokenService = (req:any) => {
   const rareToken = req.headers.authorization;
+
   if (!rareToken) {
     return false;
   }
@@ -111,6 +136,7 @@ const getUserByEmailService = async (email:string) => {
     where: {
       email,
     },
+
   });
   return user;
 };
@@ -130,6 +156,20 @@ const decodeJwtService = async (token:string) => jwt.verify(token, process.env.S
     return false;
   } return decoded;
 });
+
+const uploadImage = async (img:any) => {
+  const [fileType, ext] = img.mimetype.split('/');
+  // if file is jpg or jpeg or png
+  if (fileType === 'image' || ext === 'jpeg' || ext === 'png' || ext === 'jpg') {
+    const fileName = `${uuid.v4()}_avatar.${ext}`;
+    // get absoulute path for the user
+    const path = `${__dirname}/../static/avatars/${fileName}`;
+    img.mv(path);
+    return fileName;
+  }
+
+  throw { errorMSG: 'File must be a image! (png,jpg,jpeg)', status: 400 };
+};
 module.exports = {
   deleteUserService,
   createUserService,
@@ -139,7 +179,10 @@ module.exports = {
   getUserByUsernameService,
   isRoleGiven,
   genUserJWTService,
+  uploadImage,
   getTokenService,
   decodeJwtService,
+  deleteOldImage,
+  updateUserImageDB,
 };
 export {};
