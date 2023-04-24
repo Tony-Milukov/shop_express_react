@@ -5,7 +5,7 @@ const {
 
 const router = express.Router();
 router.put('/', addRole);
-router.get('/all', getAllRoles);
+router.post('/all', getAllRoles);
 router.delete('/', deleteRole);
 router.post('/', getRole);
 module.exports = router;

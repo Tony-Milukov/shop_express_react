@@ -3,7 +3,7 @@ const apiError = require('../middelwares/apiError.ts');
 const validateParam = require('./Validations/paramsValidation.ts');
 
 const {
-  addCategoryService, deleteCategoryService,
+  addCategoryService, deleteCategoryService, getCategoryByIdService, getAllCategoriesService,
 } = require('../Service/categoryService.ts');
 
 const addCategory = async (req:any, res:any) => {
@@ -23,6 +23,10 @@ const addCategory = async (req:any, res:any) => {
 const deleteCategory = async (req:any, res:any) => {
   try {
     const categoryId = validateParam(req, res, 'categoryId');
+
+    // check does the category exist
+    await getCategoryByIdService(categoryId);
+
     const response = await deleteCategoryService(categoryId);
     if (response) {
       res.status(200).json({ message: 'category was deleted succesfully' });
@@ -34,9 +38,32 @@ const deleteCategory = async (req:any, res:any) => {
     apiError(res, e.errorMSG, e.status);
   }
 };
+const getAllCategories = async (req:any, res:any) => {
+  try {
+    // how much elem must be given
+    const pageSize = validateParam(req, res, 'pageSize');
+    const page = validateParam(req, res, 'page');
+    const offset = pageSize * (page - 1);
 
+    const categories = await getAllCategoriesService(pageSize, offset);
+    res.status(200).json(categories);
+  } catch (e:any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
+const getCategoryById = async (req:any, res:any) => {
+  try {
+    const categoryId = validateParam(req, res, 'categoryId');
+    const category = await getCategoryByIdService(categoryId);
+    res.status(200).json(category);
+  } catch (e:any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
 module.exports = {
   addCategory,
   deleteCategory,
+  getAllCategories,
+  getCategoryById,
 };
 export {};

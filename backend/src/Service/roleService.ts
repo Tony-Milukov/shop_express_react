@@ -23,10 +23,19 @@ const deleteRoleService = async (roleId: number) => {
   });
   return !!result;
 };
-
+const getAllRolesService = async (limit:number, offset:number) => {
+  const roles = await Role.findAndCountAll({
+    offset,
+    limit,
+  });
+  if (roles.rows.length >= 1) {
+    return roles;
+  } throw { errorMSG: 'roles by this page do not exist', status: 404 };
+};
 module.exports = {
   deleteRoleService,
   addRoleService,
   getRoleById,
+  getAllRolesService,
 };
 export {};

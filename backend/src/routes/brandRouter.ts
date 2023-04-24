@@ -1,8 +1,13 @@
-const express = require("express");
-const router = express.Router();
-const {createBrand,getBrands} = require("../controllers/brandController")
+const express = require('express');
 
-router.put("/",createBrand)
-router.post("/",getBrands)
-module.exports = router
-export {}
+const router = express.Router();
+const {
+  createBrand, getBrands, deleteBrand, getBrandById,
+} = require('../controllers/brandController.ts');
+
+router.put('/', createBrand);
+router.post('/all', getBrands);
+router.delete('/', deleteBrand);
+router.post('/', getBrandById);
+module.exports = router;
+export {};
