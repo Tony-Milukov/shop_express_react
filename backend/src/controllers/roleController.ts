@@ -1,13 +1,13 @@
 const { Role } = require('../models/models.ts');
 const apiError = require('../middelwares/apiError.ts');
-const validateParam = require('./Validations/paramsValidation.ts');
+const validateBody = require('./Validations/BodyValidations.ts');
 const {
   deleteRoleService, addRoleService, getRoleById, getAllRolesService,
 } = require('../Service/roleService.ts');
 
 const addRole = async (req:any, res:any) => {
   try {
-    const role = validateParam(req, res, 'role');
+    const role = validateBody(req, res, 'role');
     const response = await addRoleService(role);
     if (response) {
       res.status(200).json({ message: 'Role was added succesfully' });
@@ -21,7 +21,7 @@ const addRole = async (req:any, res:any) => {
 };
 const deleteRole = async (req:any, res:any) => {
   try {
-    const roleId = validateParam(req, res, 'roleId');
+    const roleId = validateBody(req, res, 'roleId');
     const response = await deleteRoleService(roleId);
     if (response) {
       res.status(200).json({ message: 'Role was deleted succesfully' });
@@ -36,8 +36,8 @@ const deleteRole = async (req:any, res:any) => {
 
 const getAllRoles = async (req:any, res:any) => {
   try {
-    const pageSize = validateParam(req, res, 'pageSize');
-    const page = validateParam(req, res, 'page');
+    const pageSize = validateBody(req, res, 'pageSize');
+    const page = validateBody(req, res, 'page');
     const offset = pageSize * (page - 1);
     const roles = await getAllRolesService(pageSize, offset);
     res.status(200).json(roles);
@@ -47,7 +47,7 @@ const getAllRoles = async (req:any, res:any) => {
 };
 const getRole = async (req:any, res:any) => {
   try {
-    const roleId = validateParam(req, res, 'roleId');
+    const roleId = validateBody(req, res, 'roleId');
     const role = await getRoleById(roleId);
     res.send(role);
   } catch (e:any) {

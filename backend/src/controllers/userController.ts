@@ -1,8 +1,11 @@
-const validateParam = require('./Validations/paramsValidation.ts');
+const validateBody = require('./Validations/BodyValidations.ts');
+const validateParams = require('./Validations/ParamsValidation.ts');
 const { isRoleGiven } = require('../Service/userService.ts');
 const {
-  deleteUserService, createUserService, getUserByIdService, doesEmailExistService, doesUsernameExistService, getUserByUsernameService, genUserJWTService, decodeJwtService, getTokenService, uploadImage, deleteOldImage, updateUserImageDB,
+  deleteUserService, createUserService, getUserByIdService, doesEmailExistService, doesUsernameExistService, getUserByUsernameService, genUserJWTService, decodeJwtService, getTokenService, updateUserImageDB,
 } = require('../Service/userService.ts');
+
+const { uploadImage, deleteOldImage } = require('../middelwares/updateImage.ts');
 const { getRoleById } = require('../Service/roleService.ts');
 
 const {
@@ -13,9 +16,9 @@ const apiError = require('../middelwares/apiError.ts');
 
 const createUser = async (req:any, res:any) => {
   try {
-    const email = validateParam(req, res, 'email');
-    const password = validateParam(req, res, 'password');
-    const username = validateParam(req, res, 'username');
+    const email = validateBody(req, res, 'email');
+    const password = validateBody(req, res, 'password');
+    const username = validateBody(req, res, 'username');
 
     // if exist > throw error
     await doesEmailExistService(email);
@@ -31,7 +34,7 @@ const createUser = async (req:any, res:any) => {
 };
 const getUser = async (req:any, res:any) => {
   try {
-    const { username } = req.params;
+    const username = validateParams(req, res, 'username');
     // getting user, if not exist > throw error
     const user = await getUserByUsernameService(username);
     res.status(200).json(user);
@@ -41,7 +44,7 @@ const getUser = async (req:any, res:any) => {
 };
 const getRole = async (req:any, res:any) => {
   try {
-    const userId = validateParam(req, res, 'userId');
+    const userId = validateBody(req, res, 'userId');
     // getRoles
     const roles = await UserRole.findAndCountAll({
       where: {
@@ -60,8 +63,8 @@ const getRole = async (req:any, res:any) => {
 };
 const addRole = async (req:any, res:any) => {
   try {
-    const userId = validateParam(req, res, 'userId');
-    const roleId = validateParam(req, res, 'roleId');
+    const userId = validateBody(req, res, 'userId');
+    const roleId = validateBody(req, res, 'roleId');
 
     // does user exist
     await getUserByIdService(userId);
@@ -87,7 +90,7 @@ const addRole = async (req:any, res:any) => {
 };
 const deleteUser = async (req:any, res:any) => {
   try {
-    const userId = validateParam(req, res, 'userId');
+    const userId = validateBody(req, res, 'userId');
     // does user exist
     await getUserByIdService(userId);
     // deleting user from DB
@@ -103,8 +106,8 @@ const deleteUser = async (req:any, res:any) => {
 };
 const getUserJWT = async (req:any, res:any) => {
   try {
-    const email = validateParam(req, res, 'email');
-    const password = validateParam(req, res, 'password');
+    const email = validateBody(req, res, 'email');
+    const password = validateBody(req, res, 'password');
 
     // generate JWT token (userId && username)
     const jwt = await genUserJWTService(email, password);
@@ -132,10 +135,10 @@ const updateUserImage = async (req:any, res:any) => {
     const user = await getUserByIdService(userInfo.userId);
 
     // deleting old image if it is not default image
-    await deleteOldImage(user.img);
+    await deleteOldImage(user.img, 'avatars');
 
     // adding image to static/avatars and returning its new name
-    const newImg = await uploadImage(img);
+    const newImg = await uploadImage(img, 'avatars');
 
     // updating img for user
     await updateUserImageDB(newImg, userInfo.userId);

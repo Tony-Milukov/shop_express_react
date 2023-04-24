@@ -19,10 +19,12 @@ router.use(bodyParser.json());
 router.use(express.static('static/avatars'));
 
 router.use('/user', userRouter);
-router.use('/brand', isLoggedIn, checkRole(3), brandRouter);
+router.use('/brand', brandRouter);
 router.use('/products', productRouter);
-router.use('/category', isLoggedIn, checkRole(3), categoryRouter);
+router.use('/category', categoryRouter);
 router.use('/cart', isLoggedIn, cartRouter);
+
+// admin
 router.use('/role', isLoggedIn, checkRole(3), RoleRouter);
 
 module.exports = router;

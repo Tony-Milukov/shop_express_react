@@ -74,17 +74,6 @@ const getUserByIdService = async (userId:number) => {
   return user.dataValues;
 };
 
-const deleteOldImage = (img:string) => {
-  const imgPath = `${__dirname}/../static/avatars/${img}`;
-  if (img !== 'default.jpeg') {
-    fs.unlink(imgPath, (err:any) => {
-      if (err) {
-        throw { errorMSG: 'something went wrong' };
-      }
-      return true;
-    });
-  }
-};
 const updateUserImageDB = (img:string, userId:number) => {
   const res = User.update({ img }, { where: { id: userId } });
   if (!res) {
@@ -157,19 +146,6 @@ const decodeJwtService = async (token:string) => jwt.verify(token, process.env.S
   } return decoded;
 });
 
-const uploadImage = async (img:any) => {
-  const [fileType, ext] = img.mimetype.split('/');
-  // if file is jpg or jpeg or png
-  if (fileType === 'image' || ext === 'jpeg' || ext === 'png' || ext === 'jpg') {
-    const fileName = `${uuid.v4()}_avatar.${ext}`;
-    // get absoulute path for the user
-    const path = `${__dirname}/../static/avatars/${fileName}`;
-    img.mv(path);
-    return fileName;
-  }
-
-  throw { errorMSG: 'File must be a image! (png,jpg,jpeg)', status: 400 };
-};
 module.exports = {
   deleteUserService,
   createUserService,
@@ -179,10 +155,8 @@ module.exports = {
   getUserByUsernameService,
   isRoleGiven,
   genUserJWTService,
-  uploadImage,
   getTokenService,
   decodeJwtService,
-  deleteOldImage,
   updateUserImageDB,
 };
 export {};

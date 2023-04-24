@@ -1,4 +1,5 @@
-const validateParam = require('./Validations/paramsValidation.ts');
+const validateBody = require('./Validations/BodyValidations.ts');
+const validateParams = require('./Validations/ParamsValidation.ts');
 const apiError = require('../middelwares/apiError.ts');
 const {
   createBrandService, getAllBrandsService, getBrandByIdService, deleteBrandService,
@@ -6,7 +7,7 @@ const {
 
 const createBrand = async (req:any, res:any) => {
   try {
-    const brand = validateParam(req, res, 'brand');
+    const brand = validateBody(req, res, 'brand');
     const response = await createBrandService(brand);
     if (response) {
       res.status(200).json({ message: 'Brand was created succesfully' });
@@ -20,8 +21,8 @@ const createBrand = async (req:any, res:any) => {
 };
 const getBrands = async (req:any, res:any) => {
   try {
-    const pageSize = validateParam(req, res, 'pageSize');
-    const page = validateParam(req, res, 'page');
+    const pageSize = parseFloat(validateBody(req, res, 'pageSize'));
+    const page = parseFloat(validateBody(req, res, 'page'));
     const offset = pageSize * (page - 1);
     const roles = await getAllBrandsService(pageSize, offset);
     res.status(200).json(roles);
@@ -31,7 +32,7 @@ const getBrands = async (req:any, res:any) => {
 };
 const getBrandById = async (req:any, res:any) => {
   try {
-    const brandId = validateParam(req, res, 'brandId');
+    const brandId = validateParams(req, res, 'id');
     const brand = await getBrandByIdService(brandId);
     res.status(200).json(brand);
   } catch (e:any) {
@@ -40,7 +41,7 @@ const getBrandById = async (req:any, res:any) => {
 };
 const deleteBrand = async (req:any, res:any) => {
   try {
-    const brandId = validateParam(req, res, 'brandId');
+    const brandId = validateBody(req, res, 'brandId');
 
     // check does the brand exist
     await getBrandByIdService(brandId);

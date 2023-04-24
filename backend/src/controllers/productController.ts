@@ -1,15 +1,82 @@
 const apiError = require('../middelwares/apiError.ts');
-const validateParam = require('./Validations/paramsValidation.ts');
+const validateBody = require('./Validations/BodyValidations.ts');
+const validatePrams = require('./Validations/ParamsValidation.ts');
 
-const addProduct = (req:any, res:any) => {
+const {
+  createProductService, getProductByIdService, deleteProductService, deleteProductBrand, deleteProductCategory, getAllProductsService, getProductCategoriesService,
+} = require('../Service/productService.ts');
+const { uploadImage, deleteOldImage } = require('../middelwares/updateImage.ts');
+
+const createProduct = async (req:any, res:any) => {
   try {
-    const name = validateParam(req, res, 'name');
-    const price = validateParam(req, res, 'price');
+    const title = validateBody(req, res, 'title');
+    const price = validateBody(req, res, 'price');
+    const description = validateBody(req, res, 'description');
+    const brands = JSON.parse(validateBody(req, res, 'brands'));
+    const categories = JSON.parse(validateBody(req, res, 'categories'));
+    const img = req.files ? req.files.img : undefined;
+    if (!img) {
+      return res.status(404).json({ message: 'img was not send' });
+    }
+    const imgName = await uploadImage(img, 'products');
+    const product = await createProductService(title, price, description, imgName, brands, categories);
+    res.status(200).json({ message: `product ${product.title} with id ${product.id} was created` });
   } catch (e:any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
+const deleteProduct = async (req:any, res:any) => {
+  try {
+    const productId = validateBody(req, res, 'productId');
+
+    // check does it exist
+    const product = await getProductByIdService(productId);
+
+    // delete given brands
+    await deleteProductBrand(productId);
+
+    // delete given categories
+    await deleteProductCategory(productId);
+
+    // delete image of this product
+    await deleteOldImage(product.img, '/products');
+
+    // delete product
+    await deleteProductService(productId);
+
+    res.status(200).json({ message: 'Product was deleted succesfully' });
+  } catch (e:any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
+const getProductById = async (req:any, res:any) => {
+  try {
+    const productId = validatePrams(req, res, 'id');
+
+    // get product
+    const product = await getProductByIdService(productId);
+    res.status(200).json(product);
+  } catch (e:any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
+const getAllProducts = async (req:any, res:any) => {
+  try {
+    // get products
+    const pageSize = parseFloat(validateBody(req, res, 'pageSize'));
+    const page = parseFloat(validateBody(req, res, 'page'));
+    const offset = (page - 1) * pageSize;
+    const products = await getAllProductsService(pageSize, offset);
+    res.status(200).json(products);
+  } catch (e:any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
+
 module.exports = {
-  addProduct,
+  createProduct,
+  deleteProduct,
+  getProductById,
+  getAllProducts,
 };
 export {};

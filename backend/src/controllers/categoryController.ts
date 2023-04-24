@@ -1,6 +1,6 @@
-const { Category } = require('../models/models.ts');
 const apiError = require('../middelwares/apiError.ts');
-const validateParam = require('./Validations/paramsValidation.ts');
+const validateBody = require('./Validations/BodyValidations.ts');
+const validateParams = require('./Validations/ParamsValidation.ts');
 
 const {
   addCategoryService, deleteCategoryService, getCategoryByIdService, getAllCategoriesService,
@@ -8,7 +8,7 @@ const {
 
 const addCategory = async (req:any, res:any) => {
   try {
-    const category = validateParam(req, res, 'category');
+    const category = validateBody(req, res, 'category');
     const response = await addCategoryService(category);
     if (response) {
       res.status(200).json({ message: 'Category was added succesfully' });
@@ -22,7 +22,7 @@ const addCategory = async (req:any, res:any) => {
 };
 const deleteCategory = async (req:any, res:any) => {
   try {
-    const categoryId = validateParam(req, res, 'categoryId');
+    const categoryId = validateBody(req, res, 'categoryId');
 
     // check does the category exist
     await getCategoryByIdService(categoryId);
@@ -41,10 +41,9 @@ const deleteCategory = async (req:any, res:any) => {
 const getAllCategories = async (req:any, res:any) => {
   try {
     // how much elem must be given
-    const pageSize = validateParam(req, res, 'pageSize');
-    const page = validateParam(req, res, 'page');
+    const pageSize = parseFloat(validateBody(req, res, 'pageSize'));
+    const page = parseFloat(validateBody(req, res, 'page'));
     const offset = pageSize * (page - 1);
-
     const categories = await getAllCategoriesService(pageSize, offset);
     res.status(200).json(categories);
   } catch (e:any) {
@@ -53,7 +52,7 @@ const getAllCategories = async (req:any, res:any) => {
 };
 const getCategoryById = async (req:any, res:any) => {
   try {
-    const categoryId = validateParam(req, res, 'categoryId');
+    const categoryId = validateParams(req, res, 'id');
     const category = await getCategoryByIdService(categoryId);
     res.status(200).json(category);
   } catch (e:any) {

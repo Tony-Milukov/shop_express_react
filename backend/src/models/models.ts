@@ -62,6 +62,10 @@ const Product = Sequelize.define('product', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  img: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 });
 const Description = Sequelize.define('description', {
   id: {
@@ -127,7 +131,6 @@ const Role = Sequelize.define('roles', {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-
   },
 });
 const UserRole = Sequelize.define('user_role', {
@@ -150,8 +153,8 @@ UserRole.belongsTo(User);
 Basket.hasMany(BasketItem);
 BasketItem.belongsTo(Basket);
 
-Basket.hasMany(Product);
-Product.belongsTo(Basket);
+Product.hasMany(BasketItem);
+BasketItem.belongsTo(Product);
 
 Product.hasMany(Description);
 Description.belongsTo(Product);
@@ -179,6 +182,7 @@ module.exports = {
   UserRole,
   Role,
   ProductsCategory,
+  ProductsBrand,
 };
 
 export {};
