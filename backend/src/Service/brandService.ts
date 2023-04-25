@@ -6,7 +6,7 @@ const getBrandByIdService = async (brandId:number) => {
     return result;
   }
   // if not exist
-  throw { errorMSG: 'this brand was not defined', status: 404 };
+  throw { errorMSG: `brand with id ${brandId} doesn't exist`, status: 404 };
 };
 const createBrandService = async (brand: string) => {
   const result = await Brand.create({

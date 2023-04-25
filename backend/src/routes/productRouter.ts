@@ -7,9 +7,13 @@ const {
 
 const router = express.Router();
 
-router.put('/', isLoggedIn, checkRole(3), createProduct);
-router.delete('/', isLoggedIn, checkRole(3), deleteProduct);
+// users
 router.post('/all', getAllProducts);
 router.get('/:id', getProductById);
+
+// admins
+
+router.put('/', isLoggedIn, checkRole(process.env.ADMIN_ROLE), createProduct);
+router.delete('/', isLoggedIn, checkRole(process.env.ADMIN_ROLE), deleteProduct);
 module.exports = router;
 export {};

@@ -8,8 +8,8 @@ const {
 } = require('../controllers/brandController.ts');
 
 // admin
-router.put('/', isLoggedIn, checkRole(3), createBrand);
-router.delete('/', isLoggedIn, checkRole(3), deleteBrand);
+router.put('/', isLoggedIn, checkRole(process.env.ADMIN_ROLE), createBrand);
+router.delete('/', isLoggedIn, checkRole(process.env.ADMIN_ROLE), deleteBrand);
 
 // user
 router.post('/all', getBrands);

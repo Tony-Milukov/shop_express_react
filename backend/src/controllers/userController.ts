@@ -9,7 +9,7 @@ const { uploadImage, deleteOldImage } = require('../middelwares/updateImage.ts')
 const { getRoleById } = require('../Service/roleService.ts');
 
 const {
-  UserRole,
+  Role, UserRole,
 } = require('../models/models.ts');
 
 const apiError = require('../middelwares/apiError.ts');
@@ -45,14 +45,15 @@ const getUser = async (req:any, res:any) => {
 const getRole = async (req:any, res:any) => {
   try {
     const userId = validateBody(req, res, 'userId');
+
+    // get user
+    const user = await getUserByIdService(userId);
+
     // getRoles
-    const roles = await UserRole.findAndCountAll({
-      where: {
-        userId,
-      },
-    });
-      // if user exist, every user have min 1 role: USER,  if there are no roles, user does not exist
-    if (roles && roles.rows.length >= 1) {
+    const roles = await user.getRoles();
+
+    // if user exist, every user have min 1 role: USER,  if there are no roles, user does not exist
+    if (roles && roles.length >= 1) {
       res.json(roles);
     } else {
       res.status(404).json({ message: 'User with that userId is not defined' });
@@ -64,26 +65,50 @@ const getRole = async (req:any, res:any) => {
 const addRole = async (req:any, res:any) => {
   try {
     const userId = validateBody(req, res, 'userId');
-    const roleId = validateBody(req, res, 'roleId');
+    const roleId = parseFloat(validateBody(req, res, 'roleId'));
 
-    // does user exist
-    await getUserByIdService(userId);
+    // get role
+    const role = await getRoleById(roleId);
 
-    // does role exist
-    await getRoleById(roleId);
+    // get user
+    const user = await getUserByIdService(userId);
 
     // is role given
     const hasRole = await isRoleGiven(userId, roleId);
+
     if (hasRole) {
-      res.status(200).json({
+      return res.status(200).json({
         errorMSG: 'User with that userId already have the role',
       });
     }
-    await UserRole.create({
-      userId,
-      roleId,
-    });
+    await user.addRole(role);
     res.status(200).json({ message: 'Role was given to the user Succesfully' });
+  } catch (e:any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
+
+const removeRole = async (req:any, res:any) => {
+  try {
+    const userId = validateBody(req, res, 'userId');
+    const roleId = parseFloat(validateBody(req, res, 'roleId'));
+
+    // get role
+    const role = await getRoleById(roleId);
+
+    // get user
+    const user = await getUserByIdService(userId);
+
+    // is role given
+    const hasRole = await isRoleGiven(userId, roleId);
+
+    if (!hasRole) {
+      return res.status(200).json({
+        errorMSG: 'User with that userId do not have the role',
+      });
+    }
+    await user.removeRole(role);
+    res.status(200).json({ message: 'Role was removed for this user' });
   } catch (e:any) {
     apiError(res, e.errorMSG, e.status);
   }
@@ -156,5 +181,6 @@ module.exports = {
   addRole,
   getUserJWT,
   updateUserImage,
+  removeRole,
 };
 export {};

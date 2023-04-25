@@ -66,22 +66,12 @@ const Product = Sequelize.define('product', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-});
-const Description = Sequelize.define('description', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  title: {
+  description: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  text: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
 });
+
 const Brand = Sequelize.define('brand', {
   id: {
     type: DataTypes.INTEGER,
@@ -140,47 +130,51 @@ const UserRole = Sequelize.define('user_role', {
     autoIncrement: true,
   },
 });
+const Rating = Sequelize.define('rating', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  rating: {
+    type: DataTypes.INTEGER,
+    validate: {
+      is: /^[0-5]$/,
+    },
+  },
+});
 
 User.hasOne(Basket);
 Basket.belongsTo(User);
 
-Role.hasMany(UserRole);
-UserRole.belongsTo(Role);
+User.belongsToMany(Role, { through: UserRole });
+Role.belongsToMany(User, { through: UserRole });
 
-User.hasMany(UserRole);
-UserRole.belongsTo(User);
+Basket.belongsToMany(Product, { through: BasketItem });
+Product.belongsToMany(Basket, { through: BasketItem });
 
-Basket.hasMany(BasketItem);
-BasketItem.belongsTo(Basket);
+Product.belongsToMany(Category, { through: ProductsCategory });
+Category.belongsToMany(Product, { through: ProductsCategory });
 
-Product.hasMany(BasketItem);
-BasketItem.belongsTo(Product);
+Product.belongsToMany(Brand, { through: ProductsBrand });
+Brand.belongsToMany(Product, { through: ProductsBrand });
 
-Product.hasMany(Description);
-Description.belongsTo(Product);
+Product.hasMany(Rating);
+Rating.belongsTo(Product);
 
-Category.hasMany(ProductsCategory);
-ProductsCategory.belongsTo(Category);
-
-Product.hasMany(ProductsCategory);
-ProductsCategory.belongsTo(Product);
-
-Product.hasMany(ProductsBrand);
-ProductsBrand.belongsTo(Product);
-
-Brand.hasMany(ProductsBrand);
-ProductsBrand.belongsTo(Brand);
+User.hasMany(Rating);
+Rating.belongsTo(User);
 
 module.exports = {
   User,
   Basket,
   BasketItem,
   Product,
-  Description,
   Brand,
   Category,
   UserRole,
   Role,
+  Rating,
   ProductsCategory,
   ProductsBrand,
 };

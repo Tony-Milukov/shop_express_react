@@ -3,9 +3,17 @@ const validateBody = require('./Validations/BodyValidations.ts');
 const validatePrams = require('./Validations/ParamsValidation.ts');
 
 const {
-  createProductService, getProductByIdService, deleteProductService, deleteProductBrand, deleteProductCategory, getAllProductsService, getProductCategoriesService,
+  createProductService, getProductByIdService,
+  deleteProductService, getAllProductsService,
+  checkExistence, checkIsArray,
 } = require('../Service/productService.ts');
 const { uploadImage, deleteOldImage } = require('../middelwares/updateImage.ts');
+const {
+  getBrandByIdService,
+} = require('../Service/brandService.ts');
+const {
+  getCategoryByIdService,
+} = require('../Service/categoryService.ts');
 
 const createProduct = async (req:any, res:any) => {
   try {
@@ -15,9 +23,18 @@ const createProduct = async (req:any, res:any) => {
     const brands = JSON.parse(validateBody(req, res, 'brands'));
     const categories = JSON.parse(validateBody(req, res, 'categories'));
     const img = req.files ? req.files.img : undefined;
+    // check if image was send
     if (!img) {
       return res.status(404).json({ message: 'img was not send' });
     }
+
+    // check isArray
+    checkIsArray(categories, 'categories');
+    checkIsArray(brands, 'brands');
+    // check do all given brands / categories exist
+    await checkExistence(brands, getBrandByIdService);
+    await checkExistence(categories, getCategoryByIdService);
+
     const imgName = await uploadImage(img, 'products');
     const product = await createProductService(title, price, description, imgName, brands, categories);
     res.status(200).json({ message: `product ${product.title} with id ${product.id} was created` });
@@ -31,12 +48,6 @@ const deleteProduct = async (req:any, res:any) => {
 
     // check does it exist
     const product = await getProductByIdService(productId);
-
-    // delete given brands
-    await deleteProductBrand(productId);
-
-    // delete given categories
-    await deleteProductCategory(productId);
 
     // delete image of this product
     await deleteOldImage(product.img, '/products');

@@ -8,8 +8,8 @@ const {
 } = require('../controllers/categoryController.ts');
 
 // admin
-router.put('/', isLoggedIn, checkRole(3), addCategory);
-router.delete('/', isLoggedIn, checkRole(3), deleteCategory);
+router.put('/', isLoggedIn, checkRole(process.env.ADMIN_ROLE), addCategory);
+router.delete('/', isLoggedIn, checkRole(process.env.ADMIN_ROLE), deleteCategory);
 
 // user
 router.post('/all', getAllCategories);

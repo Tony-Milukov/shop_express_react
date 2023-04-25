@@ -9,11 +9,11 @@ const addCategoryService = async (category: string) => {
 };
 const getCategoryByIdService = async (categoryId:number) => {
   const result = await Category.findByPk(categoryId);
-  if (result) {
-    return result;
+  if (!result) {
+    throw { errorMSG: `category with id ${categoryId} doesn't exist`, status: 404 };
   }
-  // if not exist
-  throw { errorMSG: 'this category was not defined', status: 404 };
+  // if  exist
+  return result;
 };
 const deleteCategoryService = async (categoryId: number) => {
   const result = await Category.destroy({ where: { id: categoryId } });
@@ -29,9 +29,11 @@ const getAllCategoriesService = async (limit:number, offset:number) => {
     return categories;
   } throw { errorMSG: 'categories by this page do not exist', status: 404 };
 };
+
 module.exports = {
   addCategoryService,
   deleteCategoryService,
   getCategoryByIdService,
   getAllCategoriesService,
+
 };

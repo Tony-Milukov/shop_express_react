@@ -1,10 +1,9 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const uuid = require('uuid');
-const fs = require('fs');
 const {
   User, Basket, UserRole,
 } = require('../models/models.ts');
+const { getRoleById } = require('./roleService.ts');
 
 const deleteUserService = async (userId: number) => {
   await Basket.destroy({
@@ -71,7 +70,7 @@ const getUserByIdService = async (userId:number) => {
   if (!user) {
     throw { errorMSG: 'User with that userId was not defined' };
   }
-  return user.dataValues;
+  return user;
 };
 
 const updateUserImageDB = (img:string, userId:number) => {
@@ -97,15 +96,13 @@ const getUserByUsernameService = async (username:string) => {
   return user;
 };
 const isRoleGiven = async (userId:number, roleId:number) => {
-  const [isRoleGiven] = await UserRole.findAll({
-    where: {
-      userId,
-      roleId,
-    },
-  });
-  if (isRoleGiven) {
+  const user = await getUserByIdService(userId);
+  const roles = await user.getRoles();
+
+  if (roles.some((i:any) => i.dataValues.id === roleId)) {
     return true;
   }
+
   return false;
 };
 const getTokenService = (req:any) => {

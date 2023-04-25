@@ -1,42 +1,34 @@
 const {
   Product, ProductsCategory, ProductsBrand, Category, Brand,
 } = require('../models/models.ts');
+const {
+  getBrandByIdService,
+} = require('./brandService.ts');
+const {
+  getCategoryByIdService,
+} = require('./categoryService.ts');
 
 const createProductService = async (title:string, price:number, description:string, img:string, brands:any, categories:any) => {
   const product = await Product.create({
     title,
     price,
-    description,
     img,
+    description,
   });
   if (!product) {
     // default error
-    throw {};
+    throw { errorMSG: 'brands must be an array!', status: 400 };
   } else {
-    // check there are array
-    if (!Array.isArray(categories)) {
-      throw { errorMSG: 'categories must be an array!', status: 400 };
-    } if (!Array.isArray(brands)) {
-      throw { errorMSG: 'brands must be an array!', status: 400 };
-    }
     // add brands
-    await brands.forEach((brandId:number) => {
-      ProductsBrand.create({
-        brandId,
-        productId: product.id,
-      });
-    });
-
-    // add categories
-    if (Array.isArray(categories)) {
-      await categories.forEach((categoryId:number) => {
-        ProductsCategory.create({
-          categoryId,
-          productId: product.id,
-        });
-      });
+    for (const brandId of brands) {
+      const brand = await getBrandByIdService(brandId);
+      await product.addBrand(brand);
     }
-
+    // add categories
+    for (const categoryId of categories) {
+      const brand = await getCategoryByIdService(categoryId);
+      await product.addCategory(brand);
+    }
     return product;
   }
 };
@@ -47,20 +39,12 @@ const getProductByIdService = async (productId:number) => {
     },
     include: [
       {
-        model: ProductsBrand,
-        include: [
-          {
-            model: Brand,
-          },
-        ],
+        model: Brand,
+        through: ProductsBrand,
       },
       {
-        model: ProductsCategory,
-        include: [
-          {
-            model: Category,
-          },
-        ],
+        model: Category,
+        through: ProductsCategory,
       },
     ],
   });
@@ -83,63 +67,38 @@ const deleteProductService = (productId:number) => {
   }
 };
 
-const deleteProductBrand = (productId:number) => {
-  const res = ProductsBrand.destroy({
-    where: {
-      productId,
-    },
-  });
-  if (!res) {
-    // deafult error
-    throw {};
-  }
-};
-const deleteProductCategory = (productId:number) => {
-  const res = ProductsCategory.destroy({
-    where: {
-      productId,
-    },
-  });
-  if (!res) {
-    // deafult error
-    throw {};
-  }
-};
 const getAllProductsService = async (limit:number, offset:number) => {
-  try {
-    const products = await Product.findAndCountAll({
-      offset,
-      limit,
-      include: [
-        {
-          model: ProductsBrand,
-          include: [
-            {
-              model: Brand,
-            },
-          ],
-        },
-        {
-          model: ProductsCategory,
-          include: [
-            {
-              model: Category,
-            },
-          ],
-        },
-      ],
-    });
-    if (!products) {
-      throw { errorMSG: 'Products by this page were not defined', status: 404 };
-    } else {
-      return products;
-    }
-  } catch (error) {
-    console.error('Ошибка при выполнении запроса:', error);
+  const products = await Product.findAndCountAll({
+    offset,
+    limit,
+    include: [
+      {
+        model: Brand,
+        through: ProductsBrand,
+      },
+      {
+        model: Category,
+        through: ProductsCategory,
+      },
+    ],
+  });
+  if (!products) {
+    throw { errorMSG: 'Products by this page were not defined', status: 404 };
+  } else {
+    return products;
   }
 };
-
+const checkExistence = async (value:any, getService:any) => {
+  for (const id of value) {
+    await getService(id);
+  }
+};
+const checkIsArray = (array:any, name:string) => {
+  if (!Array.isArray(array)) {
+    throw { errorMSG: `${name} must be an array!`, status: 400 };
+  }
+};
 module.exports = {
-  createProductService, getProductByIdService, deleteProductService, deleteProductBrand, deleteProductCategory, getAllProductsService,
+  createProductService, getProductByIdService, deleteProductService, getAllProductsService, checkExistence, checkIsArray,
 };
 export {};

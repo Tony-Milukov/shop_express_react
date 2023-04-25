@@ -1,6 +1,7 @@
 const { getTokenService, isRoleGiven, decodeJwtService } = require('../Service/userService.ts');
 
-const checkRole = (roleId:number) => async (req:any, res:any, next:any) => {
+const checkRole = (roleId_:string) => async (req:any, res:any, next:any) => {
+  const roleId = parseFloat(roleId_);
   const token = getTokenService(req);
   const userInfo = await decodeJwtService(token);
   if (userInfo && await isRoleGiven(userInfo.userId, roleId)) {

@@ -3,12 +3,15 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
+
 const brandRouter = require('./brandRouter.ts');
 const productRouter = require('./productRouter.ts');
 const categoryRouter = require('./categoryRouter.ts');
 const userRouter = require('./userRouter.ts');
 const cartRouter = require('./cartRouter.ts');
-const RoleRouter = require('./roleRouter.ts');
+const roleRouter = require('./roleRouter.ts');
+const ratingRouter = require('./ratingRouter.ts');
+
 const checkRole = require('../middelwares/checkRole.ts');
 const isLoggedIn = require('../middelwares/isLoggedIn.ts');
 
@@ -23,9 +26,9 @@ router.use('/brand', brandRouter);
 router.use('/products', productRouter);
 router.use('/category', categoryRouter);
 router.use('/cart', isLoggedIn, cartRouter);
-
+router.use('/rating', isLoggedIn, ratingRouter);
 // admin
-router.use('/role', isLoggedIn, checkRole(3), RoleRouter);
+router.use('/role', isLoggedIn, checkRole(process.env.ADMIN_ROLE), roleRouter);
 
 module.exports = router;
 export {};
