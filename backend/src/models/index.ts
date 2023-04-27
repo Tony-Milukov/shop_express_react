@@ -56,6 +56,7 @@ module.exports = {
   ProductsBrand,
   Status,
   Order,
+  OrderDeliveryInfo,
 };
 
 export {};

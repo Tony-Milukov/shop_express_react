@@ -1,6 +1,6 @@
 const { Role } = require('../models');
-const apiError = require('../middelwares/apiError.ts');
-const validateBody = require('./Validations/BodyValidations.ts');
+const apiError = require('../utilits/apiError.ts');
+const validateBody = require('../validations/bodyValidations.ts');
 const {
   deleteRoleService, addRoleService, getRoleById, getAllRolesService,
 } = require('../Service/roleService.ts');

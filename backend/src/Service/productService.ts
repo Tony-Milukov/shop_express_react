@@ -93,17 +93,7 @@ const checkExistence = async (value:any, getService:any) => {
     await getService(id);
   }
 };
-const checkIsArray = (array:any, name:string) => {
-  if (!Array.isArray(array)) {
-    throw { errorMSG: `${name} must be an array!`, status: 400 };
-  }
-};
-const checkIsObject = (object: object, name:string) => {
-  if (typeof object !== 'object') {
-    throw { errorMSG: `${name} must be an object!`, status: 400 };
-  }
-};
 module.exports = {
-  createProductService, getProductByIdService, deleteProductService, getAllProductsService, checkExistence, checkIsArray, checkIsObject,
+  createProductService, getProductByIdService, deleteProductService, getAllProductsService, checkExistence,
 };
 export {};

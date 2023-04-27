@@ -1,12 +1,13 @@
-const apiError = require('../middelwares/apiError.ts');
-const validateBody = require('./Validations/BodyValidations.ts');
-const validatePrams = require('./Validations/ParamsValidation.ts');
+const apiError = require('../utilits/apiError.ts');
+const validateBody = require('../validations/bodyValidations.ts');
+const validatePrams = require('../validations/paramsValidation.ts');
 
 const {
   createProductService, getProductByIdService,
   deleteProductService, getAllProductsService,
-  checkExistence, checkIsArray,
+  checkExistence,
 } = require('../Service/productService.ts');
+const checkIsArray = require('../validations/checkIsArray.ts');
 const { uploadImage, deleteOldImage } = require('../middelwares/updateImage.ts');
 const {
   getBrandByIdService,

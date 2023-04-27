@@ -1,5 +1,5 @@
-const validateBody = require('./Validations/BodyValidations.ts');
-const apiError = require('../middelwares/apiError.ts');
+const validateBody = require('../validations/bodyValidations.ts');
+const apiError = require('../utilits/apiError.ts');
 const { getUserByToken } = require('../Service/userService.ts');
 const { getProductByIdService } = require('../Service/productService.ts');
 const { createBasketService, getBasketByIdService, deleteBasketService } = require('../Service/basketService.ts');

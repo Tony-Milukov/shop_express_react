@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const validator = require('validator');
 const Sequelize = require('../db.ts');
 
-const Status = Sequelize.define('custom_status', {
+const Status = Sequelize.define('status', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -37,25 +37,23 @@ const OrderDeliveryInfo = Sequelize.define('order_delivery_info', {
     primaryKey: true,
     autoIncrement: true,
   },
-  trackingLink: {
+  link: {
     type: DataTypes.STRING,
     allowNull: true,
     validate: {
       isUrl: true,
-      customValidator(value:any) {
-        if (!validator.isUrl(value)) {
-          throw { errorMSG: 'Url is required', status: 400 };
-        }
-      },
     },
   },
-  postalCompany: {
+  company: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  trackingCode: {
+  code: {
     type: DataTypes.STRING || DataTypes.INTEGER,
     allowNull: false,
+  },
+  extraInfo: {
+    type: DataTypes.STRING,
   },
 });
 module.exports = {

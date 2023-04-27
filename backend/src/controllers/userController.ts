@@ -1,5 +1,5 @@
-const validateBody = require('./Validations/BodyValidations.ts');
-const validateParams = require('./Validations/ParamsValidation.ts');
+const validateBody = require('../validations/bodyValidations.ts');
+const validateParams = require('../validations/paramsValidation.ts');
 const { isRoleGiven } = require('../Service/userService.ts');
 const {
   deleteUserService, createUserService, getUserByIdService, doesEmailExistService, doesUsernameExistService, getUserByUsernameService, genUserJWTService, decodeJwtService, getTokenService, updateUserImageDB,
@@ -10,7 +10,7 @@ const { uploadImage, deleteOldImage } = require('../middelwares/updateImage.ts')
 
 const { getRoleById } = require('../Service/roleService.ts');
 
-const apiError = require('../middelwares/apiError.ts');
+const apiError = require('../utilits/apiError.ts');
 
 const createUser = async (req:any, res:any) => {
   try {

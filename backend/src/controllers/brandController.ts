@@ -1,6 +1,6 @@
-const validateBody = require('./Validations/BodyValidations.ts');
-const validateParams = require('./Validations/ParamsValidation.ts');
-const apiError = require('../middelwares/apiError.ts');
+const validateBody = require('../validations/bodyValidations.ts');
+const validateParams = require('../validations/paramsValidation.ts');
+const apiError = require('../utilits/apiError.ts');
 const {
   createBrandService, getAllBrandsService, getBrandByIdService, deleteBrandService,
 } = require('../Service/brandService.ts');
