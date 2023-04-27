@@ -1,4 +1,4 @@
-const { Role } = require('../models/models.ts');
+const { Role } = require('../models');
 const apiError = require('../middelwares/apiError.ts');
 const validateBody = require('./Validations/BodyValidations.ts');
 const {

@@ -2,8 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {
   User, Basket, UserRole,
-} = require('../models/models.ts');
-const { getRoleById } = require('./roleService.ts');
+} = require('../models/index.ts');
 
 const deleteUserService = async (userId: number) => {
   await Basket.destroy({
@@ -105,18 +104,7 @@ const isRoleGiven = async (userId:number, roleId:number) => {
 
   return false;
 };
-const getTokenService = (req:any) => {
-  const rareToken = req.headers.authorization;
 
-  if (!rareToken) {
-    return false;
-  }
-  const token = rareToken.split(' ')[1];
-  if (token) {
-    return token;
-  }
-  return false;
-};
 const getUserByEmailService = async (email:string) => {
   const user = await User.findOne({
     where: {
@@ -137,12 +125,33 @@ const genUserJWTService = async (email:string, password:string) => {
   return false;
 };
 
+const getTokenService = (req:any) => {
+  const rareToken = req.headers.authorization;
+
+  if (!rareToken) {
+    return false;
+  }
+  const token = rareToken.split(' ')[1];
+  if (token) {
+    return token;
+  }
+  return false;
+};
 const decodeJwtService = async (token:string) => jwt.verify(token, process.env.SECRET_JWT, (err:any, decoded:any) => {
   if (err) {
     return false;
   } return decoded;
 });
 
+const getUserByToken = async (req:any, res:any) => {
+  const token = getTokenService(req);
+  const decoded = await decodeJwtService(token);
+  const user = await User.findByPk(decoded.userId);
+  if (!token || !decoded || !user) {
+    res.status(401).json({ message: 'Unauthorized!' });
+  }
+  return user;
+};
 module.exports = {
   deleteUserService,
   createUserService,
@@ -155,5 +164,6 @@ module.exports = {
   getTokenService,
   decodeJwtService,
   updateUserImageDB,
+  getUserByToken,
 };
 export {};

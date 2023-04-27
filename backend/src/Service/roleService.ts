@@ -1,4 +1,4 @@
-const { Role } = require('../models/models.ts');
+const { Role } = require('../models/index.ts');
 
 const getRoleById = async (roleId:number) => {
   const role = await Role.findByPk(roleId);

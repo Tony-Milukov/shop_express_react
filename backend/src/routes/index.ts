@@ -8,9 +8,10 @@ const brandRouter = require('./brandRouter.ts');
 const productRouter = require('./productRouter.ts');
 const categoryRouter = require('./categoryRouter.ts');
 const userRouter = require('./userRouter.ts');
-const cartRouter = require('./cartRouter.ts');
+const basketRouter = require('./basketRouter.ts');
 const roleRouter = require('./roleRouter.ts');
 const ratingRouter = require('./ratingRouter.ts');
+const orderRouter = require('./orderRouter.ts');
 
 const checkRole = require('../middelwares/checkRole.ts');
 const isLoggedIn = require('../middelwares/isLoggedIn.ts');
@@ -25,8 +26,10 @@ router.use('/user', userRouter);
 router.use('/brand', brandRouter);
 router.use('/products', productRouter);
 router.use('/category', categoryRouter);
-router.use('/cart', isLoggedIn, cartRouter);
+router.use('/basket', isLoggedIn, basketRouter);
 router.use('/rating', isLoggedIn, ratingRouter);
+router.use('/order', isLoggedIn, orderRouter);
+
 // admin
 router.use('/role', isLoggedIn, checkRole(process.env.ADMIN_ROLE), roleRouter);
 

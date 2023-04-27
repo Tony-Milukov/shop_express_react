@@ -3,14 +3,12 @@ const validateParams = require('./Validations/ParamsValidation.ts');
 const { isRoleGiven } = require('../Service/userService.ts');
 const {
   deleteUserService, createUserService, getUserByIdService, doesEmailExistService, doesUsernameExistService, getUserByUsernameService, genUserJWTService, decodeJwtService, getTokenService, updateUserImageDB,
+  getUserByToken,
 } = require('../Service/userService.ts');
 
 const { uploadImage, deleteOldImage } = require('../middelwares/updateImage.ts');
-const { getRoleById } = require('../Service/roleService.ts');
 
-const {
-  Role, UserRole,
-} = require('../models/models.ts');
+const { getRoleById } = require('../Service/roleService.ts');
 
 const apiError = require('../middelwares/apiError.ts');
 
@@ -152,12 +150,8 @@ const updateUserImage = async (req:any, res:any) => {
     return res.status(404).json({ message: 'img was not send' });
   }
   try {
-    // getting user info from token
-    const token = await getTokenService(req);
-    const userInfo = await decodeJwtService(token);
-
-    // getting user for getting old img name
-    const user = await getUserByIdService(userInfo.userId);
+    // getting user by jwt token in header
+    const user = await getUserByToken(req, res);
 
     // deleting old image if it is not default image
     await deleteOldImage(user.img, 'avatars');
@@ -166,7 +160,7 @@ const updateUserImage = async (req:any, res:any) => {
     const newImg = await uploadImage(img, 'avatars');
 
     // updating img for user
-    await updateUserImageDB(newImg, userInfo.userId);
+    await updateUserImageDB(newImg, user.id);
     res.status(200).json({ message: 'updated succesfully' });
   } catch (e:any) {
     apiError(res, e.errorMSG, e.status);

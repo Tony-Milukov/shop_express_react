@@ -1,11 +1,8 @@
-const { getTokenService, decodeJwtService } = require('../Service/userService.ts');
+const { getUserByToken } = require('../Service/userService.ts');
 
 const isLoggedIn = async (req:any, res:any, next:any) => {
-  const token = getTokenService(req);
-  const decoded = await decodeJwtService(token);
-  if (!token || !decoded) {
-    res.status(401).json({ message: 'Unauthorized!' });
-  } else {
+  const user = await getUserByToken(req, res);
+  if (user) {
     next();
   }
 };

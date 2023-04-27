@@ -1,4 +1,4 @@
-const { Rating } = require('../models/models.ts');
+const { Rating } = require('../models/index.ts');
 
 const addRatingService = async (userId:number, productId:number, rating:number) => {
   const result = await Rating.create({

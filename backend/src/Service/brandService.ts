@@ -1,4 +1,4 @@
-const { Brand } = require('../models/models.ts');
+const { Brand } = require('../models/index.ts');
 
 const getBrandByIdService = async (brandId:number) => {
   const result = await Brand.findByPk(brandId);

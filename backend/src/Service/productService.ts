@@ -1,6 +1,6 @@
 const {
   Product, ProductsCategory, ProductsBrand, Category, Brand,
-} = require('../models/models.ts');
+} = require('../models/index.ts');
 const {
   getBrandByIdService,
 } = require('./brandService.ts');
@@ -49,7 +49,7 @@ const getProductByIdService = async (productId:number) => {
     ],
   });
   if (!product) {
-    throw { errorMSG: 'this product was not defined', status: 404 };
+    throw { errorMSG: `this product with id < ${productId} > was not defined`, status: 404 };
   } else {
     return product;
   }
@@ -98,7 +98,12 @@ const checkIsArray = (array:any, name:string) => {
     throw { errorMSG: `${name} must be an array!`, status: 400 };
   }
 };
+const checkIsObject = (object: object, name:string) => {
+  if (typeof object !== 'object') {
+    throw { errorMSG: `${name} must be an object!`, status: 400 };
+  }
+};
 module.exports = {
-  createProductService, getProductByIdService, deleteProductService, getAllProductsService, checkExistence, checkIsArray,
+  createProductService, getProductByIdService, deleteProductService, getAllProductsService, checkExistence, checkIsArray, checkIsObject,
 };
 export {};

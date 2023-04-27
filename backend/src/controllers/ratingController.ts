@@ -1,7 +1,9 @@
+import { JSON } from 'sequelize';
+
 const validateBody = require('./Validations/BodyValidations.ts');
 const validateParams = require('./Validations/ParamsValidation.ts');
 const apiError = require('../middelwares/apiError.ts');
-const { getUserByIdService } = require('../Service/userService.ts');
+const { getUserByToken } = require('../Service/userService.ts');
 const { getProductByIdService } = require('../Service/productService.ts');
 const {
   addRatingService, getRatingService, userRatedService, updateRatingService,
@@ -10,25 +12,24 @@ const {
 const updateRating = async (req:any, res:any) => {
   try {
     const productId = validateBody(req, res, 'productId');
-    const userId = validateBody(req, res, 'userId');
+    const user = await getUserByToken(req, res);
     const rating = parseFloat(validateBody(req, res, 'rating'));
+
     if (rating < 0 || rating > 5) {
       return res.status(400).json({ message: 'rating must be between 1 - 5' });
     }
     // did user already rate //true //false
-    const userRated = await userRatedService(userId, productId);
+    const userRated = await userRatedService(user.id, productId);
     // update rating if user already rated
     if (userRated) {
-      await updateRatingService(userId, productId, rating);
+      await updateRatingService(user.id, productId, rating);
       return res.status(200).json({ message: 'Rating was updated succesfully' });
     }
-    // check user exist, throw err if not exist
-    await getUserByIdService(userId);
 
     // check product exist, throw err if not exist
     await getProductByIdService(productId);
 
-    await addRatingService(userId, productId, rating);
+    await addRatingService(user.id, productId, rating);
     res.status(200).json({ message: 'Rating was added succesfully' });
   } catch (e:any) {
     apiError(res, e.errorMSG, e.status);
