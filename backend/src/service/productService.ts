@@ -8,7 +8,14 @@ const {
   getCategoryByIdService,
 } = require('./categoryService.ts');
 
-const createProductService = async (title:string, price:number, description:string, img:string, brands:any, categories:any) => {
+const createProductService = async (
+  title:string,
+  price:number,
+  description:string,
+  img:string,
+  brands:any,
+  categories:any,
+) => {
   const product = await Product.create({
     title,
     price,
@@ -16,7 +23,6 @@ const createProductService = async (title:string, price:number, description:stri
     description,
   });
   if (!product) {
-    // default error
     throw { errorMSG: 'brands must be an array!', status: 400 };
   } else {
     // add brands

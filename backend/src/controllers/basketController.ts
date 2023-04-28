@@ -1,8 +1,8 @@
 const validateBody = require('../validations/bodyValidations.ts');
 const apiError = require('../utilits/apiError.ts');
-const { getUserByToken } = require('../Service/userService.ts');
-const { getProductByIdService } = require('../Service/productService.ts');
-const { createBasketService, getBasketByIdService, deleteBasketService } = require('../Service/basketService.ts');
+const { getUserByToken } = require('../service/userService.ts');
+const { getProductByIdService } = require('../service/productService.ts');
+const { createBasketService, getBasketByIdService, deleteBasketService } = require('../service/basketService.ts');
 
 const createBasket = async (req:any, res:any) => {
   try {
@@ -15,7 +15,7 @@ const createBasket = async (req:any, res:any) => {
 };
 const deleteBasket = async (req:any, res:any) => {
   try {
-    /// check does user exist and getIt
+    /// check does user exist
     const user = await getUserByToken(req, res);
     const basketId = parseFloat(validateBody(req, res, 'basketId'));
 

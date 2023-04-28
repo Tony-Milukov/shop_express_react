@@ -3,7 +3,7 @@ const validateParams = require('../validations/paramsValidation.ts');
 const apiError = require('../utilits/apiError.ts');
 const {
   createBrandService, getAllBrandsService, getBrandByIdService, deleteBrandService,
-} = require('../Service/brandService.ts');
+} = require('../service/brandService.ts');
 
 const createBrand = async (req:any, res:any) => {
   try {

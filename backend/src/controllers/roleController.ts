@@ -1,9 +1,8 @@
-const { Role } = require('../models');
 const apiError = require('../utilits/apiError.ts');
 const validateBody = require('../validations/bodyValidations.ts');
 const {
   deleteRoleService, addRoleService, getRoleById, getAllRolesService,
-} = require('../Service/roleService.ts');
+} = require('../service/roleService.ts');
 
 const addRole = async (req:any, res:any) => {
   try {

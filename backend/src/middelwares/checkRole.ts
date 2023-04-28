@@ -1,4 +1,4 @@
-const { isRoleGiven, getUserByToken } = require('../Service/userService.ts');
+const { isRoleGiven, getUserByToken } = require('../service/userService.ts');
 
 const checkRole = (roleId_:string) => async (req:any, res:any, next:any) => {
   const roleId = parseFloat(roleId_);

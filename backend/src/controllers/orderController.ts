@@ -4,15 +4,15 @@ const validateBody = require('../validations/bodyValidations.ts');
 const apiError = require('../utilits/apiError.ts');
 const checkIsObject = require('../validations/checkIsObject.ts');
 const checkIsArray = require('../validations/checkIsArray.ts');
-const { getProductByIdService } = require('../Service/productService.ts');
-const { getUserByToken, isRoleGiven, getUserByIdService } = require('../Service/userService.ts');
+const { getProductByIdService } = require('../service/productService.ts');
+const { getUserByToken, isRoleGiven, getUserByIdService } = require('../service/userService.ts');
 const {
   createCustomStatusService, deleteCustomStatusService,
   getCustomStatusService, updateCustomStatusService,
   createOrderService, getOrderByIdService, addDeliveryInfoService,
   updateDeliveryInfoService,
   getDeliveryInfoService,
-} = require('../Service/orderService.ts');
+} = require('../service/orderService.ts');
 
 const createOrder = async (req:any, res:any) => {
   try {

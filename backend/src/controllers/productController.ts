@@ -6,15 +6,15 @@ const {
   createProductService, getProductByIdService,
   deleteProductService, getAllProductsService,
   checkExistence,
-} = require('../Service/productService.ts');
+} = require('../service/productService.ts');
 const checkIsArray = require('../validations/checkIsArray.ts');
 const { uploadImage, deleteOldImage } = require('../middelwares/updateImage.ts');
 const {
   getBrandByIdService,
-} = require('../Service/brandService.ts');
+} = require('../service/brandService.ts');
 const {
   getCategoryByIdService,
-} = require('../Service/categoryService.ts');
+} = require('../service/categoryService.ts');
 
 const createProduct = async (req:any, res:any) => {
   try {

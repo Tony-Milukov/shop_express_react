@@ -98,22 +98,15 @@ const isRoleGiven = async (userId:number, roleId:number) => {
   const user = await getUserByIdService(userId);
   const roles = await user.getRoles();
 
-  if (roles.some((i:any) => i.dataValues.id === roleId)) {
-    return true;
-  }
-
-  return false;
+  return !!roles.some((i: any) => i.dataValues.id === roleId);
 };
 
-const getUserByEmailService = async (email:string) => {
-  const user = await User.findOne({
-    where: {
-      email,
-    },
+const getUserByEmailService = async (email:string) => await User.findOne({
+  where: {
+    email,
+  },
 
-  });
-  return user;
-};
+});
 const genUserJWTService = async (email:string, password:string) => {
   const user = await getUserByEmailService(email);
   if (user) {
@@ -137,11 +130,15 @@ const getTokenService = (req:any) => {
   }
   return false;
 };
-const decodeJwtService = async (token:string) => jwt.verify(token, process.env.SECRET_JWT, (err:any, decoded:any) => {
-  if (err) {
-    return false;
-  } return decoded;
-});
+const decodeJwtService = async (token:string) => jwt.verify(
+  token,
+  process.env.SECRET_JWT,
+  (err:any, decoded:any) => {
+    if (err) {
+      return false;
+    } return decoded;
+  },
+);
 
 const getUserByToken = async (req:any, res:any) => {
   const token = getTokenService(req);

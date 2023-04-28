@@ -1,13 +1,11 @@
-import { JSON } from 'sequelize';
-
 const validateBody = require('../validations/bodyValidations.ts');
 const validateParams = require('../validations/paramsValidation.ts');
 const apiError = require('../utilits/apiError.ts');
-const { getUserByToken } = require('../Service/userService.ts');
-const { getProductByIdService } = require('../Service/productService.ts');
+const { getUserByToken } = require('../service/userService.ts');
+const { getProductByIdService } = require('../service/productService.ts');
 const {
   addRatingService, getRatingService, userRatedService, updateRatingService,
-} = require('../Service/ratingService.ts');
+} = require('../service/ratingService.ts');
 
 const updateRating = async (req:any, res:any) => {
   try {

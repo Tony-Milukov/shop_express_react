@@ -4,7 +4,7 @@ const validateParams = require('../validations/paramsValidation.ts');
 
 const {
   addCategoryService, deleteCategoryService, getCategoryByIdService, getAllCategoriesService,
-} = require('../Service/categoryService.ts');
+} = require('../service/categoryService.ts');
 
 const addCategory = async (req:any, res:any) => {
   try {

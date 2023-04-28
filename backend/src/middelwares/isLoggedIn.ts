@@ -1,4 +1,4 @@
-const { getUserByToken } = require('../Service/userService.ts');
+const { getUserByToken } = require('../service/userService.ts');
 
 const isLoggedIn = async (req:any, res:any, next:any) => {
   const user = await getUserByToken(req, res);

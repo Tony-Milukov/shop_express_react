@@ -1,14 +1,14 @@
 const validateBody = require('../validations/bodyValidations.ts');
 const validateParams = require('../validations/paramsValidation.ts');
-const { isRoleGiven } = require('../Service/userService.ts');
+const { isRoleGiven } = require('../service/userService.ts');
 const {
-  deleteUserService, createUserService, getUserByIdService, doesEmailExistService, doesUsernameExistService, getUserByUsernameService, genUserJWTService, decodeJwtService, getTokenService, updateUserImageDB,
+  deleteUserService, createUserService, getUserByIdService, doesEmailExistService, doesUsernameExistService, getUserByUsernameService, genUserJWTService, updateUserImageDB,
   getUserByToken,
-} = require('../Service/userService.ts');
+} = require('../service/userService.ts');
 
 const { uploadImage, deleteOldImage } = require('../middelwares/updateImage.ts');
 
-const { getRoleById } = require('../Service/roleService.ts');
+const { getRoleById } = require('../service/roleService.ts');
 
 const apiError = require('../utilits/apiError.ts');
 
