@@ -32,8 +32,13 @@ const getBrands = async (req:any, res:any) => {
 };
 const getBrandById = async (req:any, res:any) => {
   try {
+    const getProducts = req.params.products || false;
     const brandId = validateParams(req, res, 'id');
     const brand = await getBrandByIdService(brandId);
+    if (getProducts) {
+      const products = await brand.getProducts();
+      return res.status(200).json(products);
+    }
     res.status(200).json(brand);
   } catch (e:any) {
     apiError(res, e.errorMSG, e.status);

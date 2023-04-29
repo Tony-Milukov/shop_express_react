@@ -43,7 +43,6 @@ const createOrder = async (req:any, res:any) => {
     // updating count
     for (const product of products) {
       const productItem = await getProductByIdService(product.productId);
-      console.log(productItem.count);
       await updateProductCountService(productItem.count - 1, productItem.id);
     }
     return res.status(200).json({ message: 'Order was created', orderId: order.id });
@@ -158,7 +157,6 @@ const updateDeliveryInfo = async (req:any, res:any) => {
 
     // updating order status to: sent
     order.addStatus(sentStatus);
-
     // add new Delivery Info
     await addDeliveryInfoService(info, orderId);
 

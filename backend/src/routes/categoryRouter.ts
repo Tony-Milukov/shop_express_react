@@ -13,6 +13,7 @@ router.delete('/', isLoggedIn, checkRole(process.env.ADMIN_ROLE), deleteCategory
 
 // user
 router.post('/all', getAllCategories);
-router.get('/:id', getCategoryById);
+router.get('/:id/:products?', getCategoryById);
+
 module.exports = router;
 export {};

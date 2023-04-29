@@ -2,14 +2,15 @@ const express = require('express');
 const isLoggedIn = require('../middelwares/isLoggedIn.ts');
 const checkRole = require('../middelwares/checkRole.ts');
 const {
-  createProduct, getAllProducts, deleteProduct, getProductById, updateCount,
+  createProduct, getAllProducts, deleteProduct, getProductById, updateCount, searchProduct,
 } = require('../controllers/productController.ts');
 
 const router = express.Router();
 
 // users
 router.post('/all', getAllProducts);
-router.get('/:id', getProductById);
+router.get('/id/:id', getProductById);
+router.get('/search/:title', searchProduct);
 
 // admins
 

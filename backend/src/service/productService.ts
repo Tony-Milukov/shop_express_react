@@ -1,3 +1,6 @@
+import * as inspector from 'inspector';
+import { Op } from 'sequelize';
+
 const {
   Product, ProductsCategory, ProductsBrand, Category, Brand,
 } = require('../models/index.ts');
@@ -113,7 +116,18 @@ const updateProductCountService = async (count:number, productId: number) => {
     throw { errorMSG: 'something went went wrong on updating the count' };
   }
 };
+const searchProductService = async (title: string) => {
+  const products = await Product.findAll({
+    where: {
+      title: { [Op.like]: `%${title}%` },
+    },
+  });
+  if (!products) {
+    throw { errorMSG: 'something went went wrong on searching products' };
+  }
+  return products;
+};
 module.exports = {
-  createProductService, getProductByIdService, deleteProductService, getAllProductsService, checkExistence, updateProductCountService,
+  createProductService, getProductByIdService, deleteProductService, getAllProductsService, checkExistence, updateProductCountService, searchProductService,
 };
 export {};

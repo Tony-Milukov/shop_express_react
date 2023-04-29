@@ -4,7 +4,7 @@ const validatePrams = require('../validations/paramsValidation.ts');
 
 const {
   createProductService, getProductByIdService,
-  deleteProductService, getAllProductsService, updateProductCountService,
+  deleteProductService, getAllProductsService, updateProductCountService, searchProductService,
   checkExistence,
 } = require('../service/productService.ts');
 const checkIsArray = require('../validations/checkIsArray.ts');
@@ -101,6 +101,15 @@ const updateCount = async (req:any, res:any) => {
     apiError(res, e.errorMSG, e.status);
   }
 };
+const searchProduct = async (req:any, res:any) => {
+  try {
+    const title = validatePrams(req, res, 'title');
+    const products = await searchProductService(title);
+    res.status(200).json(products);
+  } catch (e:any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
 
 module.exports = {
   createProduct,
@@ -108,5 +117,6 @@ module.exports = {
   getProductById,
   getAllProducts,
   updateCount,
+  searchProduct,
 };
 export {};

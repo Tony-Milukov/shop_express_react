@@ -13,7 +13,7 @@ router.delete('/', isLoggedIn, checkRole(process.env.ADMIN_ROLE), deleteBrand);
 
 // user
 router.post('/all', getBrands);
-router.get('/:id', getBrandById);
+router.get('/:id/:products?', getBrandById);
 
 module.exports = router;
 export {};

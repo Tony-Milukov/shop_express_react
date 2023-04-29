@@ -53,7 +53,12 @@ const getAllCategories = async (req:any, res:any) => {
 const getCategoryById = async (req:any, res:any) => {
   try {
     const categoryId = validateParams(req, res, 'id');
+    const getProducts = req.params.products || false;
     const category = await getCategoryByIdService(categoryId);
+    if (getProducts) {
+      const products = await category.getProducts();
+      return res.status(200).json(products);
+    }
     res.status(200).json(category);
   } catch (e:any) {
     apiError(res, e.errorMSG, e.status);
