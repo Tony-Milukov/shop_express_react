@@ -2,7 +2,9 @@ const validateBody = require('../validations/bodyValidations.ts');
 const apiError = require('../utilits/apiError.ts');
 const { getUserByToken } = require('../service/userService.ts');
 const { getProductByIdService } = require('../service/productService.ts');
-const { createBasketService, getBasketByIdService, deleteBasketService } = require('../service/basketService.ts');
+const {
+  createBasketService, getBasketByIdService, deleteBasketService, updateBasketCountService, getBasketItemService,
+} = require('../service/basketService.ts');
 
 const createBasket = async (req:any, res:any) => {
   try {
@@ -51,7 +53,7 @@ const addProduct = async (req:any, res:any) => {
     const user = await getUserByToken(req, res);
     const basketId = parseFloat(validateBody(req, res, 'basketId'));
     const productId = parseFloat(validateBody(req, res, 'productId'));
-
+    const count = parseFloat(req.body.count);
     // getting product
     const product = await getProductByIdService(productId);
 
@@ -59,7 +61,10 @@ const addProduct = async (req:any, res:any) => {
     const basket = await getBasketByIdService(user.id, basketId);
     const result = await basket.addProduct(product);
     if (!result) {
-      return res.status(200).json({ message: `Product ${product.title} is already in the basket` });
+      const basketItem = await getBasketItemService(basketId, productId);
+      await updateBasketCountService(count || basketItem.count + 1, productId, basketId);
+    } else if (count) {
+      await updateBasketCountService(count, productId, basketId);
     }
     res.status(200).json({ message: `Product ${product.title} was added to basket succesfully` });
   } catch (e:any) {
@@ -72,13 +77,18 @@ const deleteProduct = async (req:any, res:any) => {
     const user = await getUserByToken(req, res);
     const basketId = parseFloat(validateBody(req, res, 'basketId'));
     const productId = parseFloat(validateBody(req, res, 'productId'));
+    const deleteAll = req.body.all ?? false;
 
     // getting product
     const product = await getProductByIdService(productId);
 
     // check do the basket exist, and owner is user gotten by JWT
     const basket = await getBasketByIdService(user.id, basketId);
-
+    const basketItem = await getBasketItemService(basketId, productId);
+    if (basketItem.count >= 2 && !deleteAll) {
+      await updateBasketCountService(basketItem.count - 1, productId, basketId);
+      return res.status(200).json({ message: `cart product count was updated ${product.title}, new count for ${product.title} : ${basketItem.count - 1}` });
+    }
     const result = await basket.removeProduct(product); // = 1 / 0
 
     if (!result) {

@@ -36,8 +36,31 @@ const getBasketByIdService = async (userId:number, cartId: number) => {
   }
   return cart;
 };
-
+const getBasketItemService = async (basketId:number, productId:number) => {
+  const basketItem = await BasketItem.findOne({
+    where: {
+      basketId,
+      productId,
+    },
+  });
+  if (!basketItem) {
+    throw { errorMSG: 'this basketItem was not defined', status: 404 };
+  } return basketItem;
+};
+const updateBasketCountService = async (count: number, productId:number, basketId:number) => {
+  const result = BasketItem.update({
+    count,
+  }, {
+    where: {
+      productId,
+      basketId,
+    },
+  });
+  if (!result) {
+    throw { errorMSG: 'something went wrong on updating cartCount', status: 404 };
+  }
+};
 module.exports = {
-  createBasketService, getBasketByIdService, deleteBasketService,
+  createBasketService, getBasketByIdService, deleteBasketService, getBasketItemService, updateBasketCountService,
 };
 export {};

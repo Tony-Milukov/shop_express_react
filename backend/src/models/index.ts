@@ -1,5 +1,3 @@
-const { DataTypes } = require('sequelize');
-const Sequelize = require('../db.ts');
 const User = require('./User.ts');
 const { Basket, BasketItem } = require('./Basket.ts');
 const Product = require('./Product.ts');
@@ -7,7 +5,9 @@ const { ProductsBrand, Brand } = require('./Brand.ts');
 const { Category, ProductsCategory } = require('./Category.ts');
 const { Role, UserRole } = require('./Role.ts');
 const Rating = require('./Rating.ts');
-const { Status, Order, OrderDeliveryInfo } = require('./Order.ts');
+const {
+  Status, Order, OrderDeliveryInfo, OrderProduct,
+} = require('./Order.ts');
 
 User.hasMany(Basket);
 Basket.belongsTo(User);
@@ -39,8 +39,8 @@ Order.belongsTo(User);
 Order.hasOne(OrderDeliveryInfo);
 OrderDeliveryInfo.belongsTo(Order);
 
-Order.belongsToMany(Product, { through: 'order_product' });
-Product.belongsToMany(Order, { through: 'order_product' });
+Order.belongsToMany(Product, { through: OrderProduct });
+Product.belongsToMany(Order, { through: OrderProduct });
 
 module.exports = {
   User,

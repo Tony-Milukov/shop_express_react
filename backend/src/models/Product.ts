@@ -23,6 +23,10 @@ const Product = Sequelize.define('product', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  count: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 module.exports = Product;
 export {};

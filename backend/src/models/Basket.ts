@@ -14,6 +14,10 @@ const BasketItem = Sequelize.define('basket_item', {
     primaryKey: true,
     autoIncrement: true,
   },
+  count: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1,
+  },
 });
 module.exports = {
   BasketItem, Basket,

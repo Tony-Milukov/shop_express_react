@@ -4,7 +4,7 @@ const validatePrams = require('../validations/paramsValidation.ts');
 
 const {
   createProductService, getProductByIdService,
-  deleteProductService, getAllProductsService,
+  deleteProductService, getAllProductsService, updateProductCountService,
   checkExistence,
 } = require('../service/productService.ts');
 const checkIsArray = require('../validations/checkIsArray.ts');
@@ -19,11 +19,13 @@ const {
 const createProduct = async (req:any, res:any) => {
   try {
     const title = validateBody(req, res, 'title');
+    const count = parseFloat(validateBody(req, res, 'count'));
     const price = validateBody(req, res, 'price');
     const description = validateBody(req, res, 'description');
     const brands = JSON.parse(validateBody(req, res, 'brands'));
     const categories = JSON.parse(validateBody(req, res, 'categories'));
     const img = req.files ? req.files.img : undefined;
+
     // check if image was send
     if (!img) {
       return res.status(404).json({ message: 'img was not send' });
@@ -37,7 +39,7 @@ const createProduct = async (req:any, res:any) => {
     await checkExistence(categories, getCategoryByIdService);
 
     const imgName = await uploadImage(img, 'products');
-    const product = await createProductService(title, price, description, imgName, brands, categories);
+    const product = await createProductService(title, price, description, imgName, brands, categories, count);
     res.status(200).json({ message: `product ${product.title} with id ${product.id} was created` });
   } catch (e:any) {
     apiError(res, e.errorMSG, e.status);
@@ -84,11 +86,27 @@ const getAllProducts = async (req:any, res:any) => {
     apiError(res, e.errorMSG, e.status);
   }
 };
+const updateCount = async (req:any, res:any) => {
+  try {
+    const count = parseFloat(validateBody(req, res, 'count'));
+    const productId = parseFloat(validateBody(req, res, 'productId'));
+    // checking if the product exist
+    const product = await getProductByIdService(productId);
+    if (count < 0) {
+      return res.status(400).json({ message: 'the minimal count is 0' });
+    }
+    await updateProductCountService(count, productId);
+    res.status(200).json({ message: `count for the product ${product.title} #${product.id} was updated successfully` });
+  } catch (e:any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
 
 module.exports = {
   createProduct,
   deleteProduct,
   getProductById,
   getAllProducts,
+  updateCount,
 };
 export {};

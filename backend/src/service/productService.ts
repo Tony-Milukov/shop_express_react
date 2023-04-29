@@ -15,12 +15,14 @@ const createProductService = async (
   img:string,
   brands:any,
   categories:any,
+  count:number,
 ) => {
   const product = await Product.create({
     title,
     price,
     img,
     description,
+    count,
   });
   if (!product) {
     throw { errorMSG: 'brands must be an array!', status: 400 };
@@ -99,7 +101,19 @@ const checkExistence = async (value:any, getService:any) => {
     await getService(id);
   }
 };
+const updateProductCountService = async (count:number, productId: number) => {
+  const result = await Product.update({
+    count,
+  }, {
+    where: {
+      id: productId,
+    },
+  });
+  if (!result) {
+    throw { errorMSG: 'something went went wrong on updating the count' };
+  }
+};
 module.exports = {
-  createProductService, getProductByIdService, deleteProductService, getAllProductsService, checkExistence,
+  createProductService, getProductByIdService, deleteProductService, getAllProductsService, checkExistence, updateProductCountService,
 };
 export {};

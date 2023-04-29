@@ -4,8 +4,9 @@ const validateBody = require('../validations/bodyValidations.ts');
 const apiError = require('../utilits/apiError.ts');
 const checkIsObject = require('../validations/checkIsObject.ts');
 const checkIsArray = require('../validations/checkIsArray.ts');
-const { getProductByIdService } = require('../service/productService.ts');
+const { getProductByIdService, updateProductCountService } = require('../service/productService.ts');
 const { getUserByToken, isRoleGiven, getUserByIdService } = require('../service/userService.ts');
+const { checkProductsLength, checkProductsAvailable } = require('../validations/Order/validateProducts.ts');
 const {
   createCustomStatusService, deleteCustomStatusService,
   getCustomStatusService, updateCustomStatusService,
@@ -23,24 +24,28 @@ const createOrder = async (req:any, res:any) => {
     checkIsObject(adress, 'adress');
 
     // env is possibly be undefined, we need to prove it
-    const MAX_PRODUCTS_PER_ORDER = process.env.MAX_PRODUCTS_PER_ORDER || '15';
     const DEFAULT_ORDER_STATUS = process.env.DEFAULT_ORDER_STATUS || '1';
-    if (products.length > Number(MAX_PRODUCTS_PER_ORDER)) {
-      return res.status(400).json({ message: `Sorry, but you can only order ${process.env.MAX_PRODUCTS_PER_ORDER} products at a time, but you can do another order then` });
-    }
-    // check do all the product exist
-    for (const product of products) {
-      await getProductByIdService(product);
-    }
+
+    // checking products are not empty, and they exist, and are available (count > 0)
+    await checkProductsLength(req, res, products);
+    await checkProductsAvailable(req, res, products);
+
     const order = await createOrderService(user.id, adress);
-    for (const productId of products) {
-      const product = await getProductByIdService(productId);
-      await order.addProduct(product);
+    for (const product of products) {
+      checkIsObject(product, 'product');
+      const productItem = await getProductByIdService(product.productId);
+      await order.addProduct(productItem, { through: { count: product.count } });
     }
 
     const status = await getCustomStatusService(Number(DEFAULT_ORDER_STATUS));
     await order.addStatus(status);
 
+    // updating count
+    for (const product of products) {
+      const productItem = await getProductByIdService(product.productId);
+      console.log(productItem.count);
+      await updateProductCountService(productItem.count - 1, productItem.id);
+    }
     return res.status(200).json({ message: 'Order was created', orderId: order.id });
   } catch (e:any) {
     apiError(res, e.errorMSG, e.status);
@@ -94,7 +99,7 @@ const deleteCustomStatus = async (req:any, res:any) => {
 const getOrderById = async (req:any, res:any) => {
   try {
     const user = await getUserByToken(req, res);
-    const orderId = validateBody(req, res, 'orderId');
+    const orderId = parseFloat(validateBody(req, res, 'orderId'));
     const order = await getOrderByIdService(orderId);
 
     // if admin, don't check if the order belongs to this user,
@@ -131,6 +136,7 @@ const updateDeliveryInfo = async (req:any, res:any) => {
     const orderId = validateBody(req, res, 'orderId');
     const info = validateBody(req, res, 'deliveryInfo');
 
+    const ORDER_SENT_STATUS = process.env.ORDER_SENT_STATUS || '2';
     // checking if deliveryInfo is Object
     checkIsObject(info, 'deliveryInfo');
 
@@ -145,10 +151,17 @@ const updateDeliveryInfo = async (req:any, res:any) => {
       return res.status(400).json({ message: 'info have to  include: link, company, code, and can also include some extraInfo' });
     }
     // check do the order exist
-    await getOrderByIdService(orderId);
+    const order = await getOrderByIdService(orderId);
+
+    // check do the status exist
+    const sentStatus = await getCustomStatusService(parseFloat(ORDER_SENT_STATUS));
+
+    // updating order status to: sent
+    order.addStatus(sentStatus);
 
     // add new Delivery Info
     await addDeliveryInfoService(info, orderId);
+
     res.status(200).json({ message: `Delivery info for order ${orderId} was added succesfully` });
   } catch (e:any) {
     apiError(res, e.errorMSG, e.status);

@@ -24,7 +24,6 @@ const Order = Sequelize.define('order', {
   adress: {
     type: DataTypes.JSON,
     allowNull: false,
-
   },
   deliveredDate: {
     type: DataTypes.DATE,
@@ -56,10 +55,22 @@ const OrderDeliveryInfo = Sequelize.define('order_delivery_info', {
     type: DataTypes.STRING,
   },
 });
+const OrderProduct = Sequelize.define('order_product', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  count: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1,
+  },
+});
 module.exports = {
   Status,
   Order,
   OrderDeliveryInfo,
+  OrderProduct,
 
 };
 export {};
