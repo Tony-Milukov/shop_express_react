@@ -5,12 +5,21 @@ const checkRole = require('../middelwares/checkRole.ts');
 
 const router = express.Router();
 const {
-  createUser, getRole, getUser, deleteUser, addRole, getUserJWT, updateUserImage, removeRole,
+  createUser,
+  getRole,
+  getUser,
+  deleteUser,
+  addRole,
+  getUserJWT,
+  updateUserImage,
+  removeRole,
+  getProfile,
 } = require('../controllers/userController.ts');
 
 // users
 router.put('/register', createUser);
 router.post('/login', getUserJWT);
+router.post('/profile', getProfile);
 router.get('/:username', getUser);
 router.put('/img', isLoggedIn, updateUserImage);
 

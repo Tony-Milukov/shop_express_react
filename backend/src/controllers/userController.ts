@@ -2,17 +2,27 @@ const validateBody = require('../validations/bodyValidations.ts');
 const validateParams = require('../validations/paramsValidation.ts');
 const { isRoleGiven } = require('../service/userService.ts');
 const {
-  deleteUserService, createUserService, getUserByIdService, doesEmailExistService, doesUsernameExistService, getUserByUsernameService, genUserJWTService, updateUserImageDB,
+  deleteUserService,
+  createUserService,
+  getUserByIdService,
+  doesEmailExistService,
+  doesUsernameExistService,
+  getUserByUsernameService,
+  genUserJWTService,
+  updateUserImageDB,
   getUserByToken,
 } = require('../service/userService.ts');
 
-const { uploadImage, deleteOldImage } = require('../middelwares/updateImage.ts');
+const {
+  uploadImage,
+  deleteOldImage,
+} = require('../middelwares/updateImage.ts');
 
 const { getRoleById } = require('../service/roleService.ts');
 
 const apiError = require('../utilits/apiError.ts');
 
-const createUser = async (req:any, res:any) => {
+const createUser = async (req: any, res: any) => {
   try {
     const email = validateBody(req, res, 'email');
     const password = validateBody(req, res, 'password');
@@ -24,23 +34,25 @@ const createUser = async (req:any, res:any) => {
 
     const user = await createUserService(email, username, password);
     if (user) {
-      res.status(200).json({ message: `user with userId ${user.id} was created` });
+      res.status(200)
+        .json({ message: `user with userId ${user.id} was created` });
     }
-  } catch (e:any) {
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
-const getUser = async (req:any, res:any) => {
+const getUser = async (req: any, res: any) => {
   try {
     const username = validateParams(req, res, 'username');
     // getting user, if not exist > throw error
     const user = await getUserByUsernameService(username);
-    res.status(200).json(user);
-  } catch (e:any) {
+    res.status(200)
+      .json(user);
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
-const getRole = async (req:any, res:any) => {
+const getRole = async (req: any, res: any) => {
   try {
     const userId = validateBody(req, res, 'userId');
 
@@ -54,13 +66,14 @@ const getRole = async (req:any, res:any) => {
     if (roles && roles.length >= 1) {
       res.json(roles);
     } else {
-      res.status(404).json({ message: 'User with that userId is not defined' });
+      res.status(404)
+        .json({ message: 'User with that userId is not defined' });
     }
-  } catch (e:any) {
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
-const addRole = async (req:any, res:any) => {
+const addRole = async (req: any, res: any) => {
   try {
     const userId = validateBody(req, res, 'userId');
     const roleId = parseFloat(validateBody(req, res, 'roleId'));
@@ -75,18 +88,20 @@ const addRole = async (req:any, res:any) => {
     const hasRole = await isRoleGiven(userId, roleId);
 
     if (hasRole) {
-      return res.status(200).json({
-        errorMSG: 'User with that userId already have the role',
-      });
+      return res.status(200)
+        .json({
+          errorMSG: 'User with that userId already have the role',
+        });
     }
     await user.addRole(role);
-    res.status(200).json({ message: 'Role was given to the user Succesfully' });
-  } catch (e:any) {
+    res.status(200)
+      .json({ message: 'Role was given to the user Succesfully' });
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
 
-const removeRole = async (req:any, res:any) => {
+const removeRole = async (req: any, res: any) => {
   try {
     const userId = validateBody(req, res, 'userId');
     const roleId = parseFloat(validateBody(req, res, 'roleId'));
@@ -101,17 +116,19 @@ const removeRole = async (req:any, res:any) => {
     const hasRole = await isRoleGiven(userId, roleId);
 
     if (!hasRole) {
-      return res.status(200).json({
-        errorMSG: 'User with that userId do not have the role',
-      });
+      return res.status(200)
+        .json({
+          errorMSG: 'User with that userId do not have the role',
+        });
     }
     await user.removeRole(role);
-    res.status(200).json({ message: 'Role was removed for this user' });
-  } catch (e:any) {
+    res.status(200)
+      .json({ message: 'Role was removed for this user' });
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
-const deleteUser = async (req:any, res:any) => {
+const deleteUser = async (req: any, res: any) => {
   try {
     const userId = validateBody(req, res, 'userId');
     // does user exist
@@ -119,15 +136,17 @@ const deleteUser = async (req:any, res:any) => {
     // deleting user from DB
     const result = deleteUserService(userId);
     if (result) {
-      res.status(200).json({ message: `user with userId ${userId} was deleted` });
+      res.status(200)
+        .json({ message: `user with userId ${userId} was deleted` });
     } else {
-      res.status(404).json({ message: 'Something went wrong' });
+      res.status(404)
+        .json({ message: 'Something went wrong' });
     }
-  } catch (e:any) {
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
-const getUserJWT = async (req:any, res:any) => {
+const getUserJWT = async (req: any, res: any) => {
   try {
     const email = validateBody(req, res, 'email');
     const password = validateBody(req, res, 'password');
@@ -135,19 +154,22 @@ const getUserJWT = async (req:any, res:any) => {
     // generate JWT token (userId && username)
     const jwt = await genUserJWTService(email, password);
     if (jwt) {
-      res.status(200).json(jwt);
+      res.status(200)
+        .json({ token: jwt });
     } else {
-      res.status(404).json({ message: 'email or password are incorrect' });
+      res.status(404)
+        .json({ message: 'email or password are incorrect' });
     }
-  } catch (e:any) {
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
 
-const updateUserImage = async (req:any, res:any) => {
+const updateUserImage = async (req: any, res: any) => {
   const img = req.files ? req.files.img : undefined;
   if (!img) {
-    return res.status(404).json({ message: 'img was not send' });
+    return res.status(404)
+      .json({ message: 'img was not send' });
   }
   try {
     // getting user by jwt token in header
@@ -161,12 +183,20 @@ const updateUserImage = async (req:any, res:any) => {
 
     // updating img for user
     await updateUserImageDB(newImg, user.id);
-    res.status(200).json({ message: 'updated succesfully' });
-  } catch (e:any) {
+    res.status(200)
+      .json({ message: 'updated succesfully' });
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
-
+const getProfile = async (req: any, res: any) => {
+  try {
+    const user = await getUserByToken(req, res);
+    if (user && !user.statusCode) return res.status(200).json(user);
+  } catch (e: any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
 module.exports = {
   createUser,
   getRole,
@@ -176,5 +206,6 @@ module.exports = {
   getUserJWT,
   updateUserImage,
   removeRole,
+  getProfile,
 };
 export {};
