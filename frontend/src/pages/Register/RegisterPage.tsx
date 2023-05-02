@@ -12,23 +12,37 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import { useState } from 'react';
 
 const theme = createTheme();
 
 export default function RegisterPage() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const [email, setEmail] = useState();
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+  const [repeatPassword, setRepeatPassword] = useState();
+  const [errors, setErrors] = useState<{}>();
+  const register = async () => {
+    try {
+      const { data } = await axios.post('http://localhost:5000/api/user/register', {
+        email,
+        password,
+        username
+      });
+
+      console.log(data);
+
+    } catch (e: any) {
+
+    }
+
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
+        <CssBaseline/>
         <Box
           sx={{
             marginTop: 8,
@@ -37,13 +51,16 @@ export default function RegisterPage() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+          <Avatar sx={{
+            m: 1,
+            bgcolor: 'secondary.main'
+          }}>
+            <LockOutlinedIcon/>
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -65,14 +82,17 @@ export default function RegisterPage() {
               autoComplete="current-password"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" color="primary"/>}
               label="Remember me"
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{
+                mt: 3,
+                mb: 2
+              }}
             >
               Sign In
             </Button>
@@ -84,7 +104,7 @@ export default function RegisterPage() {
               </Grid>
               <Grid item>
                 <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {'Don\'t have an account? Sign Up'}
                 </Link>
               </Grid>
             </Grid>
