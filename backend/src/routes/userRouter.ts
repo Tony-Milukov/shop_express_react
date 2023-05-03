@@ -19,7 +19,7 @@ const {
 // users
 router.put('/register', createUser);
 router.post('/login', getUserJWT);
-router.post('/profile', getProfile);
+router.post('/account', getProfile);
 router.get('/:username', getUser);
 router.put('/img', isLoggedIn, updateUserImage);
 

@@ -12,7 +12,6 @@ import { useState } from 'react';
 import axios from 'axios';
 import './login.css';
 import LoginRequest from '../../types/loginRequest';
-import useRedirectOnLogin from '../../hooks/useRedirectOnLogin';
 
 const theme = createTheme();
 
@@ -23,11 +22,9 @@ export default function LoginPage() {
   const [password, setPassword] = useState<String>('');
   const [error, setError] = useState<Boolean | String>(false);
 
-  //if is logged in, redirect to home
-  useRedirectOnLogin();
   const login = async () => {
     try {
-      const { data } = await axios.post<LoginRequest>('http://localhost:5000/api/user/login', {
+      const { data } = await axios.post<LoginRequest>(`http://localhost:5000/api/user/login`, {
         email,
         password
       });

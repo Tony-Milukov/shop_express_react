@@ -12,7 +12,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ErrorMsg from '../../components/ErrorMsg';
 import regExp from './regExp';
-import useRedirectOnLogin from '../../hooks/useRedirectOnLogin';
 import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
@@ -24,8 +23,6 @@ interface IRegErrors {
 }
 
 export default function RegisterPage() {
-  //redirect, if the user is logged in
-  useRedirectOnLogin();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -47,7 +44,7 @@ export default function RegisterPage() {
       });
       if (password && username && email && !errors.emailErr && !errors.passwordErr && !errors.usernameErr) {
         console.log(!errors.passwordErr);
-        const res = await axios.put<IRegisterRequest>('http://localhost:5000/api/user/register', {
+        const res = await axios.put<IRegisterRequest>(`http://localhost:5000/api/user/register`, {
           email,
           password,
           username

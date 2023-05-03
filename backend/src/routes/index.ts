@@ -19,9 +19,6 @@ const isLoggedIn = require('../middelwares/isLoggedIn.ts');
 router.use(fileUpload({}));
 router.use(bodyParser.json());
 
-// allow static
-router.use(express.static('static/avatars'));
-
 router.use('/user', userRouter);
 router.use('/brand', brandRouter);
 router.use('/products', productRouter);

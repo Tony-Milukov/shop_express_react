@@ -9,6 +9,8 @@ const app = express();
 app.use(cors());
 app.use('/api', errorHandler, router);
 
+// allow static
+app.use(express.static('static/avatars'));
 const start = async (PORT:any) => {
   try {
     await sequelize.authenticate();

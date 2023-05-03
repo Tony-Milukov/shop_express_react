@@ -5,7 +5,7 @@ import {persist, createJSONStorage} from 'zustand/middleware';
 
 const userStore = create(devtools(persist(((set) => ({
   user: {
-    token: ""
+    token: false
   },
     saveToken: (token:string) => {
     set((state:any) => ({
