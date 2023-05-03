@@ -30,7 +30,7 @@ const createUser = async (req: any, res: any) => {
 
     // if exist > throw error
     await doesEmailExistService(email);
-    await doesUsernameExistService(email);
+    await doesUsernameExistService(username);
 
     const user = await createUserService(email, username, password);
     if (user) {

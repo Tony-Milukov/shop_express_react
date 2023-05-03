@@ -71,6 +71,7 @@ export default function LoginPage() {
               autoComplete="email"
               autoFocus
             />
+
             <TextField
               onChange={(e: any) => setPassword(e.target.value)}
               margin="normal"
@@ -94,7 +95,8 @@ export default function LoginPage() {
               Login
             </Button>
             <div className="loginBottom">
-              {error ? <span>email or password are incorrect</span> : null} <br/>
+              {error ? <span className={'errorMSG'}>email or password are incorrect</span> : null}
+              <br/>
               <Link to={'/register'}>
                 {'register'}
               </Link>
