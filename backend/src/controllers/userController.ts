@@ -130,14 +130,21 @@ const removeRole = async (req: any, res: any) => {
 };
 const deleteUser = async (req: any, res: any) => {
   try {
-    const userId = validateBody(req, res, 'userId');
+    const user = await getUserByToken(req, res);
+    const { userId } = req.body;
+
     // does user exist
-    await getUserByIdService(userId);
+    await getUserByIdService(user.id);
     // deleting user from DB
-    const result = deleteUserService(userId);
+    let result = null;
+    if (await isRoleGiven(user.id, process.env.ADMIN_ROLE) && userId) {
+      result = await deleteUserService(userId);
+    } else {
+      result = await deleteUserService(user.id);
+    }
     if (result) {
       res.status(200)
-        .json({ message: `user with userId ${userId} was deleted` });
+        .json({ message: `user with userId ${user.id} was deleted` });
     } else {
       res.status(404)
         .json({ message: 'Something went wrong' });
@@ -183,7 +190,7 @@ const updateUserImage = async (req: any, res: any) => {
 
     // updating img for user
     await updateUserImageDB(newImg, user.id);
-    res.status(200)
+    return res.status(200)
       .json({ message: 'updated succesfully' });
   } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
@@ -192,11 +199,15 @@ const updateUserImage = async (req: any, res: any) => {
 const getProfile = async (req: any, res: any) => {
   try {
     const user = await getUserByToken(req, res);
-    if (user && !user.statusCode) return res.status(200).json(user);
+    if (user && !user.statusCode) {
+      return res.status(200)
+        .json(user);
+    }
   } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
+
 module.exports = {
   createUser,
   getRole,

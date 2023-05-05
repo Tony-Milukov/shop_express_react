@@ -5,6 +5,7 @@ import getUserByToken from '../utilits/getUserByToken';
 const useAuth = () => {
   const token = userStore((state: any) => state.user.token);
   const [isAuth, setIsAuth] = useState<boolean>(false);
+  const logout = userStore((state: any) => state.logout);
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -12,15 +13,19 @@ const useAuth = () => {
         setIsAuth(true);
       } catch {
         setIsAuth(false);
+        if(token) {
+          logout()
+        }
       }
 
     };
     if (token) {
       checkAuth();
+
     } else {
       setIsAuth(false);
     }
-  }, [token]);
+  }, [token,logout]);
   return isAuth;
 };
 

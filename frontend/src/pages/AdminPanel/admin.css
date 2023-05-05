@@ -1,0 +1,9 @@
+.panelItem span {
+    margin-left: 15px;
+}
+.panelNav {
+    border-right: 1px solid #dedede;
+    height: 91.4vh;
+    max-width: 200px !important;
+    width: 100%;
+}

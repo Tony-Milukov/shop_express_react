@@ -145,7 +145,7 @@ const getUserByToken = async (req:any, res:any) => {
   const decoded = await decodeJwtService(token);
   const user = await User.findByPk(decoded.userId);
   if (!token || !decoded || !user) {
-    return res.status(401).json({ message: 'Unauthorized!' });
+    throw { errMSG: 'Unauthorized!', status: 401 };
   }
   return user;
 };

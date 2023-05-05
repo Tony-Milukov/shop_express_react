@@ -16,7 +16,7 @@ const uploadImage = async (img:any, folder:string) => {
 };
 const deleteOldImage = (imgName:string, folder:string) => {
   const imgPath = `${__dirname}/../static/${folder}/${imgName}`;
-  if (imgName !== 'default.jpeg') {
+  if (imgName !== 'default.jpg') {
     fs.unlink(imgPath, (err:any) => {
       if (err) {
         throw { errorMSG: 'something went wrong' };

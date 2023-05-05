@@ -1,4 +1,8 @@
-require('dotenv').config({ path: '../.env' });
+import * as path from 'path';
+import * as fs from 'fs';
+
+require('dotenv')
+  .config({ path: '../.env' });
 const express = require('express');
 const cors = require('cors');
 const sequelize = require('./db.ts');
@@ -10,8 +14,8 @@ app.use(cors());
 app.use('/api', errorHandler, router);
 
 // allow static
-app.use(express.static('static/avatars'));
-const start = async (PORT:any) => {
+app.use(express.static(path.join(__dirname, 'static/avatars')));
+const start = async (PORT: any) => {
   try {
     await sequelize.authenticate();
     await sequelize.sync();

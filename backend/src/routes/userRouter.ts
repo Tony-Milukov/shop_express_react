@@ -22,12 +22,12 @@ router.post('/login', getUserJWT);
 router.post('/account', getProfile);
 router.get('/:username', getUser);
 router.put('/img', isLoggedIn, updateUserImage);
+router.delete('/', isLoggedIn, deleteUser);
 
 // admins
 router.post('/role', isLoggedIn, checkRole(process.env.ADMIN_ROLE), getRole);
 router.put('/role', isLoggedIn, checkRole(process.env.ADMIN_ROLE), addRole);
 router.delete('/role', isLoggedIn, checkRole(process.env.ADMIN_ROLE), removeRole);
-router.delete('/', isLoggedIn, checkRole(process.env.ADMIN_ROLE), deleteUser);
 
 module.exports = router;
 export {};

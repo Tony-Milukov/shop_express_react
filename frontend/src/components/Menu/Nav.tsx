@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
+import MenuItem_ from './components/MenuItem_';
+
 import Menu from '@mui/material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -17,7 +19,11 @@ import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Link, useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import "./menu.css";
+import './menu.css';
+import { useEffect, useState } from 'react';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import checkIsAdmin from '../../utilits/checkIsAdmin';
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -61,6 +67,7 @@ export default function PrimarySearchAppBar() {
   const token = userStore((state: any) => state.user.token);
   const logout = userStore((state: any) => state.logout);
   const nav = useNavigate();
+  const [isAdmin, setAdmin] = useState<boolean>(false);
 
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -81,6 +88,13 @@ export default function PrimarySearchAppBar() {
     logout();
     nav('/login');
   };
+  useEffect(() => {
+    (
+      async () => {
+        setAdmin(await checkIsAdmin(token));
+      }
+    )();
+  }, [token]);
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
@@ -98,45 +112,25 @@ export default function PrimarySearchAppBar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle/>
-        </IconButton>
-
+        <MenuItem_ link={'/profile'} Icon={AccountCircle}/>
         <p>Profile</p>
       </MenuItem>
     </Menu>
   );
   const renderAuthItems = (
     <>
-     <Link to={"/cart"} className="menuLink">
-       <IconButton
-         size="large"
-         color="inherit"
-       >
-         <Badge badgeContent={12} color="error">
-           <ShoppingCartIcon/>
-         </Badge>
-       </IconButton>
-     </Link>
-      <Link className={"menuLink"} to={'/account'}>
-
+      <Link to={'/cart'} className="menuLink">
         <IconButton
           size="large"
-          edge="end"
-          aria-label="account of current user"
-          aria-controls={menuId}
-          aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle/>
+          <Badge badgeContent={12} color="error">
+            <ShoppingCartIcon/>
+          </Badge>
         </IconButton>
       </Link>
+
+      <MenuItem_ link={'/account'} Icon={AccountCircle}/>
 
       <IconButton
         onClick={doLogout}
@@ -168,22 +162,19 @@ export default function PrimarySearchAppBar() {
 
   const renderNoAuthItems = (
     <>
-      <IconButton
-        onClick={() => nav('/login')}
-        size="large"
-        aria-label="show more"
-        aria-haspopup="true"
-        color="inherit"
-      >
-        <LoginIcon/>
-      </IconButton>
+      <MenuItem_ link={'/login'} Icon={LoginIcon}/>
+    </>
+  );
+  const renderAdminItems = (
+    <>
+      <MenuItem_ link={'/admin'} Icon={AdminPanelSettingsIcon}/>
     </>
   );
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Link className={"menuLink"} to={"/"}><Typography
+          <Link className={'menuLink'} to={'/'}><Typography
             variant="h6"
             noWrap
             component="div"
@@ -212,7 +203,7 @@ export default function PrimarySearchAppBar() {
               xs: 'none',
               md: 'flex'
             }
-          }}> {token ? renderAuthItems : renderNoAuthItems}</Box>
+          }}> {token ? <>  {isAdmin ? renderAdminItems : null} {renderAuthItems}</> : renderNoAuthItems}</Box>
         </Toolbar>
       </AppBar>
       {renderMobileMenu}

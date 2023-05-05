@@ -1,0 +1,27 @@
+.accountPage {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 auto;
+    width: fit-content;
+    padding: 0 15px 0 15px
+}
+
+.accountMain {
+    display: flex !important;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.uploadImg {
+    margin-top: 25px !important;
+}
+.userInfoItem {
+    margin-top: 15px;
+}
+.deleteAcc {
+    margin-top: 25px !important;
+}
+
