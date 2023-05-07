@@ -10,22 +10,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Avatar,
   Button,
-  ListItem,
   List,
-  ListItemIcon,
-  ListItemText,
   Stack,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogContentText
 } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import Container from '@mui/material/Container';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AccountItem from './components/AccountItem';
+import Dialog from '../../components/Dialog/Dialog';
 
 const AccountPage = () => {
   useRedirectNotLogin();
@@ -41,7 +34,7 @@ const AccountPage = () => {
 
   useEffect(() => {
     getUserInfo();
-  }, [token,img]);
+  }, [token, img]);
 
   useEffect(() => {
     (async () => {
@@ -57,26 +50,28 @@ const AccountPage = () => {
       }
     })();
   }, [img]);
-  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const handleOpenDialog = () => {
-    setDialogOpen(true);
-  };
-
-  const handleCloseDialog = () => {
-    setDialogOpen(false);
-  };
   const deleteAccount = () => {
     (async () => {
-      await axios.delete('http://localhost:5000/api/user/', {
+    try {
+      await axios.delete(`http://localhost:5000/api/user/`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
+      nav('/login');
+      logout();
+    } catch (e) {
+      console.log(e);
+    }
+
     })();
-    nav('/login');
-    logout()
+
   };
+const openButtonDialog = (
+  <Button className={'deleteAcc'} variant={'outlined'} startIcon={<DeleteIcon/>}>DELETE</Button>
+)
+
   return (
     userInfo ? <div className={'accountPage'}>
       <Container className={'accountMain'} maxWidth="sm"><Avatar alt="Remy Sharp"
@@ -102,28 +97,9 @@ const AccountPage = () => {
           <AccountItem Icon={PersonIcon} value={userInfo.username}/>
         </List>
       </Container>
-      <Button onClick={handleOpenDialog} className={'deleteAcc'} variant="outlined"
-              startIcon={<DeleteIcon/>}>
-        Delete Account
-      </Button>
-      <Dialog
-        open={dialogOpen}
-        keepMounted
-        onClose={handleCloseDialog}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{'Are you sure you want to delete your account?'}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            It is going to be deleted forever <br/> and cannot be recovered!
-
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>no</Button>
-          <Button onClick={deleteAccount}>delete</Button>
-        </DialogActions>
-      </Dialog>
+      <Dialog handler={deleteAccount}
+              value={<>This is going to be deleted forever <br/> are you sure ? </>}
+                  failureValue={'no'} OpenButton={openButtonDialog} succesValue={'delete'}/>
     </div> : null
   );
 };

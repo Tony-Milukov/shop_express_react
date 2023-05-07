@@ -7,3 +7,36 @@
     max-width: 200px !important;
     width: 100%;
 }
+.adminPanel {
+    display: flex;
+}
+.userItem {
+    background: #ebebeb;
+    margin-bottom: 25px;
+}
+.usersAdmin {
+    padding-top: 0 !important;
+    max-width: 500px!important;
+}
+.deleteUserAdmin {
+    color: #636363;
+    cursor: pointer;
+}
+.adminUserOrders {
+    margin: 0 15px 0 15px;
+}
+.userItem  {
+    width: fit-content !important;
+    max-width: 500px;
+    width: 100% !important;
+}
+
+main {
+    max-width: 450px;
+    width: 100%;
+    margin-top: 25px !important;
+    margin-left: 25px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

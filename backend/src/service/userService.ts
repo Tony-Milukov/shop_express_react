@@ -1,3 +1,5 @@
+import { logger } from 'sequelize/types/utils/logger';
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {
@@ -94,11 +96,11 @@ const getUserByUsernameService = async (username:string) => {
   }
   return user;
 };
-const isRoleGiven = async (userId:number, roleId:number) => {
+const isRoleGiven = async (userId:number, roleId:string) => {
   const user = await getUserByIdService(userId);
-  const roles = await user.getRoles();
 
-  return !!roles.some((i: any) => i.dataValues.id === roleId);
+  const roles = await user.getRoles();
+  return !!roles.some((i: any) => i.id === parseFloat(roleId));
 };
 
 const getUserByEmailService = async (email:string) => await User.findOne({
@@ -149,6 +151,17 @@ const getUserByToken = async (req:any, res:any) => {
   }
   return user;
 };
+const getAllUsersService = async (limit: number, offset: number) => {
+  const users = await User.findAndCountAll({
+    limit,
+    offset,
+  });
+  if (!users) {
+    throw { errorMSG: 'Users were not defined' };
+  } else {
+    return users;
+  }
+};
 module.exports = {
   deleteUserService,
   createUserService,
@@ -162,5 +175,6 @@ module.exports = {
   decodeJwtService,
   updateUserImageDB,
   getUserByToken,
+  getAllUsersService,
 };
 export {};

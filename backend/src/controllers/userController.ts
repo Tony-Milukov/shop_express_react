@@ -1,3 +1,5 @@
+import { logger } from 'sequelize/types/utils/logger';
+
 const validateBody = require('../validations/bodyValidations.ts');
 const validateParams = require('../validations/paramsValidation.ts');
 const { isRoleGiven } = require('../service/userService.ts');
@@ -11,6 +13,7 @@ const {
   genUserJWTService,
   updateUserImageDB,
   getUserByToken,
+  getAllUsersService,
 } = require('../service/userService.ts');
 
 const {
@@ -131,7 +134,7 @@ const removeRole = async (req: any, res: any) => {
 const deleteUser = async (req: any, res: any) => {
   try {
     const user = await getUserByToken(req, res);
-    const { userId } = req.body;
+    const userId = parseFloat(req.params.userId);
 
     // does user exist
     await getUserByIdService(user.id);
@@ -144,7 +147,7 @@ const deleteUser = async (req: any, res: any) => {
     }
     if (result) {
       res.status(200)
-        .json({ message: `user with userId ${user.id} was deleted` });
+        .json({ message: `user with userId ${userId ?? user.id} was deleted` });
     } else {
       res.status(404)
         .json({ message: 'Something went wrong' });
@@ -207,7 +210,17 @@ const getProfile = async (req: any, res: any) => {
     apiError(res, e.errorMSG, e.status);
   }
 };
-
+const getAllUsers = async (req: any, res: any) => {
+  try {
+    const pageSize = parseFloat(validateBody(req, res, 'pageSize'));
+    const page = parseFloat(validateBody(req, res, 'page'));
+    const offset = (page - 1) * pageSize;
+    const users = await getAllUsersService(pageSize, offset);
+    res.status(200).json(users);
+  } catch (e: any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
 module.exports = {
   createUser,
   getRole,
@@ -218,5 +231,6 @@ module.exports = {
   updateUserImage,
   removeRole,
   getProfile,
+  getAllUsers,
 };
 export {};

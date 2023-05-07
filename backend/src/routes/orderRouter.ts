@@ -11,7 +11,7 @@ router.put('/', createOrder);
 // admin can see all, user only itself
 router.post('/', getOrderById);
 router.post('/all', getAllOrders);
-
+router.post('/user/:userId', getAllOrders);
 // admin
 router.put('/customStatus', checkRole(process.env.ADMIN_ROLE), updateCustomStatus);
 router.put('/delivery', checkRole(process.env.ADMIN_ROLE), updateDeliveryInfo);

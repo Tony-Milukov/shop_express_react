@@ -22,7 +22,7 @@ function Router() {
   },[token])
   const adminRoutes  = (
     <>
-      <Route path={'/admin'} element={<AdminPanel/>}></Route>
+      <Route path={'/admin/*'} element={<AdminPanel/>}></Route>
     </>
   )
   const authRoutes  = (
