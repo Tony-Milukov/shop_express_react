@@ -34,6 +34,7 @@ const AccountPage = () => {
 
   useEffect(() => {
     getUserInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, img]);
 
   useEffect(() => {
@@ -49,6 +50,7 @@ const AccountPage = () => {
         await getUserInfo();
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [img]);
 
   const deleteAccount = () => {
@@ -99,7 +101,7 @@ const openButtonDialog = (
       </Container>
       <Dialog handler={deleteAccount}
               value={<>This is going to be deleted forever <br/> are you sure ? </>}
-                  failureValue={'no'} OpenButton={openButtonDialog} succesValue={'delete'}/>
+                  failureValue={'break'} OpenButton={openButtonDialog} succesValue={'delete'}/>
     </div> : null
   );
 };

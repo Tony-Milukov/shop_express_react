@@ -46,7 +46,7 @@ const getBrandById = async (req:any, res:any) => {
 };
 const deleteBrand = async (req:any, res:any) => {
   try {
-    const brandId = validateBody(req, res, 'brandId');
+    const brandId = validateParams(req, res, 'brandId');
 
     // check does the brand exist
     await getBrandByIdService(brandId);

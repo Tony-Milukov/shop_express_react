@@ -9,7 +9,7 @@ const {
 
 // admin
 router.put('/', isLoggedIn, checkRole(process.env.ADMIN_ROLE), createBrand);
-router.delete('/', isLoggedIn, checkRole(process.env.ADMIN_ROLE), deleteBrand);
+router.delete('/:brandId', isLoggedIn, checkRole(process.env.ADMIN_ROLE), deleteBrand);
 
 // user
 router.post('/all', getBrands);

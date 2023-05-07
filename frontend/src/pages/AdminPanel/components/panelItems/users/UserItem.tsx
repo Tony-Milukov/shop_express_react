@@ -50,7 +50,7 @@ const UserItem: FC<IUserItemProps> = ({
 
         <Dialog handler={deleteUser}
                 value={<>This is going to be deleted forever <br/> are you sure ? </>}
-                failureValue={'no'} OpenButton={openButtonDialog} succesValue={'delete'}/>
+                failureValue={'break'} OpenButton={openButtonDialog} succesValue={'delete'}/>
       </ListItem>
 
     </>

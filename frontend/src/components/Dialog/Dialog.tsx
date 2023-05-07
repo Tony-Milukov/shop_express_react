@@ -7,7 +7,7 @@ import {
   DialogTitle,
 
 } from '@mui/material';
-import Dialog_ from '@mui/material/Dialog';
+import Dialog2 from '@mui/material/Dialog';
 
 interface IDialogProps {
   handler: () => void,
@@ -40,7 +40,7 @@ const Dialog: FC<IDialogProps> = ({
       {
         React.cloneElement(OpenButton,{onClick:handleOpen})
       }
-      <Dialog_
+      <Dialog2
         open={open}
         keepMounted
         onClose={handleClose}
@@ -56,7 +56,7 @@ const Dialog: FC<IDialogProps> = ({
           <Button onClick={handleClose}>{failureValue}</Button>
           <Button onClick={handler}>{succesValue}</Button>
         </DialogActions>
-      </Dialog_>
+      </Dialog2>
     </>
   );
 };

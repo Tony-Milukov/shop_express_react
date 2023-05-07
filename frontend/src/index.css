@@ -8,3 +8,9 @@
 .css-konndc-MuiListItemText-root {
     min-width: 0 !important;
 }
+
+/*dialog*/
+
+.css-qfso29-MuiTypography-root-MuiDialogContentText-root {
+    margin-left: 20px !important;
+}

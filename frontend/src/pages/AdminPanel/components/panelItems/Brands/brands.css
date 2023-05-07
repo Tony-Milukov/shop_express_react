@@ -1,0 +1,10 @@
+.brandsMain {
+    position: relative;
+    max-width: 350px;
+    width: 100%;
+}
+
+.addButton {
+    position: absolute !important;
+    right: 0px;
+}

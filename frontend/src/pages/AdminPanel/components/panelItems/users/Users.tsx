@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import userStore from '../../../../../store/userStore';
 import IUser from '../../../../../types/userInfoRequest';
 import axios from 'axios';
-import { Link, useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import UserItem from './UserItem';
-import IUsersAdmin from '../../../../../types/usersAdmin';
-import { List, Pagination, PaginationItem, Stack } from '@mui/material';
+import IUsersAdmin from '../../../../../types/usersAdminRequest';
+import { List, Pagination, Stack } from '@mui/material';
 
 const UserPanel = () => {
   const token = userStore((state: any) => state.user.token);
@@ -36,7 +36,7 @@ const UserPanel = () => {
       nav('/admin/users/1')
     }
     getUsers();
-
+    /* eslint-disable react-hooks/exhaustive-deps */
   }, [location]);
 
   const handlePagination = (event:any,page:number) => {

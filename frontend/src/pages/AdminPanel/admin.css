@@ -26,12 +26,11 @@
     margin: 0 15px 0 15px;
 }
 .userItem  {
-    width: fit-content !important;
     max-width: 500px;
     width: 100% !important;
 }
 
-main {
+.adminPanel main {
     max-width: 450px;
     width: 100%;
     margin-top: 25px !important;
