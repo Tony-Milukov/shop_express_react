@@ -3,17 +3,19 @@ const checkRole = require('../middelwares/checkRole.ts');
 
 const router = express.Router();
 const {
-  createOrder, updateCustomStatus, deleteCustomStatus, updateOrderStatus, getOrderById, getAllOrders, updateDeliveryInfo,
+  createOrder, updateCustomStatus, deleteCustomStatus, updateOrderStatus, getOrderById, getAllOrdersForUser, updateDeliveryInfo, getAllOrders,
 } = require('../controllers/orderController.ts');
 
 // user
 router.put('/', createOrder);
 // admin can see all, user only itself
-router.post('/', getOrderById);
-router.post('/all', getAllOrders);
-router.post('/user/:userId', getAllOrders);
+router.get('/:orderId', getOrderById);
+router.get('/user/all', getAllOrdersForUser);
+router.post('/user/:userId', getAllOrdersForUser);
+
 // admin
 router.put('/customStatus', checkRole(process.env.ADMIN_ROLE), updateCustomStatus);
+router.post('/all', checkRole(process.env.ADMIN_ROLE), getAllOrders);
 router.put('/delivery', checkRole(process.env.ADMIN_ROLE), updateDeliveryInfo);
 router.put('/status', checkRole(process.env.ADMIN_ROLE), updateOrderStatus);
 router.delete('/customStatus', checkRole(process.env.ADMIN_ROLE), deleteCustomStatus);

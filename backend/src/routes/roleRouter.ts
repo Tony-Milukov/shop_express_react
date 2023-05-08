@@ -6,7 +6,7 @@ const {
 const router = express.Router();
 router.put('/', addRole);
 router.post('/all', getAllRoles);
-router.delete('/', deleteRole);
+router.delete('/:roleId', deleteRole);
 router.post('/', getRole);
 module.exports = router;
 export {};

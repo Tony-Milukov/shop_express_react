@@ -1,5 +1,6 @@
 const apiError = require('../utilits/apiError.ts');
 const validateBody = require('../validations/bodyValidations.ts');
+const validateParams = require('../validations/paramsValidation.ts');
 const {
   deleteRoleService, addRoleService, getRoleById, getAllRolesService,
 } = require('../service/roleService.ts');
@@ -20,7 +21,7 @@ const addRole = async (req:any, res:any) => {
 };
 const deleteRole = async (req:any, res:any) => {
   try {
-    const roleId = validateBody(req, res, 'roleId');
+    const roleId = validateParams(req, res, 'roleId');
     const response = await deleteRoleService(roleId);
     if (response) {
       res.status(200).json({ message: 'Role was deleted succesfully' });

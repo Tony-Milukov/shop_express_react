@@ -14,8 +14,10 @@ interface IDialogProps {
   OpenButton?: React.ReactNode | any,
   succesValue: React.ReactNode | any,
   failureValue: React.ReactNode | any,
-  value: React.ReactNode | any,
+  value?: React.ReactNode | any,
   Icon?: React.ReactNode | null
+  children?: any,
+  title?: string
 }
 
 const Dialog: FC<IDialogProps> = ({
@@ -24,7 +26,8 @@ const Dialog: FC<IDialogProps> = ({
   succesValue,
   failureValue,
   value,
-
+  children,
+  title,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -38,19 +41,21 @@ const Dialog: FC<IDialogProps> = ({
   return (
     <>
       {
-        React.cloneElement(OpenButton,{onClick:handleOpen})
+        React.cloneElement(OpenButton, { onClick: handleOpen })
       }
+
       <Dialog2
         open={open}
         keepMounted
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{'Are you sure you want to delete your account?'}</DialogTitle>
+        <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             {value}
           </DialogContentText>
+          {children}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>{failureValue}</Button>

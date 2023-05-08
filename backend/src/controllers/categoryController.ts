@@ -22,7 +22,7 @@ const addCategory = async (req:any, res:any) => {
 };
 const deleteCategory = async (req:any, res:any) => {
   try {
-    const categoryId = validateBody(req, res, 'categoryId');
+    const categoryId = validateParams(req, res, 'categoryId');
 
     // check does the category exist
     await getCategoryByIdService(categoryId);

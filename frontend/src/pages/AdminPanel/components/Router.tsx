@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Users from './panelItems/users/Users';
-import Roles from './panelItems/Roles';
+import Roles from './panelItems/Roles/Roles';
 import Products from './panelItems/Products';
-import Orders from './panelItems/Orders';
 import Categories from './panelItems/Categories/Categories';
 import Brands from './panelItems/Brands/Brands';
+import Orders from './panelItems/Orders/Orders';
 
 const Router = () => {
   return (

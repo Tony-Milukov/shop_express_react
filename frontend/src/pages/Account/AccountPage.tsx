@@ -100,6 +100,8 @@ const openButtonDialog = (
         </List>
       </Container>
       <Dialog handler={deleteAccount}
+              title={'Are you sure you want to delete your account?'}
+
               value={<>This is going to be deleted forever <br/> are you sure ? </>}
                   failureValue={'break'} OpenButton={openButtonDialog} succesValue={'delete'}/>
     </div> : null

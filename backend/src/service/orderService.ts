@@ -119,6 +119,18 @@ const getDeliveryInfoService = async (orderId:number) => {
   }
   return info;
 };
+const getAllOrdersService = async (limit:number, offset:number) => {
+  const orders = await Order.findAndCountAll(
+    {
+      offset,
+      limit,
+    },
+  );
+  if (!orders) {
+    throw { errorMSG: 'Orders by this page were not defined', status: 404 };
+  }
+  return orders;
+};
 
 module.exports = {
   createCustomStatusService,
@@ -130,5 +142,6 @@ module.exports = {
   addDeliveryInfoService,
   getDeliveryInfoService,
   updateDeliveryInfoService,
+  getAllOrdersService,
 };
 export {};

@@ -1,4 +1,4 @@
-export default interface IBrand  {
+export default interface IITemPanelList {
   id: number,
   name: string,
   createdAt: string,

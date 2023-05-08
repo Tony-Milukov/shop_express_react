@@ -1,61 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import userStore from '../../../../../store/userStore';
-import IUser from '../../../../../types/userInfoRequest';
-import axios from 'axios';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import React from 'react';
+import PanelItems from '../../Paneltems';
 import UserItem from './UserItem';
-import IUsersAdmin from '../../../../../types/usersAdminRequest';
-import { List, Pagination, Stack } from '@mui/material';
+
 
 const UserPanel = () => {
-  const token = userStore((state: any) => state.user.token);
-  const [users, setUsers] = useState<IUsersAdmin>();
-  const page = useParams().page ?? 1;
-  const nav = useNavigate()
-  const location = useLocation()
-  const pageSize = 5
-  const getUsers = async () => {
-    try {
-      const { data } = await axios.post('http://localhost:5000/api/user/all', {
-        pageSize:pageSize ,
-        page: page
-      }, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      setUsers(data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    if(!users?.rows) {
-      nav('/admin/users/1')
-    }
-    getUsers();
-    /* eslint-disable react-hooks/exhaustive-deps */
-  }, [location]);
-
-  const handlePagination = (event:any,page:number) => {
-    nav(`/admin/users/${page}`)
-  }
   return (
-    <>
-      <List className={'usersAdmin'} sx={{
-        width: '100%',
-        maxWidth: 360,
-        bgcolor: 'background.paper'
-      }}>
-        {users?.rows?.map(((user: IUser) => <UserItem update={getUsers} key={user.id}
-                                                      user={user}/>))}
-      </List>
-         <Stack spacing={2}>
-          <Pagination count={users?.count ? (users.count < pageSize ? 1 : users.count / pageSize) : 0} onChange={handlePagination}/>
-        </Stack>
-    </>
+      <PanelItems addItem={false} ListItem={UserItem} url={'http://localhost:5000/api/user'} paginationUrl={"/admin/users"} name={"user"}/>
   );
 };
 export default UserPanel;

@@ -1,20 +1,21 @@
 import React, { FC } from 'react';
-import IBrand from '../../../../../types/IBrand';
+import IITemPanelList from '../../../../types/IITemPanelList';
 import { IconButton, ListItem, ListItemText } from '@mui/material';
-import Dialog from '../../../../../components/Dialog/Dialog';
+import Dialog from '../../../../components/Dialog/Dialog';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
-import userStore from '../../../../../store/userStore';
+import userStore from '../../../../store/userStore';
 
 interface IBrandItemProps {
-  brand: IBrand;
-  update: () => void
+  item: IITemPanelList,
+  update: () => void,
+  deleteUrl: string
 }
 
-const BrandItem: FC<IBrandItemProps> = ({ brand ,update}) => {
+const ListItemAdmin: FC<IBrandItemProps> = ({ item ,update,deleteUrl}) => {
   const token = userStore((state: any) => state.user.token);
   const deleteBrand = async () => {
-    await axios.delete(`http://localhost:5000/api/brand/${brand.id}`, {
+    await axios.delete(deleteUrl, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -33,12 +34,14 @@ const BrandItem: FC<IBrandItemProps> = ({ brand ,update}) => {
         <ListItem className={'userItem'}
   secondaryAction={
     <Dialog handler={deleteBrand}
-  value={<>If you delete this, <br/> all products with that brand will be
-  deleted! <br/> are you sure? </>} failureValue={'break'} succesValue={"delete"} OpenButton={openDialogButton}></Dialog>
+            title={'Are you sure you want to delete this?'}
+            value={<>If you delete this, <br/> all products with that brand will be
+  deleted!</>} failureValue={'break'} succesValue={"delete"} OpenButton={openDialogButton}></Dialog>
+
 }
 >
   <ListItemText
-    primary={`Brand: ${brand.name}`}
+    primary={`${item.name}`}
   />
   </ListItem>
   </>
@@ -46,4 +49,4 @@ const BrandItem: FC<IBrandItemProps> = ({ brand ,update}) => {
 );
 };
 
-  export default BrandItem;
+  export default ListItemAdmin;

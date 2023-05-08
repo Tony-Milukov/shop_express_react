@@ -9,12 +9,12 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
 interface IUserItemProps {
-  user: IUser;
+  item: IUser;
   update: any;
 }
 
 const UserItem: FC<IUserItemProps> = ({
-  user,
+  item,
   update
 }) => {
   const token = userStore((state: any) => state.user.token);
@@ -24,7 +24,7 @@ const UserItem: FC<IUserItemProps> = ({
 
   const deleteUser = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/user/${user.id}`, {
+      await axios.delete(`http://localhost:5000/api/user/${item.id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -40,15 +40,17 @@ const UserItem: FC<IUserItemProps> = ({
     <>
       <ListItem className={'userItem'}>
         <ListItemAvatar>
-          <Avatar src={`http://localhost:5000/${user.img}`}/>
+          <Avatar src={`http://localhost:5000/${item.img}`}/>
         </ListItemAvatar>
 
-        <ListItemText primary={user.username} secondary={user.email}/>
-        <Link className={'menuLink adminUserOrders'} to={`/user/${user.id}/orders`}> <Button variant="outlined" size="small">
+        <ListItemText primary={item.username} secondary={item.email}/>
+        <Link className={'menuLink adminUserOrders'} to={`/user/${item.id}/orders`}> <Button
+          variant="outlined" size="small">
           orders
         </Button></Link>
 
-        <Dialog handler={deleteUser}
+        <Dialog title={'Are you sure you want to delete this account?'}
+                handler={deleteUser}
                 value={<>This is going to be deleted forever <br/> are you sure ? </>}
                 failureValue={'break'} OpenButton={openButtonDialog} succesValue={'delete'}/>
       </ListItem>

@@ -9,7 +9,7 @@ const {
 
 // admin
 router.put('/', isLoggedIn, checkRole(process.env.ADMIN_ROLE), addCategory);
-router.delete('/', isLoggedIn, checkRole(process.env.ADMIN_ROLE), deleteCategory);
+router.delete('/:categoryId', isLoggedIn, checkRole(process.env.ADMIN_ROLE), deleteCategory);
 
 // user
 router.post('/all', getAllCategories);
