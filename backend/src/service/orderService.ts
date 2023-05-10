@@ -120,6 +120,10 @@ const getDeliveryInfoService = async (orderId:number) => {
   return info;
 };
 const getAllOrdersService = async (limit:number, offset:number) => {
+  console.log(
+    offset,
+    limit,
+  );
   const orders = await Order.findAndCountAll(
     {
       offset,

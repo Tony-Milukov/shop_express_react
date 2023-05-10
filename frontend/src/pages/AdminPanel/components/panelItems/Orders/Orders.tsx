@@ -1,10 +1,12 @@
 import React from 'react';
 import PanelItems from '../../Paneltems';
 import OrderItem from './OrderItem';
-
+import "./orders.css"
 const Orders = () => {
   return (
-    <PanelItems addItem={false} ListItem={OrderItem} url={'http://localhost:5000/api/order'} paginationUrl={"/admin/orders"} name={"order"}/>
+    <>
+      <PanelItems dialog={false} ListItem={OrderItem} url={'http://localhost:5000/api/order'} paginationUrl={"/admin/orders"} name={"order"}/>
+    </>
   );
 };
 

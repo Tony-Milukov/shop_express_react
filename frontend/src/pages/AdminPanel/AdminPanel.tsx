@@ -16,7 +16,6 @@ import Router from './components/Router';
 import { Link } from 'react-router-dom';
 
 const AdminPanel = () => {
-  const token = userStore((state: any) => state.user.token);
   return (
     <div className={'adminPanel'}>
       <Box className={'panelNav'} sx={{

@@ -36,6 +36,7 @@ const createOrder = async (req: any, res: any) => {
   try {
     const user = await getUserByToken(req, res);
     const adress = validateBody(req, res, 'adress');
+
     const products = validateBody(req, res, 'products');
     checkIsArray(products, 'products');
     checkIsObject(adress, 'adress');
@@ -45,9 +46,11 @@ const createOrder = async (req: any, res: any) => {
 
     // checking products are not empty, and they exist, and are available (count > 0)
     await checkProductsLength(req, res, products);
+
     await checkProductsAvailable(req, res, products);
 
     const order = await createOrderService(user.id, adress);
+
     for (const product of products) {
       checkIsObject(product, 'product');
       const productItem = await getProductByIdService(product.productId);
@@ -65,9 +68,10 @@ const createOrder = async (req: any, res: any) => {
     return res.status(200)
       .json({
         message: 'Order was created',
-        orderId: order.id,
+        orderId: order?.id,
       });
   } catch (e: any) {
+    console.log(e);
     apiError(res, e.errorMSG, e.status);
   }
 };

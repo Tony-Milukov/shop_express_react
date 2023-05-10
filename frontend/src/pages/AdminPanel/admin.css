@@ -6,9 +6,13 @@
     height: 91.4vh;
     max-width: 200px !important;
     width: 100%;
+    position: absolute;
+    left: 0;
 }
+
 .adminPanel {
     display: flex;
+    justify-content: center;
 }
 .userItem {
     background: #ebebeb;
@@ -34,7 +38,7 @@
     max-width: 450px;
     width: 100%;
     margin-top: 25px !important;
-    margin-left: 25px !important;
+    margin-left: 50px !important;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -48,4 +52,7 @@
 .addButton {
     position: absolute !important;
     right: 0px;
+}
+.orderItem {
+    background: #f0f0f0;
 }

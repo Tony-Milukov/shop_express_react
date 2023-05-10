@@ -1,0 +1,29 @@
+.orderDetails {
+    display: flex !important;
+    align-items: start;
+}
+
+.DeliveryTitle .css-10hburv-MuiTypography-root {
+    padding-top: 0 !important;
+    font-weight: bold;
+    font-family: Arial Black !important;
+}
+.css-1nxmd3h-MuiListItem-root li {
+    padding-top: 0 !important;
+}
+.orderProduct{
+    width: fit-content;
+}
+.orderProductsTitle {
+    display: block;
+    margin: 50px auto 50px auto;
+    width: fit-content;
+    font-family: monospace;
+    font-size: 20px;
+}
+.orderProducts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

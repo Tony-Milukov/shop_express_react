@@ -16,8 +16,9 @@ interface PanelItemsProps {
   paginationUrl: string,
   name: string,
   ListItem?: any,
-  addItem?: boolean,
-  children?:any
+  dialog?: boolean,
+  children?:any,
+  addItem?: boolean
 }
 
 const PanelItems: FC<PanelItemsProps> = ({
@@ -25,7 +26,8 @@ const PanelItems: FC<PanelItemsProps> = ({
   paginationUrl,
   name,
   ListItem,
-  addItem = true,
+  dialog = true,
+  addItem=true,
   children
 }) => {
   const [items, setItems] = useState<IItemsRequest>();
@@ -58,6 +60,7 @@ const PanelItems: FC<PanelItemsProps> = ({
     getItems();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
+  items?.rows?.forEach(i => console.log(i))
   const handlePagination = (event: any, page: number) => {
     nav(`${paginationUrl}/${page}`);
   };
@@ -93,32 +96,35 @@ const PanelItems: FC<PanelItemsProps> = ({
   };
   return (
     <div className={'brandsMain'}>
-      <List className={'customList'}>
-        {
-          items?.rows?.map((item: IITemPanelList) => renderListItem(item))
-        }
-      </List>
-      {addItem ? <Dialog
-        title={`Add new ${name}`}
-        OpenButton={AddButton} handler={addNewItem}
-        failureValue={'back'} succesValue={'add'}>
-        <TextField
-          onChange={(e: any) => handleInput(e)}
-          id="outlined-multiline-flexible"
-          placeholder={'Input new role'}
-          multiline
-          maxRows={4}
-        />
-        {addErr && items ? <p className={'errorMSG'}>This Category already exists </p> : null}
-        {addErr && !items ? <p className={'errorMSG'}>Please, input a category!</p> : null}
-
-      </Dialog> : null}
-      {children}
-      <Stack spacing={2}>
-        <Pagination
-          count={items?.count ? Math.ceil(items.count < pageSize ? 1 : items.count / pageSize) : 0}
-          onChange={handlePagination}/>
-      </Stack>
+      {
+        !items || items?.rows.length < 1 ? <>No one were defined</> : <>
+          <List className={'customList'}>
+            {
+              items?.rows?.map((item: IITemPanelList) => renderListItem(item))
+            }
+          </List>
+          {dialog ? <Dialog
+            title={`Add new ${name}`}
+            OpenButton={AddButton} handler={addNewItem}
+            failureValue={'back'} succesValue={'add'}>
+            {addItem ? <TextField
+              onChange={(e: any) => handleInput(e)}
+              id="outlined-multiline-flexible"
+              placeholder={'Input new role'}
+              multiline
+              maxRows={4}
+            /> : null}
+            {addErr && items ? <p className={'errorMSG'}>This Category already exists </p> : null}
+            {addErr && !items ? <p className={'errorMSG'}>Please, input a category!</p> : null}
+            {children}
+          </Dialog> : null}
+          <Stack spacing={2}>
+            <Pagination
+              count={items?.count ? Math.ceil(items.count < pageSize ? 1 : items.count / pageSize) : 0}
+              onChange={handlePagination}/>
+          </Stack>
+        </>
+      }
     </div>
   );
 };

@@ -15,6 +15,8 @@ app.use('/api', errorHandler, router);
 
 // allow static
 app.use(express.static(path.join(__dirname, 'static/avatars')));
+app.use(express.static(path.join(__dirname, 'static/products')));
+
 const start = async (PORT: any) => {
   try {
     await sequelize.authenticate();

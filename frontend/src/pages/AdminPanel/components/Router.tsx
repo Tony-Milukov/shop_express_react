@@ -6,6 +6,7 @@ import Products from './panelItems/Products';
 import Categories from './panelItems/Categories/Categories';
 import Brands from './panelItems/Brands/Brands';
 import Orders from './panelItems/Orders/Orders';
+import Order from './panelItems/Order/Order';
 
 const Router = () => {
   return (
@@ -16,6 +17,7 @@ const Router = () => {
       <Route path={'categories/:page?'} element={<Categories/>}> </Route>
       <Route path={'brands/:page?'} element={<Brands/>}></Route>
       <Route path={'roles/:page?'} element={<Roles/>}></Route>
+      <Route path={'order/:orderId'} element={<Order/>}></Route>
     </Routes>
   );
 };

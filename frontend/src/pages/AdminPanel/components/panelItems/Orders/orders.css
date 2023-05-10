@@ -1,0 +1,17 @@
+.mainOrder {
+    display: flex;
+    flex-direction: column;
+    min-height: 350px;
+}
+
+.orderInfoList {
+    display: flex;
+    flex-direction: column;
+}
+.orderInfoListItem{
+    display: block !important;
+}
+.openOrderInfoButton {
+    display: flex;
+    align-items: center;
+}
