@@ -1,7 +1,7 @@
-.mainOrder {
+.mainOrderItem {
     display: flex;
     flex-direction: column;
-    min-height: 350px;
+    margin-bottom: 20px;
 }
 
 .orderInfoList {

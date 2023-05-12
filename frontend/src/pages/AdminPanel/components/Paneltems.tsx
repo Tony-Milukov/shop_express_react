@@ -34,7 +34,7 @@ const PanelItems: FC<PanelItemsProps> = ({
   const token = userStore((state: any) => state.user.token);
   const nav = useNavigate();
   const page = (useParams()).page ?? 1;
-  const pageSize = 5;
+  const pageSize = 10;
   const location = useLocation();
   const [addErr, setAddErr] = useState<boolean>(false);
 
@@ -53,14 +53,12 @@ const PanelItems: FC<PanelItemsProps> = ({
       });
       setItems(data);
     } catch (e) {
-      console.log(e);
     }
   };
   useEffect(() => {
     getItems();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
-  items?.rows?.forEach(i => console.log(i))
   const handlePagination = (event: any, page: number) => {
     nav(`${paginationUrl}/${page}`);
   };

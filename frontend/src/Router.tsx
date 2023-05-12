@@ -9,6 +9,7 @@ import AdminPanel from './pages/AdminPanel/AdminPanel';
 import checkIsAdmin from './utilits/checkIsAdmin';
 import userStore from './store/userStore';
 import { useEffect, useState } from 'react';
+import OrderPage from './pages/Order/OrderPage';
 function Router() {
   const token = userStore((state: any) => state.user.token);
   const isAuth = useAuth()
@@ -16,7 +17,11 @@ function Router() {
   useEffect(() => {
     (
       async () => {
-        setAdmin(await checkIsAdmin(token))
+       try {
+         setAdmin(await checkIsAdmin(token))
+       } catch (e) {
+         console.log(e);
+       }
       }
     )()
   },[token])
@@ -28,6 +33,7 @@ function Router() {
   const authRoutes  = (
     <Routes>
       <Route path={'/account'} element={<AccountPage/>}></Route>
+      <Route path={'/order/:orderId'} element={<OrderPage/>}></Route>
       {isAdmin ? adminRoutes : null}
     </Routes>
   )

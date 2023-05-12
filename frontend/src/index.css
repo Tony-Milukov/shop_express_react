@@ -14,3 +14,7 @@
 .css-qfso29-MuiTypography-root-MuiDialogContentText-root {
     margin-left: 20px !important;
 }
+.css-1ka5eyc-MuiPaper-root-MuiMenu-paper-MuiPopover-paper {
+    height: 30px;
+    padding-right: 30px;
+}

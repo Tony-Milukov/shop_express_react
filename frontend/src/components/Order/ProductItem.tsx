@@ -1,6 +1,6 @@
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import React, { FC } from 'react';
-import IProduct from '../../../../../types/product';
+import IProduct from '../../types/product';
 
 interface ProductItemProps {
   item: IProduct

@@ -30,6 +30,7 @@ const {
   updateDeliveryInfoService,
   getDeliveryInfoService,
   getAllOrdersService,
+  getAllCustomStatusesService,
 } = require('../service/orderService.ts');
 
 const createOrder = async (req: any, res: any) => {
@@ -212,10 +213,22 @@ const getAllOrders = async (req: any, res: any) => {
   try {
     const pageSize = parseFloat(validateBody(req, res, 'pageSize'));
     const page = parseFloat(validateBody(req, res, 'page'));
-    const offset = (page - 1) * pageSize;
-    const orders = await getAllOrdersService(page, offset);
+    const offset = pageSize * (page === 1 ? 0 : page - 1);
+    const orders = await getAllOrdersService(pageSize, offset);
     res.status(200)
       .json(orders);
+  } catch (e: any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
+const getAllCustomStatuses = async (req:any, res:any) => {
+  try {
+    const pageSize = parseFloat(validateBody(req, res, 'pageSize'));
+    const page = parseFloat(validateBody(req, res, 'page'));
+    const offset = pageSize * (page === 1 ? 0 : page - 1);
+    const statuses = await getAllCustomStatusesService(pageSize, offset);
+    res.status(200)
+      .json(statuses);
   } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
@@ -229,5 +242,6 @@ module.exports = {
   getAllOrdersForUser,
   updateDeliveryInfo,
   getAllOrders,
+  getAllCustomStatuses,
 };
 export {};

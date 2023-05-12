@@ -9,7 +9,6 @@ export default async (token:string) => {
        'Content-Type': 'application/json'
      }
    })
-   console.log(result);
    return !!result
  } catch (e) {
    return false

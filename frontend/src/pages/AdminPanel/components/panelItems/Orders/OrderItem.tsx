@@ -29,7 +29,6 @@ const OrderItem: FC<IOrderItemProps> = ({
 
   useEffect(() => {
     (async () => {
-      console.log(item);
       const { data } = await axios.get<IOrder>(`http://localhost:5000/api/order/${item.id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -46,7 +45,7 @@ const OrderItem: FC<IOrderItemProps> = ({
   }, 0);
   return (
     <>
-      <div className="mainOrder">
+      <div className="mainOrderItem">
       <div className={"openOrderInfoButton"}>
         <ListItemButton onClick={() => setInfoOpen(!infoOpen)}>
           <ListItemText primary={`Order #${item.id} (${order?.adress?.fullname})`}/>
