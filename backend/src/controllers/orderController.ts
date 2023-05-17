@@ -77,7 +77,7 @@ const createOrder = async (req: any, res: any) => {
   }
 };
 
-const updateOrderStatus = async (req: any, res: any) => {
+const addOrderStatus = async (req: any, res: any) => {
   try {
     const orderId = parseFloat(validateBody(req, res, 'orderId'));
     const order = await getOrderByIdService(orderId);
@@ -87,6 +87,26 @@ const updateOrderStatus = async (req: any, res: any) => {
 
     // we add status
     const result = await order.addStatus(status);
+    if (!result) {
+      return res.status(200)
+        .json({ message: `This status was already added to order #${orderId}` });
+    }
+    res.status(200)
+      .json({ message: `order #${orderId} was updated succesfully` });
+  } catch (e: any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
+const deleteOrderStatus = async (req: any, res: any) => {
+  try {
+    const orderId = parseFloat(validateParams(req, res, 'orderId'));
+    const order = await getOrderByIdService(orderId);
+
+    const statusId = parseFloat(validateParams(req, res, 'statusId'));
+    const status = await getCustomStatusService(statusId);
+
+    // we add status
+    const result = await order.removeStatus(status);
     if (!result) {
       return res.status(200)
         .json({ message: `This status was already added to order #${orderId}` });
@@ -115,7 +135,7 @@ const updateCustomStatus = async (req: any, res: any) => {
 };
 const deleteCustomStatus = async (req: any, res: any) => {
   try {
-    const statusId = validateBody(req, res, 'statusId');
+    const statusId = validateParams(req, res, 'statusId');
     // check does custom status exist
     await getCustomStatusService(statusId);
 
@@ -237,11 +257,12 @@ module.exports = {
   createOrder,
   updateCustomStatus,
   deleteCustomStatus,
-  updateOrderStatus,
+  addOrderStatus,
   getOrderById,
   getAllOrdersForUser,
   updateDeliveryInfo,
   getAllOrders,
   getAllCustomStatuses,
+  deleteOrderStatus,
 };
 export {};

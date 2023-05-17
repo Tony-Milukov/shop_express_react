@@ -7,6 +7,7 @@ import Categories from './panelItems/Categories/Categories';
 import Brands from './panelItems/Brands/Brands';
 import Orders from './panelItems/Orders/Orders';
 import Order from './panelItems/Order/Order';
+import Statuses from './panelItems/Statuses/Statuses';
 
 const Router = () => {
   return (
@@ -18,6 +19,7 @@ const Router = () => {
       <Route path={'brands/:page?'} element={<Brands/>}></Route>
       <Route path={'roles/:page?'} element={<Roles/>}></Route>
       <Route path={'order/:orderId'} element={<Order/>}></Route>
+      <Route path={'statuses/:page?'} element={<Statuses/>}></Route>
     </Routes>
   );
 };

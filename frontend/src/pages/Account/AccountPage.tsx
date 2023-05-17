@@ -25,7 +25,7 @@ const AccountPage = () => {
   const token = userStore((state: any) => state.user.token);
   const logout = userStore((state: any) => state.logout);
   const [userInfo, setUserInfo] = useState<IUserInfoRequest>();
-  const [img, setImg] = useState<File>();
+  const [img, setImg] = useState<File | null>();
   const nav = useNavigate();
   const getUserInfo = async () => {
     const res = await getUserByToken(token);
@@ -34,7 +34,6 @@ const AccountPage = () => {
 
   useEffect(() => {
     getUserInfo();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, img]);
 
   useEffect(() => {
@@ -49,6 +48,7 @@ const AccountPage = () => {
         });
         await getUserInfo();
       }
+      setImg(null)
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [img]);

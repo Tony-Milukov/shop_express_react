@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import userStore from '../../store/userStore';
-import getUserByToken from '../../utilits/getUserByToken';
-import IUserInfoRequest from '../../types/userInfoRequest';
+import React from 'react';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -13,7 +10,6 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 import Shop2Icon from '@mui/icons-material/Shop2';
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
 import Router from './components/Router';
-import { Link } from 'react-router-dom';
 
 const AdminPanel = () => {
   return (
@@ -26,6 +22,7 @@ const AdminPanel = () => {
           <List>
             <PanelMenuItem to={'users'} title={'Users'} Icon={PeopleAltIcon}/>
             <PanelMenuItem to={'orders'} title={'Orders'} Icon={Shop2Icon}/>
+            <PanelMenuItem to={'statuses'} title={'Statuses'} Icon={AccessibilityIcon}/>
             <PanelMenuItem to={'products'} title={'Products'} Icon={InventoryIcon}/>
             <PanelMenuItem to={'categories'} title={'Categories'} Icon={CategoryIcon}/>
             <PanelMenuItem to={'brands'} title={'Brands'} Icon={ApartmentIcon}/>

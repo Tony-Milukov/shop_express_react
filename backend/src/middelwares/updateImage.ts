@@ -6,12 +6,11 @@ const uploadImage = async (img:any, folder:string) => {
   // if file is jpg or jpeg or png
   if (fileType === 'image' || ext === 'jpeg' || ext === 'png' || ext === 'jpg') {
     const fileName = `${uuid.v4()}_${folder}.${ext}`;
-    // get absoulute path for the user
+    // get absolute path for the user
     const path = `${__dirname}/../static/${folder}/${fileName}`;
     img.mv(path);
     return fileName;
   }
-
   throw { errorMSG: 'File must be a image! (png,jpg,jpeg)', status: 400 };
 };
 const deleteOldImage = (imgName:string, folder:string) => {

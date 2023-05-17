@@ -1,0 +1,8 @@
+.updateDeliveryBtn {
+    margin: 0 auto !important;
+    display: flex !important;
+    margin-bottom: 25px !important;
+}
+.deliveryInfoInput {
+    margin-bottom: 20px !important;
+}

@@ -15,6 +15,9 @@
     margin-left: 20px !important;
 }
 .css-1ka5eyc-MuiPaper-root-MuiMenu-paper-MuiPopover-paper {
-    height: 30px;
+    height: 55px;
     padding-right: 30px;
+}
+.scrollable {
+    overflow: auto;
 }
