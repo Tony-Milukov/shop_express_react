@@ -4,21 +4,26 @@ import axios from 'axios';
 import userStore from '../../store/userStore';
 import './select.css';
 
-interface IInfinitySelectPROPS {
+interface IInfinitySelectProps {
   url: string;
   onSelect?: (id: number) => {} | null;
 }
 
-const CustomInfiniteSelect: FC<IInfinitySelectPROPS> = ({
+const CustomInfiniteSelect: FC<IInfinitySelectProps> = ({
+    //API url to get data, template request:
+    // post.(url, {
+    //         page: page,
+    //         pageSize,
+    //       }
     url,
     onSelect,
   }) => {
     const token = userStore((state: any) => state.user.token);
-    const containerRef = useRef(null);
+    const containerRef = useRef(null); // used to calculate end of seen div
     const [items, setItems] = useState<any[]>([]);
     const [page, setPage] = useState<number>(1);
-    const [hasMore, setHasMore] = useState<boolean>();
-    const pageSize = 5;
+    const [hasMore, setHasMore] = useState<boolean>(); // are there more items than rendered
+    const pageSize = 5; // how many items on one time
     const getItems = async () => {
       const { data } = await axios.post(url, {
         page: page,

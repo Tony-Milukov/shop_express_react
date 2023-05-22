@@ -1,5 +1,4 @@
 const { DataTypes } = require('sequelize');
-const validator = require('validator');
 const Sequelize = require('../db.ts');
 
 const Status = Sequelize.define('status', {
@@ -39,9 +38,6 @@ const OrderDeliveryInfo = Sequelize.define('order_delivery_info', {
   link: {
     type: DataTypes.STRING,
     allowNull: true,
-    validate: {
-      isUrl: true,
-    },
   },
   company: {
     type: DataTypes.STRING,

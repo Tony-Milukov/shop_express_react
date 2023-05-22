@@ -192,23 +192,23 @@ const getAllOrdersForUser = async (req: any, res: any) => {
 const updateDeliveryInfo = async (req: any, res: any) => {
   try {
     const orderId = validateBody(req, res, 'orderId');
-    const info = validateBody(req, res, 'deliveryInfo');
-
-    const ORDER_SENT_STATUS = process.env.ORDER_SENT_STATUS || '2';
+    const deliveryInfo = validateBody(req, res, 'deliveryInfo');
+    console.log(`orderId: ${orderId}`);
+    const ORDER_SENT_STATUS = process.env.ORDER_SENT_STATUS || '9';
     // checking if deliveryInfo is Object
-    checkIsObject(info, 'deliveryInfo');
+    checkIsObject(deliveryInfo, 'deliveryInfo');
 
     // if delivery info exists, it will be updated
     if (await getDeliveryInfoService(orderId)) {
       // update given DeliveryInfo fields
-      await updateDeliveryInfoService(info, orderId);
+      await updateDeliveryInfoService(deliveryInfo, orderId);
       return res.status(200)
         .json({
-          message: `${Object.keys(info)
+          message: `${Object.keys(deliveryInfo)
             .join(', ')} fields in Delivery Info were updated`,
         });
     }
-    if (!info.link || !info.company || !info.code) {
+    if (!deliveryInfo.link || !deliveryInfo.company || !deliveryInfo.code) {
       return res.status(400)
         .json({ message: 'info have to  include: link, company, code, and can also include some extraInfo' });
     }
@@ -221,7 +221,7 @@ const updateDeliveryInfo = async (req: any, res: any) => {
     // updating order status to: sent
     order.addStatus(sentStatus);
     // add new Delivery Info
-    await addDeliveryInfoService(info, orderId);
+    await addDeliveryInfoService(deliveryInfo, orderId);
 
     res.status(200)
       .json({ message: `Delivery info for order ${orderId} was added succesfully` });

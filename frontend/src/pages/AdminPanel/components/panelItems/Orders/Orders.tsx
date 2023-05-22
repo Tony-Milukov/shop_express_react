@@ -1,6 +1,6 @@
 import React from 'react';
 import PanelItems from '../../Paneltems';
-import OrderItem from './OrderItem';
+import OrderItem from './components/OrderItem';
 import "./orders.css"
 const Orders = () => {
   return (

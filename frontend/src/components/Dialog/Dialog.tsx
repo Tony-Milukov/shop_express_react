@@ -5,18 +5,29 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-
 } from '@mui/material';
 import Dialog2 from '@mui/material/Dialog';
 
 interface IDialogProps {
+  //will run on succes button
   handler: () => void,
+
+  //button which opens dialog
   OpenButton?: React.ReactNode | any,
+
+  //button which runs handler
   succesValue: React.ReactNode | any,
+
+  //button which closes dialog without running handler
   failureValue: React.ReactNode | any,
+
+  //some text in the dialog
   value?: React.ReactNode | any,
-  Icon?: React.ReactNode | null
+
+  //children that could be rendered in the dialog
   children?: any,
+
+  //dialog title
   title?: string
 }
 

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import IOrderItemReqest from '../../../../../types/orderItemReqest';
+import IOrderItemReqest from '../../../../../../types/orderItemReqest';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import {
@@ -10,10 +10,10 @@ import {
   ListItemText
 } from '@mui/material';
 import axios from 'axios';
-import userStore from '../../../../../store/userStore';
+import userStore from '../../../../../../store/userStore';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import IOrder from '../../../../../types/order';
+import IOrder from '../../../../../../types/order';
 
 interface IOrderItemProps {
   update: () => void,

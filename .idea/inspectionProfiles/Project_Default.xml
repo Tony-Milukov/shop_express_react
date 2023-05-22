@@ -5,5 +5,6 @@
     <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" editorAttributes="WARNING_ATTRIBUTES">
       <option name="useSeverityFromConfigFile" value="false" />
     </inspection_tool>
+    <inspection_tool class="TypeScriptSmartCast" enabled="false" level="WARNING" enabled_by_default="false" />
   </profile>
 </component>

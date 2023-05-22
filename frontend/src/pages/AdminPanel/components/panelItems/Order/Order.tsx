@@ -11,14 +11,19 @@ import Dialog from '../../../../../components/Dialog/Dialog';
 import Button from '@mui/material/Button';
 import './order.css';
 import IDeliveryInfo from '../../../../../types/deliveryInfo';
+import UpdateDelivery from './components/UpdateDelivery';
 
 const Order = () => {
   const { orderId } = useParams();
   const [err, setErr] = useState<boolean>(false);
-  const [update, setUpdate] = useState<number>();
+  //Order will be updated by this state
+  const [update, setUpdate] = useState<number>(1);
   const token = userStore((state: any) => state.user.token);
-  const [deliveryInfo, setDeliveryInfo] = useState<IDeliveryInfo>();
-  const deliveryInfoFields = ['company', 'trackCode', 'trackLink', 'extraInfo',];
+
+  //Order will be updated by this state
+  const updateOrder = () => {
+    setUpdate(update + 1);
+  }
   const changeStatus = async (id: number) => {
     try {
       setErr(false);
@@ -31,42 +36,17 @@ const Order = () => {
           'Content-Type': 'application/json'
         }
       });
-      setUpdate(id);
+      updateOrder()
     } catch {
       setErr(true);
     }
   };
-  const updateDeliveryInfo = () => {
-    console.log(deliveryInfo);
-  };
-  useEffect(() => {
-    updateDeliveryInfo();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deliveryInfo]);
 
   return (
     <>
       {
         err ? <Popup/> : <OrderComponent orderId={orderId} update={update}>
-          <Dialog succesValue={'update'} failureValue={'break'} handler={updateDeliveryInfo}
-                  OpenButton={<Button className={'updateDeliveryBtn'}>Update delivery
-                    Info</Button>}>
-            {deliveryInfoFields.map(i =>
-              <>
-                <TextField
-                  className={'deliveryInfoInput'}
-                  onChange={(e: any) => setDeliveryInfo({
-                    ...deliveryInfo,
-                    [i]: e.target.value
-                  })}
-                  id="standard-multiline-flexible"
-                  label={i}
-                  multiline
-                  maxRows={4}
-                  variant="standard"
-                /> <br/></>
-            )}
-          </Dialog>
+          <UpdateDelivery updateOrder={updateOrder} orderId={orderId}/>
           <InputLabel id="demo-simple-select-label">Change Order status</InputLabel>
           <CustomInfiniteSelect onSelect={changeStatus}
                                 url={`http://localhost:5000/api/order/customStatus/all`}></CustomInfiniteSelect>

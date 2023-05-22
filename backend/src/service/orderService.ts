@@ -94,7 +94,6 @@ const updateDeliveryInfoService = async (info:any, orderId:number) => {
   const result = await OrderDeliveryInfo.update(
     {
       ...info,
-
     },
     {
       where: {

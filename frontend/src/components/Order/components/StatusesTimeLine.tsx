@@ -19,6 +19,8 @@ interface IStatusesProps {
 const StatusesTimeLine: FC<IStatusesProps> = ({ statuses,update, orderId }) => {
   const token = userStore((state: any) => state.user.token);
   const [isAdmin,setAdmin] = useState<boolean>(false)
+
+  //check if user Is admin, (bool)
   const handleIsAdmin = async () => {
     setAdmin(await checkIsAdmin(token))
   }
@@ -26,6 +28,8 @@ const StatusesTimeLine: FC<IStatusesProps> = ({ statuses,update, orderId }) => {
     handleIsAdmin()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[token])
+  
+  //deleting order status by statusId
   const deleteOrderStatus = async (statusId:number) => {
     try {
       await axios.delete(`http://localhost:5000/api/order/status/${orderId}/${statusId}`,{

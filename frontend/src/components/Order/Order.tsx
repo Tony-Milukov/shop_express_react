@@ -8,7 +8,6 @@ import IProduct from '../../types/product';
 import ProductItem from '../ProductItem/ProductItem';
 import Popup from '../Popup/Popup';
 import StatusesTimeLine from './components/StatusesTimeLine';
-
 interface OrderProps {
   orderId?: number | string,
   children?: any,
@@ -23,9 +22,13 @@ const Order: FC<OrderProps> = ({
   const [err, setErr] = useState<boolean>(false);
   const [order, setOrder] = useState<IOrder>();
   const token = userStore((state: any) => state.user.token);
+
+  //calculating full price of products in the order
   const price = order?.products.reduce((acc: number, value: any) => {
     return acc + value.price;
   }, 0);
+
+  //getting order by id from server
   const getOrder = async () => {
     try {
       const { data } = await axios.get<IOrder>(`http://localhost:5000/api/order/${orderId}`, {
@@ -40,6 +43,7 @@ const Order: FC<OrderProps> = ({
       setErr(true);
     }
   }
+
   useEffect(() => {
     getOrder()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,6 +91,9 @@ const Order: FC<OrderProps> = ({
             </List>
           </ListItem>
         </List>
+        <List>
+        </List>
+
         {children}
         <StatusesTimeLine orderId={orderId} update={getOrder} statuses={order?.statuses}/>
         <div className="orderProducts">
