@@ -10,6 +10,7 @@ import checkIsAdmin from './utilits/checkIsAdmin';
 import userStore from './store/userStore';
 import { useEffect, useState } from 'react';
 import OrderPage from './pages/Order/OrderPage';
+import Products from './pages/Products/Products';
 function Router() {
   const token = userStore((state: any) => state.user.token);
   const isAuth = useAuth()
@@ -49,6 +50,7 @@ function Router() {
         <Nav/>
         <Routes>
           <Route path="/" element={<HomePage/>}/>
+          <Route path="/products/:page?" element={<Products/>}/>
         </Routes>
         {
           isAuth ?

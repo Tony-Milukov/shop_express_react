@@ -58,7 +58,7 @@ const OrderItem: FC<IOrderItemProps> = ({
           <ListItem className={"orderInfoListItem"} sx={{ pl: 4 }}>
             <ListItemText primary={`price : ${price}$`} />
             <ListItemText primary={`delivered : ${item.deliveredDate ?? "not delivered"}`} />
-            <ListItemText primary={`delivered : ${currentStatus?.name ?? "not defined"}`} />
+            {currentStatus?.name  ? <ListItemText primary={`status : ${currentStatus?.name}`} /> : null}
             <ListItemText primary={`country: ${item?.adress.country}`} />
             <ListItemText primary={`ordered: ${item?.createdAt}`} />
             <ListItemText primary={`updated: ${item?.updatedAt}`} />

@@ -22,6 +22,7 @@ const createProduct = async (req:any, res:any) => {
     const count = parseFloat(validateBody(req, res, 'count'));
     const price = validateBody(req, res, 'price');
     const description = validateBody(req, res, 'description');
+
     const brands = JSON.parse(validateBody(req, res, 'brands'));
     const categories = JSON.parse(validateBody(req, res, 'categories'));
     const img = req.files ? req.files.img : undefined;
@@ -30,7 +31,6 @@ const createProduct = async (req:any, res:any) => {
     if (!img) {
       return res.status(404).json({ message: 'img was not send' });
     }
-
     // check isArray
     checkIsArray(categories, 'categories');
     checkIsArray(brands, 'brands');
@@ -42,6 +42,7 @@ const createProduct = async (req:any, res:any) => {
     const product = await createProductService(title, price, description, imgName, brands, categories, count);
     res.status(200).json({ message: `product ${product.title} with id ${product.id} was created` });
   } catch (e:any) {
+    console.log(e);
     apiError(res, e.errorMSG, e.status);
   }
 };

@@ -1,4 +1,4 @@
-.orderDetails {
+.orderHeader {
     display: flex !important;
     align-items: flex-start;
 }
@@ -11,22 +11,12 @@
 .css-1nxmd3h-MuiListItem-root li {
     padding-top: 0 !important;
 }
-.orderProduct{
-    width: fit-content;
-}
 .orderProductsTitle {
     display: block;
     margin: 50px auto 50px auto;
     width: fit-content;
     font-family: monospace;
     font-size: 20px;
-}
-.orderProducts {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 50px;
 }
 .Order  {
     max-width: fit-content;
@@ -39,4 +29,16 @@
 }
 .css-18y2uza-MuiTypography-root-MuiTimelineContent-root svg  {
     cursor: pointer;
+}
+.deliveryInfoItem {
+    text-align: center;
+    display: flex;
+    align-items: self-end!important;
+}
+.deliveryInfoItem b {
+    margin-left: 20px;
+}
+.deliveryInfoMain {
+    display: flex;
+    justify-content: space-between;
 }

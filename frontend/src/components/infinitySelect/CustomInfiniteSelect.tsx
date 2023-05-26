@@ -6,7 +6,7 @@ import './select.css';
 
 interface IInfinitySelectProps {
   url: string;
-  onSelect?: (id: number) => {} | null;
+  onSelect?: (item:any) => {} | null | void;
 }
 
 const CustomInfiniteSelect: FC<IInfinitySelectProps> = ({
@@ -22,8 +22,7 @@ const CustomInfiniteSelect: FC<IInfinitySelectProps> = ({
     const containerRef = useRef(null); // used to calculate end of seen div
     const [items, setItems] = useState<any[]>([]);
     const [page, setPage] = useState<number>(1);
-    const [hasMore, setHasMore] = useState<boolean>(); // are there more items than rendered
-    const pageSize = 5; // how many items on one time
+    const pageSize: number = 5; // how many items on one time
     const getItems = async () => {
       const { data } = await axios.post(url, {
         page: page,
@@ -35,7 +34,6 @@ const CustomInfiniteSelect: FC<IInfinitySelectProps> = ({
         }
       });
       setItems([...new Set([...items, ...data.rows])]);
-      setHasMore(data.count !== items.length);
     };
     useEffect(() => {
       getItems();
@@ -58,10 +56,7 @@ const CustomInfiniteSelect: FC<IInfinitySelectProps> = ({
       <div onScroll={handleScroll} ref={containerRef} className={'scrollable infinitySelect'}>
         {
           items?.map(i =>
-            <MenuItem onClick={() => onSelect ? onSelect(i.id) : null} key={i.id}>{i.name}</MenuItem>)
-        }
-        {
-          hasMore ? <MenuItem>Loading ...</MenuItem> : null
+            <MenuItem onClick={() => onSelect ? onSelect(i) : null} key={i.id}>{i.name}</MenuItem>)
         }
       </div>
     )

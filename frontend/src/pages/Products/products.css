@@ -1,0 +1,21 @@
+.product{
+    width: fit-content;
+    margin-top: 50px;
+    max-width: 450px;
+    width:  450px;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 140px;
+    padding: 14px;
+}
+.products {
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+.productsMain {
+    margin-top: 50px;
+}

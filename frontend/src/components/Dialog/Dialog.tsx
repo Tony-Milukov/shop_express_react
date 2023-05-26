@@ -15,10 +15,10 @@ interface IDialogProps {
   //button which opens dialog
   OpenButton?: React.ReactNode | any,
 
-  //button which runs handler
+  //text which will be shown in success button which calls handler
   succesValue: React.ReactNode | any,
 
-  //button which closes dialog without running handler
+  //TEXT which  will be shown in failure button closes dialog without running handler
   failureValue: React.ReactNode | any,
 
   //some text in the dialog

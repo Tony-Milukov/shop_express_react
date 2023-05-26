@@ -2,7 +2,7 @@ const deliveryInfoRegExp: { [key: string]: RegExp } = {
   company: /^\w{2,50}$/,
   code: /^\w{4,100}$/,
   link: /https?:\/\/\w+\.\w+/,
-  extraInfo: /^(?!\s*$)([\w\s]{0,250})$/,
+  extraInfo: /^([\w\s]{0,250})$/,
 };
 const deliveryInfoRegExpErrs: { [key: string]: string } = {
   company: "Please enter a valid company name (2 - 50 symbol). ",

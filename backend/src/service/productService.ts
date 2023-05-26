@@ -99,8 +99,8 @@ const getAllProductsService = async (limit:number, offset:number) => {
     return products;
   }
 };
-const checkExistence = async (value:any, getService:any) => {
-  for (const id of value) {
+const checkExistence = async (itemIds:any, getService:any) => {
+  for (const id of itemIds) {
     await getService(id);
   }
 };

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { List, ListItem, ListItemText } from '@mui/material';
+import { List } from '@mui/material';
 import axios from 'axios';
 import userStore from '../../store/userStore';
 import IOrder from '../../types/order';
@@ -8,6 +8,10 @@ import IProduct from '../../types/product';
 import ProductItem from '../ProductItem/ProductItem';
 import Popup from '../Popup/Popup';
 import StatusesTimeLine from './components/StatusesTimeLine';
+import DeliveryInfo from './components/DeliveryInfo';
+import OrderDetails from './components/OrderDetails';
+import OrderAdress from './components/OrderAdress';
+
 interface OrderProps {
   orderId?: number | string,
   children?: any,
@@ -23,11 +27,6 @@ const Order: FC<OrderProps> = ({
   const [order, setOrder] = useState<IOrder>();
   const token = userStore((state: any) => state.user.token);
 
-  //calculating full price of products in the order
-  const price = order?.products.reduce((acc: number, value: any) => {
-    return acc + value.price;
-  }, 0);
-
   //getting order by id from server
   const getOrder = async () => {
     try {
@@ -39,64 +38,26 @@ const Order: FC<OrderProps> = ({
       });
       setErr(false);
       setOrder(data);
+
     } catch (e) {
       setErr(true);
     }
-  }
-
+  };
   useEffect(() => {
-    getOrder()
+    getOrder();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [orderId,update]);
-  const adress = order?.adress;
+  }, [orderId, update]);
   return <>
     {err || !orderId ? <Popup/> :
       <div className={'Order'}>
-        <List className={'orderDetails'}>
-          <ListItem disablePadding>
-            <List>
-              <ListItem>
-                <ListItemText className={'DeliveryTitle'} primary="Delivery"/>
-              </ListItem>
-              <ListItem>
-                <ListItemText primary={adress?.fullname}/>
-              </ListItem>
-              <ListItem>
-                <ListItemText primary={adress?.country}/>
-              </ListItem>
-              <ListItem>
-                <ListItemText primary={`${adress?.zip} , ${adress?.city}`}/>
-              </ListItem>
-              <ListItem>
-                <ListItemText primary={`${adress?.street} ${adress?.number}`}/>
-              </ListItem>
-              {
-                adress?.extraInfo ? <ListItem>
-                  <ListItemText primary={adress?.extraInfo ?? null}/>
-                </ListItem> : null
-              }
-            </List>
-          </ListItem>
-          <ListItem disablePadding>
-            <List>
-              <ListItem>
-                <ListItemText className={'DeliveryTitle'} primary="Details"/>
-              </ListItem>
-              <ListItem>
-                <ListItemText primary={`total: ${price}$`}/>
-              </ListItem>
-              <ListItem>
-                <ListItemText primary={`ordered: ${order?.createdAt}$`}/>
-              </ListItem>
-            </List>
-          </ListItem>
+        <List className={'orderHeader'}>
+          <OrderAdress order={order}/>
+          <OrderDetails order={order}/>
         </List>
-        <List>
-        </List>
-
+        <DeliveryInfo deliveryInfo={order?.order_delivery_info}/>
         {children}
         <StatusesTimeLine orderId={orderId} update={getOrder} statuses={order?.statuses}/>
-        <div className="orderProducts">
+        <div className="products">
           <span className={'orderProductsTitle'}>Ordered Products</span>
           {
             order?.products.map((item: IProduct) => <ProductItem key={item.id} item={item}/>)

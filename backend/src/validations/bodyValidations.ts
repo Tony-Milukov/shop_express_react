@@ -1,7 +1,6 @@
 const validateParam = (req:any, res:any, name:string) => {
   const paramValue = req.body[name];
-  console.log(paramValue !== 0);
-  if (paramValue === 0 ? false : !paramValue) {
+  if (paramValue === 0 ? false : !paramValue || paramValue === 'undefined') {
     throw { errorMSG: `${name} was not entered` };
   }
   return paramValue;

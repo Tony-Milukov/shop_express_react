@@ -1,0 +1,48 @@
+.inputProductImage:hover {
+        transition: 0.5s;
+        filter: brightness(60%)
+}
+.newProductMain{
+        display: flex;
+        align-items: center;
+}
+.newProductInput {
+        margin-bottom: 25px!important;
+}
+.newProductInputs{
+        display: flex;
+        flex-direction: column;
+}
+.uploadImageContainer {
+        max-width: 250px;
+        width: 250px;
+        height: 250px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 20px;
+}
+.uploadImgProductBtn {
+        font-size: 50px!important;
+        border: none!important;
+}
+.uploadImgProductBtn:hover {
+       background: none!important;
+}
+.css-1gb9piy-MuiIcon-root {
+        align-items: center !important;
+        display: flex!important;
+        justify-content: center;
+}
+.chips {
+        margin-top: 25px;
+        margin-bottom: 50px;
+}
+.selectProductInfoTitle{
+        margin: 25px auto 25px auto;
+        font-size: 25px;
+}
+.selectProductInfo {
+        display: flex;
+        flex-direction: column;
+}
