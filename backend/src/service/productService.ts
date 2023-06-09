@@ -2,7 +2,11 @@ import * as inspector from 'inspector';
 import { Op } from 'sequelize';
 
 const {
-  Product, ProductsCategory, ProductsBrand, Category, Brand,
+  Product,
+  ProductsCategory,
+  ProductsBrand,
+  Category,
+  Brand,
 } = require('../models/index.ts');
 const {
   getBrandByIdService,
@@ -12,13 +16,13 @@ const {
 } = require('./categoryService.ts');
 
 const createProductService = async (
-  title:string,
-  price:number,
-  description:string,
-  img:string,
-  brands:any,
-  categories:any,
-  count:number,
+  title: string,
+  price: number,
+  description: string,
+  img: string,
+  brands: any,
+  categories: any,
+  count: number,
 ) => {
   const product = await Product.create({
     title,
@@ -28,7 +32,10 @@ const createProductService = async (
     count,
   });
   if (!product) {
-    throw { errorMSG: 'brands must be an array!', status: 400 };
+    throw {
+      errorMSG: 'brands must be an array!',
+      status: 400,
+    };
   } else {
     // add brands
     for (const brandId of brands) {
@@ -43,7 +50,7 @@ const createProductService = async (
     return product;
   }
 };
-const getProductByIdService = async (productId:number) => {
+const getProductByIdService = async (productId: number) => {
   const product = await Product.findOne({
     where: {
       id: productId,
@@ -60,13 +67,16 @@ const getProductByIdService = async (productId:number) => {
     ],
   });
   if (!product) {
-    throw { errorMSG: `this product with id < ${productId} > was not defined`, status: 404 };
+    throw {
+      errorMSG: `this product with id < ${productId} > was not defined`,
+      status: 404,
+    };
   } else {
     return product;
   }
 };
 
-const deleteProductService = (productId:number) => {
+const deleteProductService = (productId: number) => {
   const res = Product.destroy({
     where: {
       id: productId,
@@ -78,7 +88,7 @@ const deleteProductService = (productId:number) => {
   }
 };
 
-const getAllProductsService = async (limit:number, offset:number) => {
+const getAllProductsService = async (limit: number, offset: number) => {
   const products = await Product.findAndCountAll({
     offset,
     limit,
@@ -94,17 +104,46 @@ const getAllProductsService = async (limit:number, offset:number) => {
     ],
   });
   if (!products) {
-    throw { errorMSG: 'Products by this page were not defined', status: 404 };
+    throw {
+      errorMSG: 'Products by this page were not defined',
+      status: 404,
+    };
   } else {
     return products;
   }
 };
-const checkExistence = async (itemIds:any, getService:any) => {
+const getAllFilteredProductsService = async (categoryId: number | string, brandId: number | string, limit: number, offset: number) => {
+  const products = await Product.findAndCountAll({
+    offset,
+    limit,
+    include: [
+      {
+        model: Brand,
+        where: brandId ? { id: brandId } : {},
+        through: ProductsBrand,
+      },
+      {
+        model: Category,
+        where: categoryId ? { id: categoryId } : {},
+        through: ProductsCategory,
+      },
+    ],
+  });
+  if (!products) {
+    throw {
+      errorMSG: 'Products by this page were not defined',
+      status: 404,
+    };
+  } else {
+    return products;
+  }
+};
+const checkExistence = async (itemIds: any, getService: any) => {
   for (const id of itemIds) {
     await getService(id);
   }
 };
-const updateProductCountService = async (count:number, productId: number) => {
+const updateProductCountService = async (count: number, productId: number) => {
   const result = await Product.update({
     count,
   }, {
@@ -127,7 +166,15 @@ const searchProductService = async (title: string) => {
   }
   return products;
 };
+
 module.exports = {
-  createProductService, getProductByIdService, deleteProductService, getAllProductsService, checkExistence, updateProductCountService, searchProductService,
+  createProductService,
+  getProductByIdService,
+  deleteProductService,
+  getAllProductsService,
+  checkExistence,
+  updateProductCountService,
+  searchProductService,
+  getAllFilteredProductsService,
 };
 export {};

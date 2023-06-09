@@ -1,33 +1,38 @@
-import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardMedia, Grid, makeStyles, Typography } from '@mui/material';
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import IProduct from '../../types/product';
-
+import "./product.css"
 interface ProductItemProps {
   item: IProduct
 }
+
 const ProductItem: FC <ProductItemProps> = ({item}) => {
+
   return (
-   <Link className={"menuLink"} to={`/product/${item.id}`}>
-     <Card className={"product"} sx={{ display: 'flex' }}>
-       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-         <CardContent sx={{ flex: '1 0 auto' }}>
-           <Typography component="div" variant="h5">
-             {item.title}
-           </Typography>
-           <Typography variant="subtitle1" color="text.secondary" component="div">
-             {item.price}$
-           </Typography>
-         </CardContent>
-       </Box>
-       <CardMedia
-         component="img"
-         sx={{ width: 151 }}
-         image={`http://localhost:5000/${item.img}`}
-         alt="product image"
-       />
-     </Card>
-   </Link>
+    <Grid  className={"productItem"} item xs={12} sm={"auto"} md={4} lg={3}>
+      <Link className={"menuLink productContainer"} to={`/product/${item.id}`}>
+        <Card>
+          <CardMedia
+            sx={{ height: 140 }}
+            image={`http://localhost:5000/${item.img}`}
+            title="img"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {item.title}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {item.description.slice(1, 50)}...
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button size="small">Share</Button>
+            <Button size="small">Learn More</Button>
+          </CardActions>
+        </Card>
+      </Link>
+    </Grid>
 );
 };
 

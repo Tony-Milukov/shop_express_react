@@ -1,6 +1,6 @@
 import { Button, Modal, Typography } from '@mui/material';
-import {Link} from "react-router-dom"
-import React, { FC } from 'react';
+import { Link } from 'react-router-dom';
+import React, { FC, useState } from 'react';
 import Box from '@mui/material/Box';
 import './popup.css';
 
@@ -24,9 +24,11 @@ const Popup: FC<IPopup> = ({
     bgcolor: 'background.paper',
     p: 4,
   };
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+
   return (
     <Modal
-      open={true}
+      open={isOpen}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       className={'customPopup'}
@@ -39,7 +41,7 @@ const Popup: FC<IPopup> = ({
           {message}
         </Typography>
         <Link className={'menuLink'} to={redirect}>
-          <Button className={'redirectBtn'} variant={'outlined'}>Home</Button>
+          <Button onClick={() => setIsOpen(false)} className={'redirectBtn'} variant={'outlined'}>Home</Button>
         </Link>
       </Box>
     </Modal>

@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import ProductItem from '../../components/ProductItem/ProductItem';
 import IProduct from '../../types/product';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import userStore from '../../store/userStore';
-import "./products.css"
-
+import './products.css';
+import RenderProducts from './components/RenderProducts';
+import { Pagination } from '@mui/material';
+import Popup from '../../components/Popup/Popup';
+import CustomInfiniteSelect from '../../components/infinitySelect/CustomInfiniteSelect';
+import { IProductsFilter } from '../../types/IProductsFilter';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import IconButton from '@mui/material/IconButton';
+import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 
 interface IProductsRequest {
   count: number,
@@ -13,35 +19,86 @@ interface IProductsRequest {
 }
 
 const Products = () => {
-  const [produts,setProducts] = useState<IProductsRequest | null>()
-  const page = useParams().page ?? 1
-  const pageSize: number = 50
-  const token = userStore((state:any) => state.token)
-  const getProducts = async () => {
-     try {
-       const {data} =  await axios.post("http://localhost:5000/api/products/all", {
-         pageSize:pageSize,
-         page:page
-       }, {
-         headers: {
-           'Authorization': `Bearer ${token}`,
-           'Content-Type': 'application/json'
-         }
-       })
-       setProducts(data)
-     }catch(err) {
-       console.log(err);
-     }
-  }
+  const [products, setProducts] = useState<IProductsRequest | null>();
+  const [productsFilter, setProductsFilter] = useState<IProductsFilter | null>();
+  const nav = useNavigate();
+  const location = useLocation();
+  const paginationUrl: string = '/products';
+  const page = parseInt(useParams().page ?? '1');
+  const pageSize: number = 50;
+  const token = userStore((state: any) => state.token);
+
   useEffect(() => {
-    getProducts()
-  }, [])
+    setProductsFilter(null);
+  }, [location]);
+  const getProducts = async () => {
+    try {
+      const { data } = await axios.post('http://localhost:5000/api/products/all', {
+        pageSize: pageSize,
+        page: page,
+        categoryId: productsFilter?.category?.id,
+        brandId: productsFilter?.brand?.id,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      setProducts(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  //redirect user on page change, to expected page
+  const handlePagination = (event: any, page: number) => {
+    nav(`${paginationUrl}/${page}`);
+  };
+  useEffect(() => {
+    getProducts();
+  }, [page, productsFilter, location]);
+
   return (
-    <div className="products productsMain">
-      {
-        produts?.rows.map((product:IProduct) => <ProductItem item={product}/>)
-      }
-    </div>
+    products?.rows.length === 0 && page !== 1 ?
+      <Popup redirect={'/products'} message={'sorry, no products were defined by this page'}/>
+      : <div className={'products'}>
+        <div className="filter">
+          <div className="productsFilter">
+            <span>Category{!productsFilter?.category ? <FilterListIcon/> :
+              <IconButton
+                onClick={() => setProductsFilter({
+                  ...productsFilter,
+                  category: undefined
+                })}> <FilterListOffIcon/></IconButton>}</span>
+            <span>{productsFilter?.category?.name}</span>
+            <CustomInfiniteSelect onSelect={(item: any) => setProductsFilter({
+              ...productsFilter,
+              category: item
+            })} url={`http://localhost:5000/api/category/all`}/>
+          </div>
+          <div className="productsFilter">
+            <span>Brand {!productsFilter?.brand ? <FilterListIcon/> : <IconButton
+              onClick={() => setProductsFilter({
+                ...productsFilter,
+                brand: undefined
+              })}> <FilterListOffIcon/></IconButton>}</span>
+            <span>{productsFilter?.brand?.name}</span>
+            <CustomInfiniteSelect onSelect={(item: any) => setProductsFilter({
+              ...productsFilter,
+              brand: item
+            })} url={`http://localhost:5000/api/brand/all`}/>
+          </div>
+        </div>
+        {
+          products?.rows.length === 0 ? <span className={"noProductsMsg"}>no products were defined by this filter</span> :
+            <>
+              <RenderProducts products={products?.rows!}/>
+              <Pagination
+                count={products?.count ? Math.ceil(products.count < pageSize ? 1 : products.count / pageSize) : 0}
+                onChange={handlePagination}/>
+            </>
+        }
+
+      </div>
   );
 };
 

@@ -31,7 +31,6 @@ const CreateNewProduct = () => {
     if (!img || brands.length < 1 || categories.length < 1) {
       return;
     }
-    console.log(img?.file);
     const data = new FormData();
     data.append('img', (img?.file) as File);
     data.append('categories', JSON.stringify(categories.map(i => i.id)));

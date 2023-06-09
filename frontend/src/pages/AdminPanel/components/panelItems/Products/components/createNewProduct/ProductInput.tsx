@@ -7,7 +7,6 @@ interface ProductInfoInputProps {
   setProductInfo: (productInfo: IProductInfo) => any,
   productInfo: IProductInfo,
   name: string,
-
 }
 
 const ProductInfoInput: FC<ProductInfoInputProps> = ({

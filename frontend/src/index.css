@@ -21,4 +21,6 @@
 .scrollable {
     overflow: auto;
 }
-
+.MuiCardMedia-root{
+    background-size: contain !important;
+}

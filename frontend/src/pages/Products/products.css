@@ -1,5 +1,4 @@
 .product{
-    width: fit-content;
     margin-top: 50px;
     max-width: 450px;
     width:  450px;
@@ -10,12 +9,18 @@
 }
 .products {
     display: flex;
-    margin: 0 auto;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    margin-bottom: 50px;
+    margin: 50px auto;
+    justify-content: center;
 }
 .productsMain {
+    padding: 34px;
+}
+.productsPagination{
+    margin-bottom: 25px;
+
+}
+.noProductsMsg {
     margin-top: 50px;
 }

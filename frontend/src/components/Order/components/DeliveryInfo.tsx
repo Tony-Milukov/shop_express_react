@@ -20,9 +20,6 @@ const DeliveryInfo: FC<DeliveryInfoItemProps> = ({ deliveryInfo }) => {
               <ListItem className={"deliveryInfoItem"}>
                 Shiping company:  <b>{String(deliveryInfo?.company)}</b>
               </ListItem>
-              <ListItem className={"deliveryInfoItem"}>
-                Shipping company:  <b>{String(deliveryInfo?.company)}</b>
-              </ListItem>
               {deliveryInfo?.extraInfo ? <ListItem className={"deliveryInfoItem"}>
                 *extra:  <b>{String(deliveryInfo?.extraInfo)}</b>
               </ListItem> : null }

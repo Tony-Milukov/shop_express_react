@@ -3,12 +3,20 @@ const validateBody = require('../validations/bodyValidations.ts');
 const validatePrams = require('../validations/paramsValidation.ts');
 
 const {
-  createProductService, getProductByIdService,
-  deleteProductService, getAllProductsService, updateProductCountService, searchProductService,
+  createProductService,
+  getProductByIdService,
+  deleteProductService,
+  getAllProductsService,
+  updateProductCountService,
+  searchProductService,
   checkExistence,
+  getAllFilteredProductsService,
 } = require('../service/productService.ts');
 const checkIsArray = require('../validations/checkIsArray.ts');
-const { uploadImage, deleteOldImage } = require('../middelwares/updateImage.ts');
+const {
+  uploadImage,
+  deleteOldImage,
+} = require('../middelwares/updateImage.ts');
 const {
   getBrandByIdService,
 } = require('../service/brandService.ts');
@@ -16,7 +24,7 @@ const {
   getCategoryByIdService,
 } = require('../service/categoryService.ts');
 
-const createProduct = async (req:any, res:any) => {
+const createProduct = async (req: any, res: any) => {
   try {
     const title = validateBody(req, res, 'title');
     const count = parseFloat(validateBody(req, res, 'count'));
@@ -29,7 +37,8 @@ const createProduct = async (req:any, res:any) => {
 
     // check if image was send
     if (!img) {
-      return res.status(404).json({ message: 'img was not send' });
+      return res.status(404)
+        .json({ message: 'img was not send' });
     }
     // check isArray
     checkIsArray(categories, 'categories');
@@ -40,13 +49,14 @@ const createProduct = async (req:any, res:any) => {
 
     const imgName = await uploadImage(img, 'products');
     const product = await createProductService(title, price, description, imgName, brands, categories, count);
-    res.status(200).json({ message: `product ${product.title} with id ${product.id} was created` });
-  } catch (e:any) {
+    res.status(200)
+      .json({ message: `product ${product.title} with id ${product.id} was created` });
+  } catch (e: any) {
     console.log(e);
     apiError(res, e.errorMSG, e.status);
   }
 };
-const deleteProduct = async (req:any, res:any) => {
+const deleteProduct = async (req: any, res: any) => {
   try {
     const productId = validateBody(req, res, 'productId');
 
@@ -59,55 +69,72 @@ const deleteProduct = async (req:any, res:any) => {
     // delete product
     await deleteProductService(productId);
 
-    res.status(200).json({ message: 'Product was deleted succesfully' });
-  } catch (e:any) {
+    res.status(200)
+      .json({ message: 'Product was deleted succesfully' });
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
-const getProductById = async (req:any, res:any) => {
+const getProductById = async (req: any, res: any) => {
   try {
     const productId = validatePrams(req, res, 'id');
 
     // get product
     const product = await getProductByIdService(productId);
-    res.status(200).json(product);
-  } catch (e:any) {
+    res.status(200)
+      .json(product);
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
-const getAllProducts = async (req:any, res:any) => {
+const getAllProducts = async (req: any, res: any) => {
   try {
     // get products
     const pageSize = parseFloat(validateBody(req, res, 'pageSize'));
     const page = parseFloat(validateBody(req, res, 'page'));
     const offset = (page - 1) * pageSize;
+    const {
+      categoryId,
+      brandId,
+    } = req.body;
+    // if there is a filter property, do filter
+    if (categoryId || brandId) {
+      const products = await getAllFilteredProductsService(categoryId, brandId, pageSize, offset);
+      return res.status(200)
+        .json(products);
+    }
+
     const products = await getAllProductsService(pageSize, offset);
-    res.status(200).json(products);
-  } catch (e:any) {
+    res.status(200)
+      .json(products);
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
-const updateCount = async (req:any, res:any) => {
+const updateCount = async (req: any, res: any) => {
   try {
     const count = parseFloat(validateBody(req, res, 'count'));
     const productId = parseFloat(validateBody(req, res, 'productId'));
     // checking if the product exist
     const product = await getProductByIdService(productId);
     if (count < 0) {
-      return res.status(400).json({ message: 'the minimal count is 0' });
+      return res.status(400)
+        .json({ message: 'the minimal count is 0' });
     }
     await updateProductCountService(count, productId);
-    res.status(200).json({ message: `count for the product ${product.title} #${product.id} was updated successfully` });
-  } catch (e:any) {
+    res.status(200)
+      .json({ message: `count for the product ${product.title} #${product.id} was updated successfully` });
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
-const searchProduct = async (req:any, res:any) => {
+const searchProduct = async (req: any, res: any) => {
   try {
     const title = validatePrams(req, res, 'title');
     const products = await searchProductService(title);
-    res.status(200).json(products);
-  } catch (e:any) {
+    res.status(200)
+      .json(products);
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
