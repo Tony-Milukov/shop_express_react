@@ -1,3 +1,5 @@
+import IStatus from './status';
+
 export default interface IProduct {
   count: number,
   createdAt: string,
@@ -7,6 +9,7 @@ export default interface IProduct {
   price: number,
   title:string,
   updatedAt: string,
-  order_product: any
-
+  order_product: any,
+  brands: IStatus[],
+  categories: IStatus[]
 }

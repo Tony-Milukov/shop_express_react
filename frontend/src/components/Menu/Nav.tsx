@@ -9,7 +9,7 @@ import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import MenuItem_ from './components/MenuItem_';
-
+import ClearIcon from '@mui/icons-material/Clear';
 import Menu from '@mui/material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -17,7 +17,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import userStore from '../../store/userStore';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import './menu.css';
 import { useEffect, useState } from 'react';
@@ -65,10 +65,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PrimarySearchAppBar() {
   const token = userStore((state: any) => state.user.token);
+  const searchValue = userStore((state: any) => state.user.searchValue);
+  const setSearchValue = userStore((state: any) => state.setSearchValue);
+
   const logout = userStore((state: any) => state.logout);
   const nav = useNavigate();
   const [isAdmin, setAdmin] = useState<boolean>(false);
+  const location = useLocation();
+  //we are getting a current path
+  const currentPath = location.pathname.split('/')[1];
 
+  //setting searchValue to default
+  window.onload = function () {
+    setSearchValue('');
+  };
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
 
@@ -81,7 +91,6 @@ export default function PrimarySearchAppBar() {
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-  const menuId = 'primary-search-account-menu';
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const doLogout = () => {
@@ -117,6 +126,12 @@ export default function PrimarySearchAppBar() {
       </MenuItem>
     </Menu>
   );
+
+  useEffect(() => {
+    if (searchValue && currentPath !== 'products') {
+      nav(`/products`);
+    }
+  }, [searchValue]);
   const renderAuthItems = (
     <>
       <Link to={'/cart'} className="menuLink">
@@ -124,9 +139,7 @@ export default function PrimarySearchAppBar() {
           size="large"
           color="inherit"
         >
-          <Badge badgeContent={12} color="error">
             <ShoppingCartIcon/>
-          </Badge>
         </IconButton>
       </Link>
 
@@ -192,9 +205,13 @@ export default function PrimarySearchAppBar() {
               <SearchIcon/>
             </SearchIconWrapper>
             <StyledInputBase
+              value={searchValue}
+              onChange={(e: any) => setSearchValue(e.target.value)}
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
             />
+            {searchValue ? <IconButton className={'clearButton'}
+                                       onClick={() => setSearchValue('')}><ClearIcon/></IconButton> : null}
           </Search>
 
           <Box sx={{ flexGrow: 1 }}/>
@@ -203,11 +220,10 @@ export default function PrimarySearchAppBar() {
               xs: 'none',
               md: 'flex'
             }
-          }}> {token ? <>  {isAdmin ? renderAdminItems : null} {renderAuthItems}</> : renderNoAuthItems}</Box>
+          }}> {token ? <>  {isAdmin ? renderAdminItems : null} {renderAuthItems} </> : renderNoAuthItems}</Box>
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
     </Box>
-  )
-    ;
+  );
 }

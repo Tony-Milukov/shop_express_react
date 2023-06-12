@@ -4,15 +4,18 @@ import ProductItem from '../../../components/ProductItem/ProductItem';
 import { Grid } from '@mui/material';
 
 interface RenderProductsProps {
-  products: IProduct[]
+  products: IProduct[];
 }
-const RenderProducts: FC <RenderProductsProps> = ({products}) => {
+
+const RenderProducts: FC<RenderProductsProps> = ({ products }) => {
   return (
-    <Grid container  spacing={2} className="products productsMain">
-      {
-        products?.map((product:IProduct) => <ProductItem item={product}/>)
-      }
-    </Grid>
+   <>
+     { products &&  products.length !== 0 ? <Grid container spacing={2} className="products productsMain">
+       {
+         products?.map((product: IProduct) => <ProductItem key={product.id} item={product}/>)
+       }
+     </Grid> : <span className={"noProductsMsg"}>Products were not defined</span>}
+   </>
   );
 };
 

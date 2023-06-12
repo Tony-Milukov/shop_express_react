@@ -8,12 +8,14 @@ interface IPopup {
   title?: string,
   message?: string,
   redirect?: string,
+  btnText?: string,
 }
 
 const Popup: FC<IPopup> = ({
   message = 'something went wrong',
   title = 'Error 404',
-  redirect = '/'
+  redirect = '/',
+  btnText = "home"
 }) => {
   const style = {
     position: 'absolute' as 'absolute',
@@ -41,7 +43,7 @@ const Popup: FC<IPopup> = ({
           {message}
         </Typography>
         <Link className={'menuLink'} to={redirect}>
-          <Button onClick={() => setIsOpen(false)} className={'redirectBtn'} variant={'outlined'}>Home</Button>
+          <Button onClick={() => setIsOpen(false)} className={'redirectBtn'} variant={'outlined'}>{btnText}</Button>
         </Link>
       </Box>
     </Modal>

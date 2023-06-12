@@ -70,15 +70,15 @@ const deleteProduct = async (req: any, res: any) => {
     await deleteProductService(productId);
 
     res.status(200)
-      .json({ message: 'Product was deleted succesfully' });
+      .json({ message: 'ProductPage was deleted succesfully' });
   } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
 const getProductById = async (req: any, res: any) => {
   try {
+    console.log(true);
     const productId = validatePrams(req, res, 'id');
-
     // get product
     const product = await getProductByIdService(productId);
     res.status(200)

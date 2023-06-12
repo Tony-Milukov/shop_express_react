@@ -1,0 +1,103 @@
+.container-prod {
+    margin: auto;
+    width: 100%;
+}
+
+.main-product {
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #f7f7f7;
+    justify-content: space-between;
+    background-size: contain;
+}
+
+.main-product img {
+    max-height: 550px;
+    margin: 25px auto 50px;
+    position: relative;
+    max-width: calc(100% - 50px);
+}
+
+@media (max-width: 420px) {
+    .orderDetails {
+        max-width: 253px;
+    }
+}
+
+.main-product {
+    display: flex;
+    align-items: center;
+}
+.price {
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 29px;
+    flex-direction: column;
+    color: #ef5b70;
+    text-align: center;
+    padding-top: 32px;
+}
+.productsContentH2 {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #4d4d4d;
+    padding-top: 27px;
+}
+.productsContentP {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    max-width: 572px;
+    width: 100%;
+    padding-top: 49px;
+    color: #5e5e5e;
+    margin: auto;
+}
+
+.hr {
+    border: 1px solid #eaeaea;
+    margin-top: 65px;
+}
+.btn-add-to-card {
+    background-color: white;
+    border: 1px solid #ff6a6a;
+    width: 211px;
+    height: 47px;
+    color: #f26376;
+    display: flex;
+    margin: 49px auto;
+    cursor: pointer;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+
+}
+.btn-add-to-card img {
+    margin-left: 24px;
+    margin-top: 13px;
+}
+
+.btn-add-to-card:hover {
+    background-color: #f5f5f5;
+}
+.btn-text {
+    margin: 0 auto;
+}
+.productsContent {
+    flex-direction: column;
+    border: 1px solid #eaeaea;
+    background: white;
+    position: relative;
+    width: calc(100% - 10%);
+    margin: -24px auto 0;
+}
+.buyOptionButtons{
+    display: flex;
+}

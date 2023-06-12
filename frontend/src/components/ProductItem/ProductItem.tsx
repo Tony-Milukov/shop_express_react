@@ -10,7 +10,7 @@ interface ProductItemProps {
 const ProductItem: FC <ProductItemProps> = ({item}) => {
 
   return (
-    <Grid  className={"productItem"} item xs={12} sm={"auto"} md={4} lg={3}>
+    <Grid  className={"productItem"} item xs={12} sm={"auto"} md={3.5} lg={2.5}>
       <Link className={"menuLink productContainer"} to={`/product/${item.id}`}>
         <Card>
           <CardMedia
@@ -31,6 +31,14 @@ const ProductItem: FC <ProductItemProps> = ({item}) => {
             <Button size="small">Learn More</Button>
           </CardActions>
         </Card>
+        {/* <div className="card"> */}
+        {/*   <Link to={`/product/${item.id}`}> <img height="420" className="img" src={`http://localhost:5000/${item.img}`} alt="photo"/></Link> */}
+        {/*   <Link to={`/product/${item.id}`}><h1 className="h1-card capitalize">{item.title}</h1></Link> */}
+        {/*   <Link to={`/product/${item.id}`}> */}
+        {/*     <p className="p-card">Known for her sculptural takes on traditional  tailoring, Australian arbiter */}
+        {/*       of cool Kym Ellery teams  up with Moda Operandi.</p></Link> */}
+        {/*   <p className="prices">{item.price}$</p> */}
+        {/* </div> */}
       </Link>
     </Grid>
 );

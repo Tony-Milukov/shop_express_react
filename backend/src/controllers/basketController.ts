@@ -3,19 +3,24 @@ const apiError = require('../utilits/apiError.ts');
 const { getUserByToken } = require('../service/userService.ts');
 const { getProductByIdService } = require('../service/productService.ts');
 const {
-  createBasketService, getBasketByIdService, deleteBasketService, updateBasketCountService, getBasketItemService,
+  createBasketService,
+  getBasketByIdService,
+  deleteBasketService,
+  updateBasketCountService,
+  getBasketItemService,
 } = require('../service/basketService.ts');
 
-const createBasket = async (req:any, res:any) => {
+const createBasket = async (req: any, res: any) => {
   try {
     const user = await getUserByToken(req, res);
     const cart = await createBasketService(user.id);
-    res.status(200).json({ message: `Basket was created for user ${user.username}, basket id: ${cart.id}` });
-  } catch (e:any) {
+    res.status(200)
+      .json({ message: `Basket was created for user ${user.username}, basket id: ${cart.id}` });
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
-const deleteBasket = async (req:any, res:any) => {
+const deleteBasket = async (req: any, res: any) => {
   try {
     /// check does user exist
     const user = await getUserByToken(req, res);
@@ -27,12 +32,13 @@ const deleteBasket = async (req:any, res:any) => {
     // if deleting was not succesfull, it will throw an error
     await deleteBasketService(basketId);
 
-    res.status(200).json({ message: `Basket was deleted for user ${user.username}, cart id: ${basketId}` });
-  } catch (e:any) {
+    res.status(200)
+      .json({ message: `Basket was deleted for user ${user.username}, cart id: ${basketId}` });
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
-const getBasketById = async (req:any, res:any) => {
+const getBasketById = async (req: any, res: any) => {
   try {
     /// check does user exist and getIt
     const user = await getUserByToken(req, res);
@@ -41,13 +47,14 @@ const getBasketById = async (req:any, res:any) => {
     // check do the basket exist, and owner is user gotten by JWT
     const basket = await getBasketByIdService(user.id, basketId);
 
-    res.status(200).json(basket);
-  } catch (e:any) {
+    res.status(200)
+      .json(basket);
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
 
-const addProduct = async (req:any, res:any) => {
+const addProduct = async (req: any, res: any) => {
   try {
     /// check does user exist and get it
     const user = await getUserByToken(req, res);
@@ -66,12 +73,13 @@ const addProduct = async (req:any, res:any) => {
     } else if (count) {
       await updateBasketCountService(count, productId, basketId);
     }
-    res.status(200).json({ message: `Product ${product.title} was added to basket succesfully` });
-  } catch (e:any) {
+    res.status(200)
+      .json({ message: `Product ${product.title} was added to basket succesfully` });
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
-const deleteProduct = async (req:any, res:any) => {
+const deleteProduct = async (req: any, res: any) => {
   try {
     /// check does user exist and get it
     const user = await getUserByToken(req, res);
@@ -87,20 +95,37 @@ const deleteProduct = async (req:any, res:any) => {
     const basketItem = await getBasketItemService(basketId, productId);
     if (basketItem.count >= 2 && !deleteAll) {
       await updateBasketCountService(basketItem.count - 1, productId, basketId);
-      return res.status(200).json({ message: `cart product count was updated ${product.title}, new count for ${product.title} : ${basketItem.count - 1}` });
+      return res.status(200)
+        .json({ message: `cart product count was updated ${product.title}, new count for ${product.title} : ${basketItem.count - 1}` });
     }
     const result = await basket.removeProduct(product); // = 1 / 0
 
     if (!result) {
-      return res.status(404).json({ message: `Product ${product.title} was not defined in this basket` });
+      return res.status(404)
+        .json({ message: `Product ${product.title} was not defined in this basket` });
     }
-    res.status(200).json({ message: `Product ${product.title} was deleted from basket succesfully` });
-  } catch (e:any) {
-    console.log(e);
+    res.status(200)
+      .json({ message: `Product ${product.title} was deleted from basket succesfully` });
+  } catch (e: any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
+const getUserBaskets = async (req: any, res: any) => {
+  try {
+    const user = await getUserByToken(req, res);
+    const baskets = await user.getBaskets();
+    res.status(200)
+      .json(baskets);
+  } catch (e: any) {
     apiError(res, e.errorMSG, e.status);
   }
 };
 module.exports = {
-  createBasket, deleteBasket, getBasketById, addProduct, deleteProduct,
+  createBasket,
+  deleteBasket,
+  getBasketById,
+  addProduct,
+  deleteProduct,
+  getUserBaskets,
 };
 export {};

@@ -1,12 +1,13 @@
 import React from 'react';
 import './index.css';
 import Router from './Router';
+import { SnackbarProvider } from 'notistack';
 
 function App() {
   return (
-    <div>
-      <Router/>
-    </div>
+      <SnackbarProvider  maxSnack={3}>
+        <Router/>
+      </SnackbarProvider>
   );
 }
 

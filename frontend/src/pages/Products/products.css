@@ -22,5 +22,29 @@
 
 }
 .noProductsMsg {
-    margin-top: 50px;
+    width: fit-content;
+    display: flex;
+    margin: 50px auto 0;
+}
+.productsFilter span {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    justify-content: space-between;
+}
+
+.filter {
+    display: flex;
+    max-width: 350px;
+    justify-content: space-between;
+    width: 100%;
+}
+.selectedFilter {
+    height: 40px;
+    width: calc(100% + 20px);
+    display: flex !important;
+    justify-content: center !important;
+    font-size: larger;
+    font-family: monospace
 }
