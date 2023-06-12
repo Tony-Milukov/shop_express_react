@@ -41,7 +41,7 @@ const getCustomStatusService = async (statusId:number) => {
   return result;
 };
 const createOrderService = async (userId:number, adress:any) => {
-  if (!adress.fullname || !adress.number
+  if (!adress.fullName || !adress.number
     || !adress.street || !adress.city
     || !adress.zip || !adress.country) {
     throw { errorMSG: 'All fields (fullname, street, city,number (house), zip, country) are required', status: 400 };

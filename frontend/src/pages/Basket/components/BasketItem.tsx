@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
-import IProduct from '../../../types/product';
+import { IBasketItem } from '../../../types/IBaskertItem';
 
 interface IBasketItemProps {
-  product: IProduct
+  product: IBasketItem
 }
 const BasketItem: FC <IBasketItemProps> = ({product}) => {
+  console.log(product);
   return (
     <div>
-
+      {`${product.title}, count: ${product.basket_item.count}`}
     </div>
   );
 };
