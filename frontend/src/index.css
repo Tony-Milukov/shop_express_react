@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    font-family: 'Lato', sans-serif;
 }
 
 .errorMSG {
@@ -1267,16 +1268,7 @@ input[type='checkbox'] {
     height: 306px;
 }
 
-.main-cart {
-    max-width: 1140px;
-    margin: auto;
-    justify-content: space-between;
-    display: flex;
-}
 
-.wares-cart {
-    margin-top: 96px;
-}
 
 .order-name {
     text-transform: capitalize;
@@ -1365,19 +1357,6 @@ input[type='checkbox'] {
     margin-left: 129px;
 }
 
-#inputs-cart {
-    max-width: 374px;
-    width: 100%;
-    border: 1px solid #a4a4a4;
-    margin-top: 21px;
-    height: 44px;
-    outline: none;
-    padding-left: 17px;
-    font-weight: 300;
-    font-size: 13px;
-    line-height: 16px;
-    color: #222222;
-}
 
 #get-a-quote {
     background: none;
@@ -1408,9 +1387,6 @@ input[type='checkbox'] {
     background-color: rgb(221, 221, 221);
 }
 
-.flex-cart {
-    display: flex;
-}
 
 .shipping {
     flex-direction: column;
@@ -1469,10 +1445,10 @@ input[type='checkbox'] {
 
 .line-shipping {
     height: 1px;
-    width: 275px;
+    width: calc(100% - 80px);
+    display: block;;
     background: #e2e2e2;
-    margin: auto;
-    margin-top: 21px;
+    margin: 21px auto auto;
 }
 
 .procced-btn {
@@ -1480,7 +1456,6 @@ input[type='checkbox'] {
     cursor: pointer;
     height: 50px;
     background: #f16d7f;
-    color: white;
     text-transform: uppercase;
     font-style: normal;
     font-weight: 300;
@@ -1506,25 +1481,6 @@ input[type='checkbox'] {
     border: 1px solid #f16d7f;
 }
 
-.clear-shopping-cart,
-.contue-shopping {
-    width: 224px;
-    height: 49px;
-    cursor: pointer;
-    border: 1px solid #a4a4a4;
-    background: none;
-    text-transform: uppercase;
-    font-weight: 300;
-    font-size: 14px;
-    line-height: 17px;
-    color: #000000;
-    margin-bottom: 128px;
-}
-
-.btns-cart {
-    justify-content: space-between;
-    display: flex;
-}
 
 .contue-shopping:hover,
 .clear-shopping-cart:hover {
@@ -1680,197 +1636,6 @@ input[type='checkbox'] {
 
     .contacts {
         max-width: 950px;
-    }
-}
-
-@media (max-width: 1200px) {
-    .hotDealsLink {
-        max-width: 232px;
-    }
-
-    .main-top-cat-important {
-        max-width: 736px;
-    }
-
-    .main-text-reg {
-        margin: 0px auto 100px !important;
-    }
-
-    .clear-shopping-cart, .contue-shopping {
-
-        margin-bottom: 64px;
-    }
-
-    .inputs-reg {
-        margin: 0 auto;
-    }
-
-
-    .as-you-join {
-        font-size: 16px;
-        line-height: 19px;
-
-    }
-
-    .btn-join-now {
-        cursor: pointer;
-    }
-
-    .your-name {
-
-        margin-top: 40px;
-    }
-
-    .proceed-to-checkout {
-        margin-bottom: 64px;
-
-    }
-
-    .footerMain {
-        height: 693px;
-    }
-
-    .sort-filter {
-        max-width: 666px;
-    }
-
-    .inputs-shipping-adress {
-        margin: auto;
-    }
-
-    .main-text-reg {
-        margin-left: 22px;
-    }
-
-    .perks {
-        font-size: 16px;
-        line-height: 19px;
-
-    }
-
-    .p-reg-text {
-        width: 365px;
-        font-size: 16px;
-        line-height: 19px;
-
-    }
-
-    .top {
-        max-width: 750px;
-        width: 100%;
-    }
-
-    .main-top-cat {
-        max-width: 736px;
-    }
-
-    .main-cart {
-
-        flex-direction: column;
-    }
-
-    .wares-cart {
-        margin-top: 59px;
-    }
-
-
-    .flex-cart {
-        margin: auto;
-    }
-
-    .shipping {
-        margin: auto;
-    }
-
-    .icon-3 {
-        margin-right: 20px;
-    }
-
-    .cards {
-        max-width: 761px;
-        margin: 47px auto;
-    }
-
-    .info-shop {
-        height: 610px;
-    }
-
-    .hot {
-        margin: 0 auto;
-        max-width: 747px;
-    }
-
-    .hot_deals {
-        margin-top: 20px;
-    }
-
-
-    .hot-deal-4 {
-        width: 747px;
-        height: 116px;
-        margin: 0 auto;
-    }
-
-    .icons-footer {
-        flex-direction: column;
-    }
-
-    .free-delivery {
-        margin: 0 auto;
-    }
-
-    .img-p-footer {
-        display: none;
-    }
-
-    .sales {
-        margin: 0 auto !important;
-        padding-top: 48px;
-    }
-
-    .top {
-        height: 387.57px;
-        background-size: 386px;
-    }
-
-    .footerMain {
-        height: 215px;
-    }
-
-    .contacts {
-        max-width: 704px;
-    }
-
-    .top-text {
-        padding-top: 138px;
-        padding-left: 425px;
-    }
-
-    .p-top {
-        font-style: normal;
-        font-weight: 900;
-        font-size: 44px;
-        line-height: 53px;
-        color: #222222;
-    }
-
-    .text_under-1 {
-        font-style: normal;
-        font-weight: bold;
-        font-size: 24px;
-        line-height: 29px;
-        color: #222222;
-    }
-
-    .hot-deal-1,
-    .hot-deal-2,
-    .hot-deal-3 {
-        height: 167.62px;
-        width: 232px;
-    }
-
-    .icons-footer {
-        padding-top: 48px;
     }
 }
 
@@ -2099,7 +1864,6 @@ input[type='checkbox'] {
         font-weight: 300;
         font-size: 12px;
         line-height: 14px;
-
     }
 
     #choose-quantyty-cart {
@@ -2321,12 +2085,7 @@ input[type='checkbox'] {
     color: rgb(196, 85, 57);
 }
 
-.removeFromCart {
-    position: absolute;
-    right: 2%;
-    margin-top: 2%;
-    cursor: pointer;
-}
+
 
 #checkbox-reg-2 {
     display: block;

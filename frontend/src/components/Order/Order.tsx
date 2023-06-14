@@ -38,7 +38,6 @@ const Order: FC<OrderProps> = ({
       });
       setErr(false);
       setOrder(data);
-
     } catch (e) {
       setErr(true);
     }

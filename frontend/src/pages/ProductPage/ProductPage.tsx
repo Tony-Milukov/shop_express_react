@@ -61,24 +61,21 @@ const ProductPage = () => {
   return (!product && isLoaded || isErr && isLoaded ?
       <Popup redirect={'/products'} btnText={'products'}
              message={'Sorry, this product was not defined :/'}/> : <>
-        <div className="container-prod">
-          <main className="main-product">
+        <div className="productPageContainer">
+          <main className="productPageMain">
             <img src={`http://localhost:5000/${product?.img}`} alt="img"/>
           </main>
-          <div className="container">
             <section className="productsContent">
-              <h2 className="productsContentH2">{product?.title}</h2>
-              <p className="productsContentP">{product?.description}</p><p
-              className="price">{product?.price}$</p>
-              <div className="hr"/>
+              <h2 className="productPageTitle">{product?.title}</h2>
+              <p className="productPageDescription">{product?.description}</p><p
+              className="priceProductPage">{product?.price}$</p>
+              <div className="hrProductsPage"/>
               <div className="buyOptionButtons">
-                <button onClick={addToBasket} className="btn-add-to-card"><span
-                  className="btn-text">Add to Basket</span></button>
+                <button onClick={addToBasket} className="addToCartBtn"><span>Add to Basket</span></button>
                 {/* <button  className="btn-add-to-card"><span */}
                 {/*   className="btn-text">Buy</span></button> */}
               </div>
             </section>
-          </div>
         </div>
       </>
   );

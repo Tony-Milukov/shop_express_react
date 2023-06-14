@@ -43,7 +43,7 @@ const createOrder = async (req: any, res: any) => {
     checkIsObject(adress, 'adress');
 
     // env is possibly be undefined, we need to prove it
-    const DEFAULT_ORDER_STATUS = process.env.DEFAULT_ORDER_STATUS || '1';
+    const DEFAULT_ORDER_STATUS = process.env.DEFAULT_ORDER_STATUS || '9';
 
     // checking products are not empty, and they exist, and are available (count > 0)
     await checkProductsLength(req, res, products);

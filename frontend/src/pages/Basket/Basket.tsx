@@ -2,32 +2,50 @@ import React, { useEffect, useState } from 'react';
 import { IBasket } from '../../types/IBasket';
 import axios from 'axios';
 import userStore from '../../store/userStore';
-import IProduct from '../../types/product';
 import BasketItem from './components/BasketItem';
 import { IBasketItem } from '../../types/IBaskertItem';
-import { useForm, Controller } from 'react-hook-form';
-import * as yup from "yup";
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import './basket.css';
+import TextField from '@mui/material/TextField';
+import { useNavigate } from 'react-router-dom';
 
+interface IOrderCreated {
+  message: string,
+  orderId: number
+}
 const Basket = () => {
   const token = userStore((state: any) => state.user.token);
+  const nav = useNavigate();
   const [basket, setBasket] = useState<IBasket>();
+  const [totalPrice, setTotalPrice] = useState<number>(0);
   const adress = yup.object({
-    fullName: yup.string(),
-    country: yup.string(),
-    number: yup.number().positive().integer(),
-    street: yup.string(),
-    city: yup.string(),
-  }).required();
+    fullName: yup.string()
+      .required(),
+    country: yup.string()
+      .required(),
+    number: yup.number()
+      .positive()
+      .integer()
+      .required(),
+    street: yup.string()
+      .required(),
+    city: yup.string()
+      .required(),
+    zip: yup.number()
+      .positive()
+      .integer(),
+    extraInfo: yup.string()
+      .notRequired()
+  });
   const {
     register,
     handleSubmit,
-    formState: { errors: {
-      fullName
-    } }
+    formState: { errors }
   } = useForm({
-  resolver: yupResolver(adress)
-});
+    resolver: yupResolver(adress)
+  });
   const [products, setProducts] = useState<IBasketItem[]>([]);
   const getBasket = async () => {
     try {
@@ -53,11 +71,14 @@ const Basket = () => {
         }
       });
       setProducts(data.products);
+
     } catch (e) {
       console.log(e);
     }
   };
-
+  const doUpdateData = async () => {
+    await getProducts();
+  };
   useEffect(() => {
     getBasket();
   }, []);
@@ -65,34 +86,103 @@ const Basket = () => {
   useEffect(() => {
     getProducts();
   }, [basket]);
-  const createOrder = (e:any) => {
-    console.log(e);
+
+  useEffect(() => {
+    products.map((product: IBasketItem) => setTotalPrice(totalPrice + (product.price * product.basket_item.count)));
+  }, [products]);
+  const clearBasket =  async () => {
+    try {
+      await axios.delete(`http://localhost:5000/api/basket/clear/${basket?.id}`,{
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+    await getProducts()
+    } catch (e) {
+      console.log(e);
+    }
   }
+  const createOrder = async (adress: any) => {
+      try {
+      const {data}  =  await axios.put<IOrderCreated>(`http://localhost:5000/api/order/`, {
+          adress,
+          products: products.map(product => {
+            return {
+              productId: product.id,
+              count: product.basket_item.count
+            }
+          }),
+        }, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      nav(`/order/${data.orderId}`)
+      } catch (e) {
+        console.log(e);
+      }
+  };
   return (
-    <main className="main-cart">
-      <div className="flex-cart">
-        <div className="wares-cart">
-          {products!.map(product => <BasketItem key={product.id} product={product}/>)}
-          <div className="btns-cart">
-            {products!.length > 0 ?
-              <button className="clear-shopping-cart">clear shopping cart</button> : null}
+    <main className="cartContainer">
+     <div className="productsContainer">
+          <div className="cartProducts">
+            {
+              products.length >=1 ?
+              products.map(product => <BasketItem update={doUpdateData} key={product.id}
+                                            product={product}/>)
+            :
+                <span>No products in cart :/</span>
+            }
+            <div className="cartButtons">
+              {products!.length > 0 ?
+                <button className="clearCartBtn" onClick={clearBasket}>clear shopping cart</button> : null}
+
+
+            </div>
           </div>
         </div>
-      </div>
-      <form onSubmit={handleSubmit(createOrder)}className="inputs-shipping-adress">
-        <input {...register("fullName")} type="text"
-               id="inputs-cart" placeholder="Country"/>
-        {/* <span className="errorMSG_">{error.changeCountryError  && btnActive ? errors.changeCountryError : ""}</span> */}
 
-        <input type="text" id="inputs-cart" placeholder="city"/>
-        {/* <span className="errorMSG_">{error.changeCityError  && btnActive ? errors.changeCityError : ""}</span> */}
-        <input min="0" max="999" type="number" id="inputs-cart" placeholder="Postcode / Zip"/>
-        {/* <span className="errorMSG_">{error.changePostCodeError  && btnActive ? errors.changePostCodeError : ""}</span> */}
-        <div className="proceed-to-checkout">
-          <p className="sub-total-p">sub total<span className="sub-total">${}</span></p>
-          <p className="grand-total-p">Grand total<span className="grand-total">${}</span></p>
-          <div className="line-shipping"></div>
-          <button type={"submit"} className="procced-btn">proceed to checkout</button>
+      <form onSubmit={handleSubmit(createOrder)} className="adressInputsContainer">
+        <TextField variant="outlined"
+                   fullWidth
+                   margin="normal"
+                   InputLabelProps={{
+                     shrink: true
+                   }}
+                   {...register('fullName')} type="text"
+                   className={'adressInput'} placeholder="Fullname"/>
+        {errors.fullName && <span className="errorMSG_">{errors.fullName.message}</span>}
+
+        <TextField {...register('country')} type="text" className={'adressInput'}
+                   placeholder="country"/>
+        {errors.country && <span className="errorMSG_">{errors.country.message}</span>}
+
+        <TextField {...register('zip')} type="text" className={'adressInput'} placeholder="zip"/>
+        {errors.zip && <span className="errorMSG_">{errors.zip.message}</span>}
+
+        <TextField {...register('city')} type="text" className={'adressInput'} placeholder="city"/>
+        {errors.city && <span className="errorMSG_">{errors.city.message}</span>}
+
+        <TextField {...register('street')} type="text" className={'adressInput'}
+                   placeholder="street"/>
+        {errors.street && <span className="errorMSG_">{errors.street.message}</span>}
+
+        <TextField {...register('number')} type="text" className={'adressInput'}
+                   placeholder="number"/>
+        {errors.number && <span className="errorMSG_">{errors.number.message}</span>}
+
+        <TextField {...register('extraInfo')} type="text" className={'adressInput'}
+                   placeholder="*extra information"/>
+        {errors.extraInfo && <span className="errorMSG_">{errors.extraInfo.message}</span>}
+
+        <div className="placeOrderContainer">
+          <p className="totalPrice">Grand total<span>${totalPrice}</span>
+          </p>
+          <span className="placeOrderHr"></span>
+          <button type={'submit'}
+                  className="placeOrderBtn">proceed to checkout
+          </button>
         </div>
       </form>
       <div/>

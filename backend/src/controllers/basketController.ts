@@ -1,4 +1,5 @@
 const validateBody = require('../validations/bodyValidations.ts');
+const validateParams = require('../validations/paramsValidation.ts');
 const apiError = require('../utilits/apiError.ts');
 const { getUserByToken } = require('../service/userService.ts');
 const { getProductByIdService } = require('../service/productService.ts');
@@ -8,6 +9,7 @@ const {
   deleteBasketService,
   updateBasketCountService,
   getBasketItemService,
+  clearBasketByIdService,
 } = require('../service/basketService.ts');
 
 const createBasket = async (req: any, res: any) => {
@@ -83,9 +85,9 @@ const deleteProduct = async (req: any, res: any) => {
   try {
     /// check does user exist and get it
     const user = await getUserByToken(req, res);
-    const basketId = parseFloat(validateBody(req, res, 'basketId'));
-    const productId = parseFloat(validateBody(req, res, 'productId'));
-    const deleteAll = req.body.all ?? false;
+    const basketId = parseFloat(validateParams(req, res, 'basketId'));
+    const productId = parseFloat(validateParams(req, res, 'productId'));
+    const deleteAll = req.params.all ?? false;
 
     // getting product
     const product = await getProductByIdService(productId);
@@ -120,6 +122,20 @@ const getUserBaskets = async (req: any, res: any) => {
     apiError(res, e.errorMSG, e.status);
   }
 };
+const clearBasketById = async (req: any, res: any) => {
+  try {
+    const basketId = validateParams(req, res, 'basketId');
+    const user = await getUserByToken(req, res);
+    // check do the basket exist, and owner is user gotten by JWT
+    await getBasketByIdService(user.id, basketId);
+    await clearBasketByIdService(basketId);
+    res.status(200)
+      .json({ message: 'Basket was cleared successfully' });
+  } catch (e: any) {
+    console.log(e);
+    apiError(res, e.errorMSG, e.status);
+  }
+};
 module.exports = {
   createBasket,
   deleteBasket,
@@ -127,5 +143,6 @@ module.exports = {
   addProduct,
   deleteProduct,
   getUserBaskets,
+  clearBasketById,
 };
 export {};

@@ -1,9 +1,9 @@
-.container-prod {
+.productPageContainer {
     margin: auto;
     width: 100%;
 }
 
-.main-product {
+.productPageMain {
     width: 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -12,7 +12,7 @@
     background-size: contain;
 }
 
-.main-product img {
+.productPageMain img {
     max-height: 550px;
     margin: 25px auto 50px;
     position: relative;
@@ -25,11 +25,11 @@
     }
 }
 
-.main-product {
+.productPageMain {
     display: flex;
     align-items: center;
 }
-.price {
+.priceProductPage {
     font-weight: 300;
     font-size: 24px;
     line-height: 29px;
@@ -38,7 +38,7 @@
     text-align: center;
     padding-top: 32px;
 }
-.productsContentH2 {
+.productPageTitle {
     font-style: normal;
     font-weight: 300;
     font-size: 18px;
@@ -48,7 +48,7 @@
     color: #4d4d4d;
     padding-top: 27px;
 }
-.productsContentP {
+.productPageDescription {
     font-style: normal;
     font-weight: 300;
     font-size: 14px;
@@ -61,11 +61,11 @@
     margin: auto;
 }
 
-.hr {
+.hrProductsPage {
     border: 1px solid #eaeaea;
     margin-top: 65px;
 }
-.btn-add-to-card {
+.addToCartBtn {
     background-color: white;
     border: 1px solid #ff6a6a;
     width: 211px;
@@ -79,15 +79,15 @@
     justify-content: center;
 
 }
-.btn-add-to-card img {
+.addToCartBtn img {
     margin-left: 24px;
     margin-top: 13px;
 }
 
-.btn-add-to-card:hover {
+.addToCartBtn:hover {
     background-color: #f5f5f5;
 }
-.btn-text {
+.addToCartBtn span {
     margin: 0 auto;
 }
 .productsContent {

@@ -48,7 +48,15 @@ const createProduct = async (req: any, res: any) => {
     await checkExistence(categories, getCategoryByIdService);
 
     const imgName = await uploadImage(img, 'products');
-    const product = await createProductService(title, price, description, imgName, brands, categories, count);
+    const product = await createProductService(
+      title,
+      price,
+      description,
+      imgName,
+      brands,
+      categories,
+      count,
+    );
     res.status(200)
       .json({ message: `product ${product.title} with id ${product.id} was created` });
   } catch (e: any) {

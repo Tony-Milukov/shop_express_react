@@ -60,7 +60,17 @@ const updateBasketCountService = async (count: number, productId:number, basketI
     throw { errorMSG: 'something went wrong on updating cartCount', status: 404 };
   }
 };
+const clearBasketByIdService = async (basketId:number) => {
+  const result = BasketItem.destroy({
+    where: {
+      basketId,
+    },
+  });
+  if (!result) {
+    throw { errorMSG: 'something went wrong on clearing cart', status: 500 };
+  }
+};
 module.exports = {
-  createBasketService, getBasketByIdService, deleteBasketService, getBasketItemService, updateBasketCountService,
+  createBasketService, getBasketByIdService, deleteBasketService, getBasketItemService, updateBasketCountService, clearBasketByIdService,
 };
 export {};
