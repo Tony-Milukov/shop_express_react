@@ -6,23 +6,15 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import MenuItem_ from './components/MenuItem_';
 import ClearIcon from '@mui/icons-material/Clear';
-import Menu from '@mui/material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MoreIcon from '@mui/icons-material/MoreVert';
 import userStore from '../../store/userStore';
-import LoginIcon from '@mui/icons-material/Login';
-import LogoutIcon from '@mui/icons-material/Logout';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import './menu.css';
 import { useEffect, useState } from 'react';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import checkIsAdmin from '../../utilits/checkIsAdmin';
+import MenuIcon from '@mui/icons-material/Menu';
+import MobileMenu from './components/MobileMenu';
+import Menu from './components/Menu';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -64,13 +56,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
-  const token = userStore((state: any) => state.user.token);
   const searchValue = userStore((state: any) => state.user.searchValue);
   const setSearchValue = userStore((state: any) => state.setSearchValue);
-
-  const logout = userStore((state: any) => state.logout);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false)
   const nav = useNavigate();
-  const [isAdmin, setAdmin] = useState<boolean>(false);
   const location = useLocation();
   //we are getting a current path
   const currentPath = location.pathname.split('/')[1];
@@ -79,110 +68,18 @@ export default function PrimarySearchAppBar() {
   window.onload = function () {
     setSearchValue('');
   };
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
 
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const doLogout = () => {
-    logout();
-    nav('/login');
-  };
-  useEffect(() => {
-    (
-      async () => {
-        setAdmin(await checkIsAdmin(token));
-      }
-    )();
-  }, [token]);
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <MenuItem_ link={'/profile'} Icon={AccountCircle}/>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
 
   useEffect(() => {
     if (searchValue && currentPath !== 'products') {
       nav(`/products`);
     }
   }, [searchValue]);
-  const renderAuthItems = (
-    <>
-      <Link to={'/cart'} className="menuLink">
-        <IconButton
-          size="large"
-          color="inherit"
-        >
-            <ShoppingCartIcon/>
-        </IconButton>
-      </Link>
 
-      <MenuItem_ link={'/account'} Icon={AccountCircle}/>
+  const handleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+}
 
-      <IconButton
-        onClick={doLogout}
-        size="large"
-        color="inherit">
-        <LogoutIcon/>
-      </IconButton>
-      <Box sx={{
-        display: {
-          xs: 'flex',
-          md: 'none'
-        }
-      }}>
-        <IconButton
-          size="large"
-          aria-label="show more"
-          aria-controls={mobileMenuId}
-          aria-haspopup="true"
-          onClick={handleMobileMenuOpen}
-          color="inherit"
-        >
-          <MoreIcon/>
-        </IconButton>
-      </Box>
-
-    </>
-
-  );
-
-  const renderNoAuthItems = (
-    <>
-      <MenuItem_ link={'/login'} Icon={LoginIcon}/>
-    </>
-  );
-  const renderAdminItems = (
-    <>
-      <MenuItem_ link={'/admin'} Icon={AdminPanelSettingsIcon}/>
-    </>
-  );
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -220,10 +117,21 @@ export default function PrimarySearchAppBar() {
               xs: 'none',
               md: 'flex'
             }
-          }}> {token ? <>  {isAdmin ? renderAdminItems : null} {renderAuthItems} </> : renderNoAuthItems}</Box>
+          }}>
+            <Menu/>
+          </Box>
+          <IconButton
+            onClick={handleMobileMenu}
+            className={"openMobileMenuIcon"}
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
         </Toolbar>
+
       </AppBar>
-      {renderMobileMenu}
+     <MobileMenu handleMobileMenu={handleMobileMenu} isMobileMenuOpen={isMobileMenuOpen}/>
+
     </Box>
   );
 }

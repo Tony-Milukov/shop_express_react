@@ -89,7 +89,7 @@ const Basket = () => {
 
   useEffect(() => {
     products.map((product: IBasketItem) => setTotalPrice(totalPrice + (product.price * product.basket_item.count)));
-  }, [products]);
+  }, [products, basket]);
   const clearBasket =  async () => {
     try {
       await axios.delete(`http://localhost:5000/api/basket/clear/${basket?.id}`,{
@@ -144,14 +144,7 @@ const Basket = () => {
         </div>
 
       <form onSubmit={handleSubmit(createOrder)} className="adressInputsContainer">
-        <TextField variant="outlined"
-                   fullWidth
-                   margin="normal"
-                   InputLabelProps={{
-                     shrink: true
-                   }}
-                   {...register('fullName')} type="text"
-                   className={'adressInput'} placeholder="Fullname"/>
+        <TextField variant="outlined"{...register('fullName')} type="text" className={'adressInput'} placeholder="Fullname"/>
         {errors.fullName && <span className="errorMSG_">{errors.fullName.message}</span>}
 
         <TextField {...register('country')} type="text" className={'adressInput'}

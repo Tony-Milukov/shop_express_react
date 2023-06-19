@@ -1,7 +1,7 @@
 export default interface IAdress {
   city: string,
   country: string,
-  fullname: string,
+  fullName: string,
   number: string,
   street: number,
   zip: string,

@@ -22,3 +22,31 @@
 .clearButton {
     color: white;
 }
+.mobileMenu {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    right: 0;
+    position: absolute;
+    background: white;
+    z-index: 999;
+}
+.mobileMenu .menuLink button svg, .mobileMenu button svg{
+        font-size: 30px;
+}
+.openMobileMenuIcon {
+    color: white !important;
+    display: none !important;
+}
+
+@media (max-width: 900px) {
+    .openMobileMenuIcon {
+        display: block!important;
+    }
+}
+
+@media (max-width: 500px) {
+    .css-1kcggdq-MuiInputBase-root {
+        width: 170px;
+    }
+}

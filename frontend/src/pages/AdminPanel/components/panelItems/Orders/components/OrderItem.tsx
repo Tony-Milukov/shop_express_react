@@ -48,7 +48,7 @@ const OrderItem: FC<IOrderItemProps> = ({
       <div className="mainOrderItem">
       <div className={"openOrderInfoButton"}>
         <ListItemButton onClick={() => setInfoOpen(!infoOpen)}>
-          <ListItemText primary={`Order #${item.id} (${order?.adress?.fullname})`}/>
+          <ListItemText primary={`Order #${item.id} (${order?.adress?.fullName})`}/>
           {infoOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
        <Link to={`/admin/order/${item.id}`}> <Button variant="contained">to Order</Button></Link>

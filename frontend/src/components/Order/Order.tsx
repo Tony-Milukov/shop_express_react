@@ -25,6 +25,7 @@ const Order: FC<OrderProps> = ({
 }) => {
   const [err, setErr] = useState<boolean>(false);
   const [order, setOrder] = useState<IOrder>();
+  const [menuOpen,setMenuOpen] = useState<boolean>(false)
   const token = userStore((state: any) => state.user.token);
 
   //getting order by id from server
@@ -62,6 +63,7 @@ const Order: FC<OrderProps> = ({
             order?.products.map((item: IProduct) => <ProductItem key={item.id} item={item}/>)
           }
         </div>
+
       </div>
     }
 

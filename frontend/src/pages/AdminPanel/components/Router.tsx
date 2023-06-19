@@ -20,6 +20,7 @@ const Router = () => {
       <Route path={'roles/:page?'} element={<Roles/>}></Route>
       <Route path={'order/:orderId'} element={<Order/>}></Route>
       <Route path={'statuses/:page?'} element={<Statuses/>}></Route>
+      <Route path={"*"} element={<Orders/>}></Route>
     </Routes>
   );
 };

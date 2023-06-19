@@ -37,7 +37,7 @@
 .filter {
     display: flex;
     max-width: 350px;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
 }
 .selectedFilter {

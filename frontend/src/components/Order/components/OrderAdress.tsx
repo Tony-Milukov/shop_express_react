@@ -15,7 +15,7 @@ const OrderAdress: FC <OrderAdressProps>  = ({order}) => {
           <ListItemText className={'DeliveryTitle'} primary="Shipping adress"/>
         </ListItem>
         <ListItem>
-          <ListItemText primary={adress?.fullname}/>
+          <ListItemText primary={adress?.fullName}/>
         </ListItem>
         <ListItem>
           <ListItemText primary={adress?.country}/>

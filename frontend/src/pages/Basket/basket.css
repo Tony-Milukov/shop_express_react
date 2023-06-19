@@ -8,6 +8,7 @@
 .productsContainer {
     display: flex;
     margin: 0 auto;
+    padding: 15px;
 }
 
 .cartContainer {

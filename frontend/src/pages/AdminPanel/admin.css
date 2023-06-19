@@ -6,8 +6,6 @@
     height: 91.4vh;
     max-width: 200px !important;
     width: 100%;
-    position: absolute;
-    left: 0;
 }
 
 .adminPanel {
@@ -32,10 +30,12 @@
 .userItem  {
     max-width: 500px;
     width: 100% !important;
+    flex-wrap: wrap;
+    justify-content: center !important;
 }
 
 .adminPanel main {
-    max-width: 450px;
+    max-width: 500px;
     width: 100%;
     margin-top: 25px !important;
     margin-left: 50px !important;
@@ -45,7 +45,6 @@
 }
 .brandsMain {
     position: relative;
-    max-width: 350px;
     width: 100%;
 }
 
@@ -55,4 +54,40 @@
 }
 .orderItem {
     background: #f0f0f0;
+}
+.openAdminMobileMenu {
+    display: none !important;
+}
+@media  (max-width: 990px) {
+    .panelNav {
+        z-index: 999;
+        background: white;
+        opacity: 0;
+        display: none;
+        height: 100%;
+        transform: translateX(-20px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .panelNav.show {
+        opacity: 1;
+        display: block;
+        transform: translateY(0);
+    }
+    .panelNavContainer {
+        position: absolute!important;
+        left: 0;
+        z-index: 50;
+        height: 100%;
+        display: flex;
+    }
+    .openAdminMobileMenu {
+        display: block !important;
+        height: fit-content;
+        border-radius: unset !important;
+        position: fixed;
+    }
+    .adminPanel main {
+        margin-left: unset !important;
+        padding: 0 20px;
+    }
 }
