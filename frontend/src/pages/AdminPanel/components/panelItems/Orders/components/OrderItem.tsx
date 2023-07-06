@@ -16,12 +16,10 @@ import { Link } from 'react-router-dom';
 import IOrder from '../../../../../../types/order';
 
 interface IOrderItemProps {
-  update: () => void,
   item: IOrderItemReqest
 }
 
 const OrderItem: FC<IOrderItemProps> = ({
-  update,
   item
 }) => {
   const [order, setOrder] = useState<IOrder>();
@@ -29,7 +27,7 @@ const OrderItem: FC<IOrderItemProps> = ({
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get<IOrder>(`http://localhost:5000/api/order/${item.id}`, {
+      const { data } = await axios.get<IOrder>(`http://localhost:5000/api/order/id/${item.id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

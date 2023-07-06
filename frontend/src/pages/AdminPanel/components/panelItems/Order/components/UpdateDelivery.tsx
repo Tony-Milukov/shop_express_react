@@ -33,7 +33,7 @@ const UpdateDelivery: FC<IUpdateDeliveryProps> = ({
 
   //send request to get Data
   const getDeliveryInfo = async () => {
-    const { data: { order_delivery_info } } = await axios.get<IOrder>(`http://localhost:5000/api/order/${orderId}`, {
+    const { data: { order_delivery_info } } = await axios.get<IOrder>(`http://localhost:5000/api/order/id/${orderId}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'

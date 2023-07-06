@@ -31,7 +31,7 @@ const Order: FC<OrderProps> = ({
   //getting order by id from server
   const getOrder = async () => {
     try {
-      const { data } = await axios.get<IOrder>(`http://localhost:5000/api/order/${orderId}`, {
+      const { data } = await axios.get<IOrder>(`http://localhost:5000/api/order/id/${orderId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

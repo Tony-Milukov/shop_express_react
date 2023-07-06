@@ -30,7 +30,7 @@ interface PanelItemsProps {
   // Children components or elements to be included in the dialog menu
   children?:any,
 
-  //Indicates whether a add item function should be included, request template: put(props url)
+  //Indicates whether add item function should be included, request template: put(props url)
   addItem?: boolean
 }
 
@@ -41,15 +41,16 @@ const PanelItems: FC<PanelItemsProps> = ({
   ListItem,
   dialog = true,
   addItem=true,
-  children
+  children,
 }) => {
   const [items, setItems] = useState<IItemsRequest>();
+  const [err,setErr] = useState<boolean>(false)
   const token = userStore((state: any) => state.user.token);
   const nav = useNavigate();
   const page = (useParams()).page ?? 1;
   const pageSize = 10;
   const location = useLocation();
-  const [addErr, setAddErr] = useState<boolean>(false);
+  const [addItemErr, setAddItemErr] = useState<boolean>(false);
 
   //new value inputted in  dialog
   const [inputValue, setValue] = useState<string>('');
@@ -73,6 +74,7 @@ const PanelItems: FC<PanelItemsProps> = ({
       });
       setItems(data);
     } catch (e) {
+      console.log(e);
     }
   };
   useEffect(() => {
@@ -93,7 +95,7 @@ const PanelItems: FC<PanelItemsProps> = ({
   //   [props name]: inputValue,
   // }
   const addNewItem = async () => {
-    setAddErr(false);
+    setAddItemErr(false);
     try {
       await axios.put<IItemsRequest>(url, {
         [name]: inputValue,
@@ -105,7 +107,7 @@ const PanelItems: FC<PanelItemsProps> = ({
       });
       await getItems();
     } catch (e) {
-      setAddErr(true);
+      setAddItemErr(true);
     }
   };
 
@@ -122,7 +124,7 @@ const PanelItems: FC<PanelItemsProps> = ({
         update={getItems} key={item.id}/>;
   };
   return (
-    <div className={'brandsMain'}>
+    <div className={'itemsMain'}>
       {
         !items || items?.rows.length < 1 ? <>No one were defined</> : <>
           <List className={'customList'}>
@@ -141,8 +143,9 @@ const PanelItems: FC<PanelItemsProps> = ({
               multiline
               maxRows={4}
             /> : null}
-            {addErr && items ? <p className={'errorMSG'}>This Category already exists </p> : null}
-            {addErr && !items ? <p className={'errorMSG'}>Please, input a category!</p> : null}
+            {addItemErr && !items ? <p className={'errorMSG'}>Please, input a correct value!</p> : null}
+            {addItemErr && items ? <p className={'errorMSG'}>Item with this value already exists</p> : null}
+
             {children}
           </Dialog> : null}
           <Stack spacing={2}>

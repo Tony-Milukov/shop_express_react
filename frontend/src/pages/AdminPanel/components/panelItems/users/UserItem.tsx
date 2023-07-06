@@ -44,7 +44,7 @@ const UserItem: FC<IUserItemProps> = ({
         </ListItemAvatar>
 
         <ListItemText primary={item.username} secondary={item.email}/>
-        <Link className={'menuLink adminUserOrders'} to={`/user/${item.id}/orders`}> <Button
+        <Link className={'menuLink adminUserOrders'} to={`/admin/orders/user/${item.id}`}> <Button
           variant="outlined" size="small">
           orders
         </Button></Link>

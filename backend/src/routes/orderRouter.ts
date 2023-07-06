@@ -8,10 +8,10 @@ const {
 
 // user
 router.put('/', createOrder);
+
 // admin can see all, user only itself
-router.get('/:orderId', getOrderById);
-router.get('/user/all', getAllOrdersForUser);
-router.post('/user/:userId', getAllOrdersForUser);
+router.get('/id/:orderId', getOrderById);
+router.get('/user/:userId?', getAllOrdersForUser);
 
 // admin
 router.put('/customStatus', checkRole(process.env.ADMIN_ROLE), updateCustomStatus);

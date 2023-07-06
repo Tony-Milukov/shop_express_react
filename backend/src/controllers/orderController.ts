@@ -172,7 +172,7 @@ const getOrderById = async (req: any, res: any) => {
 const getAllOrdersForUser = async (req: any, res: any) => {
   try {
     const userByToken = await getUserByToken(req, res);
-    const { userId } = req.body;
+    const { userId } = req.params;
     const ordersByToken = await userByToken.getOrders();
 
     // if admin, don't check if the orders belongs to this user,

@@ -13,6 +13,7 @@ import OrderPage from './pages/Order/OrderPage';
 import Products from './pages/Products/Products';
 import ProductPage from './pages/ProductPage/ProductPage';
 import Basket from './pages/Basket/Basket';
+import OrdersPage from './pages/Orders/OrdersPage';
 function Router() {
   const token = userStore((state: any) => state.user.token);
   const isAuth = useAuth()
@@ -37,6 +38,7 @@ function Router() {
     <Routes>
       <Route path={'/account'} element={<AccountPage/>}></Route>
       <Route path={'/order/:orderId'} element={<OrderPage/>}></Route>
+      <Route path={'/orders'} element={<OrdersPage/>}></Route>
       {isAdmin ? adminRoutes : null}
     </Routes>
   )

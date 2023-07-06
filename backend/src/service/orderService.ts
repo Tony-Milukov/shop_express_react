@@ -126,7 +126,7 @@ const getAllOrdersService = async (limit:number, offset:number) => {
     },
   );
   if (!orders) {
-    throw { errorMSG: 'Orders by this page were not defined', status: 404 };
+    throw { errorMSG: 'OrdersPage by this page were not defined', status: 404 };
   }
   return orders;
 };

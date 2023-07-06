@@ -8,12 +8,14 @@ import Brands from './panelItems/Brands/Brands';
 import Orders from './panelItems/Orders/Orders';
 import Order from './panelItems/Order/Order';
 import Statuses from './panelItems/Statuses/Statuses';
+import UserOrders from './panelItems/Orders/UserOrders';
 
 const Router = () => {
   return (
     <Routes>
       <Route path={'users/:page?'} element={<Users/>}></Route>
       <Route path={'orders/:page?'} element={<Orders/>}></Route>
+      <Route path={'orders/user/:userId'} element={<UserOrders/>}></Route>
       <Route path={'products/:page?'} element={<Products/>}></Route>
       <Route path={'categories/:page?'} element={<Categories/>}> </Route>
       <Route path={'brands/:page?'} element={<Brands/>}></Route>
