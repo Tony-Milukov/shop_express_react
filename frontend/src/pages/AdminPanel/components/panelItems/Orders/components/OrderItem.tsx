@@ -16,10 +16,12 @@ import { Link } from 'react-router-dom';
 import IOrder from '../../../../../../types/order';
 
 interface IOrderItemProps {
-  item: IOrderItemReqest
+  item: IOrderItemReqest,
+  orderLink?: string
 }
 
 const OrderItem: FC<IOrderItemProps> = ({
+  orderLink = "/admin/order/",
   item
 }) => {
   const [order, setOrder] = useState<IOrder>();
@@ -49,7 +51,7 @@ const OrderItem: FC<IOrderItemProps> = ({
           <ListItemText primary={`Order #${item.id} (${order?.adress?.fullName})`}/>
           {infoOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
-       <Link to={`/admin/order/${item.id}`}> <Button variant="contained">to Order</Button></Link>
+       <Link to={`${orderLink+item.id}`}> <Button variant="contained">to Order</Button></Link>
       </div>
       <Collapse className={"orderInfoContainer"} in={infoOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>

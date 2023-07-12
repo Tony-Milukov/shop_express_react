@@ -3,3 +3,10 @@
     max-height: 85vh;
     overflow: auto;
 }
+
+.ordersTitle {
+    display: block;
+    width: fit-content;
+    margin: 0 auto 10px;
+    font-size: 20px;
+}

@@ -67,13 +67,12 @@ const ProductPage = () => {
           </main>
             <section className="productsContent">
               <h2 className="productPageTitle">{product?.title}</h2>
-              <p className="productPageDescription">{product?.description}</p><p
-              className="priceProductPage">{product?.price}$</p>
+              <p className="productPageDescription">{product?.description}</p>
+              <p className="priceProductPage">{product?.price}$</p>
+              <p className="productPageTitle">available: {product?.count}</p>
               <div className="hrProductsPage"/>
               <div className="buyOptionButtons">
-                <button onClick={addToBasket} className="addToCartBtn"><span>Add to Basket</span></button>
-                {/* <button  className="btn-add-to-card"><span */}
-                {/*   className="btn-text">Buy</span></button> */}
+                <button disabled={product?.count === 0} onClick={addToBasket} className="addToCartBtn"><span>{product?.count === 0 ? "Unavailable now" : "Add to Basket"}</span></button>
               </div>
             </section>
         </div>

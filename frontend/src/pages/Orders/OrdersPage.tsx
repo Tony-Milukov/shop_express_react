@@ -36,8 +36,9 @@ const OrdersPage: FC<IOrdersProps> = ({ userId }) => {
 
     !err ? <div className="itemsMain orders">
       <List className={'customList'}>
+        <span className={"ordersTitle"}>Orders</span>
         {
-          items?.map((order: IOrderItemReqest) => <OrderItem key={order.id} item={order}/>)
+          items?.map((order: IOrderItemReqest) => <OrderItem orderLink={"/order/"} key={order.id} item={order}/>)
         }
       </List>
     </div> : <Popup/>

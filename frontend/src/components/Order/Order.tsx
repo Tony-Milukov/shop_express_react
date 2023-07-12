@@ -11,6 +11,7 @@ import StatusesTimeLine from './components/StatusesTimeLine';
 import DeliveryInfo from './components/DeliveryInfo';
 import OrderDetails from './components/OrderDetails';
 import OrderAdress from './components/OrderAdress';
+import OrderItem from '../../pages/Order/components/OrderItem';
 
 interface OrderProps {
   orderId?: number | string,
@@ -45,6 +46,7 @@ const Order: FC<OrderProps> = ({
   };
   useEffect(() => {
     getOrder();
+    console.log(order?.products);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId, update]);
   return <>
@@ -60,7 +62,7 @@ const Order: FC<OrderProps> = ({
         <div className="products">
           <span className={'orderProductsTitle'}>Ordered Products</span>
           {
-            order?.products.map((item: IProduct) => <ProductItem key={item.id} item={item}/>)
+            order?.products.map((item: IProduct) => <OrderItem key={item.id} product={item}/>)
           }
         </div>
 

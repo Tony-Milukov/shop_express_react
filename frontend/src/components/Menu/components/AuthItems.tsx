@@ -30,6 +30,7 @@ const AuthItems = () => {
   };
   return (
    token ?  <>
+     <Link to={"/orders"} className="menuLink ordersButtonMenu">Orders</Link>
      {
        isAdmin ?  <MenuItem_ link={'/admin'} Icon={AdminPanelSettingsIcon}/> : null
      }
@@ -41,7 +42,6 @@ const AuthItems = () => {
           <ShoppingCartIcon/>
         </IconButton>
       </Link>
-
       <MenuItem_ link={'/account'} Icon={AccountCircle}/>
 
       <IconButton
@@ -50,16 +50,6 @@ const AuthItems = () => {
         color="inherit">
         <LogoutIcon/>
       </IconButton>
-      <Box sx={{
-        display: {
-          xs: 'flex',
-          md: 'none'
-        }
-      }}>
-
-
-      </Box>
-
     </> : null
   );
 };
