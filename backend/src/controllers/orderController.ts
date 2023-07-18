@@ -63,8 +63,9 @@ const createOrder = async (req: any, res: any) => {
 
     // updating count
     for (const product of products) {
+      console.log(product);
       const productItem = await getProductByIdService(product.productId);
-      await updateProductCountService(productItem.count - 1, productItem.id);
+      await updateProductCountService(productItem.count - product.count, productItem.id);
     }
     return res.status(200)
       .json({

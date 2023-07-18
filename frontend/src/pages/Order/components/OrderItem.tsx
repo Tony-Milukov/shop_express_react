@@ -33,6 +33,7 @@ const OrderItem:FC <IOrderItemProps> = ({
           <div className="cartItemCount">
             <div className="cartItemChangeCount">Quantyty: <span className="quantyty-value-cart"> <input
               value={product.order_product.count}
+              disabled
               min="0" max="999" type="number"/></span></div>
           </div>
         </CardContent>

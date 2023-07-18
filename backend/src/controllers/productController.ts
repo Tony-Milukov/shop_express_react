@@ -11,6 +11,7 @@ const {
   searchProductService,
   checkExistence,
   getAllFilteredProductsService,
+  getRandomProductsService,
 } = require('../service/productService.ts');
 const checkIsArray = require('../validations/checkIsArray.ts');
 const {
@@ -85,7 +86,6 @@ const deleteProduct = async (req: any, res: any) => {
 };
 const getProductById = async (req: any, res: any) => {
   try {
-    console.log(true);
     const productId = validatePrams(req, res, 'id');
     // get product
     const product = await getProductByIdService(productId);
@@ -146,7 +146,16 @@ const searchProduct = async (req: any, res: any) => {
     apiError(res, e.errorMSG, e.status);
   }
 };
-
+const getRandomProducts = async (req:any, res:any) => {
+  try {
+    const limit = parseFloat(validatePrams(req, res, 'limit'));
+    const products = await getRandomProductsService(limit);
+    res.status(200)
+      .json(products);
+  } catch (e: any) {
+    apiError(res, e.errorMSG, e.status);
+  }
+};
 module.exports = {
   createProduct,
   deleteProduct,
@@ -154,5 +163,6 @@ module.exports = {
   getAllProducts,
   updateCount,
   searchProduct,
+  getRandomProducts,
 };
 export {};

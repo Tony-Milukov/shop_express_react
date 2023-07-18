@@ -50,9 +50,9 @@ const BasketItem: FC<IBasketItemProps> = ({
             <span className="cartItemPrice">Price: <span
               className="price-dollar-cart">{product.price}$</span></span>
             <div className="cartItemCount">
-              <div className="cartItemChangeCount">Quantyty: <span className="quantyty-value-cart"> <input
+              <div className="cartItemChangeCount">Quantyty: <span> <input
                 value={product.basket_item.count}
-                min="0" max="999" type="number"/></span></div>
+                min="0" max="999" disabled type="number"/></span></div>
             </div>
           </CardContent>
           <CardActions className={'removeFromCartBtn'}>

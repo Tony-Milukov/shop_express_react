@@ -10,7 +10,7 @@ interface ProductItemProps {
 const ProductItem: FC <ProductItemProps> = ({item}) => {
 
   return (
-    <Grid  className={"productItem"} item xs={12} sm={"auto"} md={3.5} lg={2.5}>
+    <Grid className={"productItem"} item xs={12} sm={"auto"} md={3.5} lg={2.5}>
       <Link className={"menuLink productContainer"} to={`/product/${item.id}`}>
         <Card>
           <CardMedia

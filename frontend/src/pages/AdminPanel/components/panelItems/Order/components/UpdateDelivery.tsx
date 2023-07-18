@@ -13,7 +13,6 @@ interface IUpdateDeliveryProps {
   updateOrder: () => void;
 }
 
-
 const UpdateDelivery: FC<IUpdateDeliveryProps> = ({
   orderId,
   updateOrder

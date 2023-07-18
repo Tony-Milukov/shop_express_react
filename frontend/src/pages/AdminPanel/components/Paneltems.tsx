@@ -139,13 +139,12 @@ const PanelItems: FC<PanelItemsProps> = ({
             {addItem ? <TextField
               onChange={(e: any) => handleInput(e)}
               id="outlined-multiline-flexible"
-              placeholder={'Input new role'}
+              placeholder={`Input ${name}`}
               multiline
               maxRows={4}
             /> : null}
             {addItemErr && !items ? <p className={'errorMSG'}>Please, input a correct value!</p> : null}
             {addItemErr && items ? <p className={'errorMSG'}>Item with this value already exists</p> : null}
-
             {children}
           </Dialog> : null}
           <Stack spacing={2}>

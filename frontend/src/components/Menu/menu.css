@@ -1,8 +1,8 @@
 .menuLink {
     text-decoration: none;
     color: inherit;
+    margin-left: 5px;
 }
-
 .css-e53awj-MuiStack-root {
     align-items: center !important;
 }

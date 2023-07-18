@@ -7,8 +7,10 @@ interface OrderDetailsProps {
 }
 
 const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
-  //calculating full price of products in the order
+  const creationDate = new Date(order?.createdAt!);
+  const outputCreationDate: string = `${creationDate.getDate()}.${creationDate.getMonth()} ${creationDate.getFullYear()} ,  ${creationDate.getHours()}:${creationDate.getMinutes()} `;
 
+  //calculating full price of products in the order
   const price = order?.products.reduce((acc: number, value: any) => {
     return acc + (value.price * value.order_product.count);
   }, 0);
@@ -24,7 +26,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
           <ListItemText primary={`total: ${price}$`}/>
         </ListItem>
         <ListItem>
-          <ListItemText primary={`ordered: ${order?.createdAt}$`}/>
+          <ListItemText primary={`ordered: ${outputCreationDate}`}/>
         </ListItem>
       </List>
     </ListItem>

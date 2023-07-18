@@ -64,6 +64,7 @@ const getOrderByIdService = async (orderId:number) => {
       {
         model: Status,
         through: 'order_statuses',
+        order: [['createdAt', 'ASC']],
       },
       {
         model: Product,

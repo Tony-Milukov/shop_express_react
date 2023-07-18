@@ -10,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import './basket.css';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
+import basketItem from './components/BasketItem';
 
 interface IOrderCreated {
   message: string,
@@ -109,7 +110,7 @@ const Basket = () => {
           products: products.map(product => {
             return {
               productId: product.id,
-              count: product.basket_item.count
+              count: product.count >= product.basket_item.count ? product.basket_item.count : product.count
             }
           }),
         }, {
@@ -118,6 +119,7 @@ const Basket = () => {
           'Content-Type': 'application/json'
         }
       });
+      await clearBasket()
       nav(`/order/${data.orderId}`)
       } catch (e) {
         console.log(e);
@@ -173,7 +175,7 @@ const Basket = () => {
           <p className="totalPrice">Grand total<span>${totalPrice}</span>
           </p>
           <span className="placeOrderHr"></span>
-          <button type={'submit'}
+          <button disabled={products.length <= 0} type={'submit'}
                   className="placeOrderBtn">proceed to checkout
           </button>
         </div>

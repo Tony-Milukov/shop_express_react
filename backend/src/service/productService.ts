@@ -1,5 +1,4 @@
-import * as inspector from 'inspector';
-import { Op } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 
 const {
   Product,
@@ -166,6 +165,16 @@ const searchProductService = async (title: string) => {
   }
   return products;
 };
+const getRandomProductsService = async (limit: number) => {
+  const products = await Product.findAll({
+    order: Sequelize.literal('RAND()'),
+    limit,
+  });
+  if (!products) {
+    throw { errorMSG: 'something went went wrong on getting random products' };
+  }
+  return products;
+};
 
 module.exports = {
   createProductService,
@@ -176,5 +185,6 @@ module.exports = {
   updateProductCountService,
   searchProductService,
   getAllFilteredProductsService,
+  getRandomProductsService,
 };
 export {};

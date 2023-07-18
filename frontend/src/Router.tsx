@@ -14,6 +14,7 @@ import Products from './pages/Products/Products';
 import ProductPage from './pages/ProductPage/ProductPage';
 import Basket from './pages/Basket/Basket';
 import OrdersPage from './pages/Orders/OrdersPage';
+import Footer from './components/Footer/Footer';
 function Router() {
   const token = userStore((state: any) => state.user.token);
   const isAuth = useAuth()
@@ -39,6 +40,7 @@ function Router() {
       <Route path={'/account'} element={<AccountPage/>}></Route>
       <Route path={'/order/:orderId'} element={<OrderPage/>}></Route>
       <Route path={'/orders'} element={<OrdersPage/>}></Route>
+      <Route path="/cart" element={<Basket/>}/>
       {isAdmin ? adminRoutes : null}
     </Routes>
   )
@@ -49,23 +51,26 @@ function Router() {
     </Routes>
   )
   return (
-    <div>
-      <BrowserRouter>
-        <Nav/>
-        <Routes>
-          <Route path="/" element={<HomePage/>}/>
-          <Route path="/products/:page?" element={<Products/>}/>
-          <Route path="/product/:productId" element={<ProductPage/>}/>
-          <Route path="/cart" element={<Basket/>}/>
-        </Routes>
-        {
-          isAuth ?
-            //only auth paths
-            authRoutes
-            //only not auth paths
-            : guestRoutes
-        }
-      </BrowserRouter>
+    <div id={"index"}>
+      <div className="content">
+        <BrowserRouter>
+          <Nav/>
+          <Routes>
+            <Route path="/" element={<HomePage/>}/>
+            <Route path="/products/:page?" element={<Products/>}/>
+            <Route path="/product/:productId" element={<ProductPage/>}/>
+          </Routes>
+          {
+            isAuth ?
+              //only auth paths
+              authRoutes
+              //only not auth paths
+              : guestRoutes
+          }
+        </BrowserRouter>
+
+      </div>
+      <Footer/>
     </div>
   );
 }
