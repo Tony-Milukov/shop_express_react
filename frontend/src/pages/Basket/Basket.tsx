@@ -139,14 +139,12 @@ const Basket = () => {
             <div className="cartButtons">
               {products!.length > 0 ?
                 <button className="clearCartBtn" onClick={clearBasket}>clear shopping cart</button> : null}
-
-
             </div>
           </div>
         </div>
 
       <form onSubmit={handleSubmit(createOrder)} className="adressInputsContainer">
-        <TextField variant="outlined"{...register('fullName')} type="text" className={'adressInput'} placeholder="Fullname"/>
+        <TextField variant="outlined" {...register('fullName')} type="text" className={'adressInput'} placeholder="Fullname"/>
         {errors.fullName && <span className="errorMSG_">{errors.fullName.message}</span>}
 
         <TextField {...register('country')} type="text" className={'adressInput'}

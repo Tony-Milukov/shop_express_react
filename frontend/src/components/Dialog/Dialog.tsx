@@ -10,16 +10,16 @@ import Dialog2 from '@mui/material/Dialog';
 
 interface IDialogProps {
   //will run on succes button
-  handler: () => void,
+  handler?: () => void,
 
   //button which opens dialog
   OpenButton?: React.ReactNode | any,
 
   //text which will be shown in success button which calls handler
-  succesValue: React.ReactNode | any,
+  succesValue?: React.ReactNode | any,
 
   //TEXT which  will be shown in failure button closes dialog without running handler
-  failureValue: React.ReactNode | any,
+  failureValue?: React.ReactNode | any,
 
   //some text in the dialog
   value?: React.ReactNode | any,
@@ -69,8 +69,9 @@ const Dialog: FC<IDialogProps> = ({
           {children}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>{failureValue}</Button>
-          <Button onClick={handler}>{succesValue}</Button>
+          {failureValue ? <Button onClick={handleClose}>{failureValue}</Button> : null}
+          {succesValue ? <Button onClick={handler}>{succesValue}</Button> : null}
+
         </DialogActions>
       </Dialog2>
     </>

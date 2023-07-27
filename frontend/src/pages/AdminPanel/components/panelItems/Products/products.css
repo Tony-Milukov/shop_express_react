@@ -5,7 +5,8 @@
 
 .newProductMain {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .newProductInput {
@@ -15,6 +16,7 @@
 .newProductInputs {
     display: flex;
     flex-direction: column;
+    max-width: 230px;
 }
 
 .uploadImageContainer {
