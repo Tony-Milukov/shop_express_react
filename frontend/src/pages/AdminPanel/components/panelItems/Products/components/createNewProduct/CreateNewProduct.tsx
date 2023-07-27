@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import RenderChips from './RenderChips';
 import Dialog from '../../../../../../../components/Dialog/Dialog';
-import { Button, IconButton } from '@mui/material';
+import { Button } from '@mui/material';
 import ICreateProductImg from '../../../../../../../types/ICreateProductImg';
 import '../../products.css';
 import IStatus from '../../../../../../../types/status';

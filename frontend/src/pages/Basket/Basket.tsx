@@ -10,7 +10,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import './basket.css';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
-import basketItem from './components/BasketItem';
 
 interface IOrderCreated {
   message: string,
@@ -82,14 +81,20 @@ const Basket = () => {
   };
   useEffect(() => {
     getBasket();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     getProducts();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [basket]);
 
   useEffect(() => {
     products.map((product: IBasketItem) => setTotalPrice(totalPrice + (product.price * product.basket_item.count)));
+
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products, basket]);
   const clearBasket =  async () => {
     try {
